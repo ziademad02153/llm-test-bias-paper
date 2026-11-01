@@ -18,12 +18,41 @@ if str(project_root) not in sys.path:
 from src.schema import ExperimentalCondition, ProblemSpec
 
 
-# Pricing catalog ($ per 1 Million tokens) - OpenRouter rates verified November 2026
+# Model Registry: Pinned providers, quantizations, verified pricing, and official URLs
+# Verified Date: November 1, 2026
+MODEL_REGISTRY = {
+    "meta-llama/llama-3.3-70b-instruct": {
+        "pinned_provider": "DeepInfra",
+        "quantization": "bf16",
+        "prompt_price_per_m": 0.12,
+        "completion_price_per_m": 0.30,
+        "source_url": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
+        "doc_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+        "verified_date": "2026-11-01"
+    },
+    "qwen/qwen-2.5-coder-32b-instruct": {
+        "pinned_provider": "DeepInfra",
+        "quantization": "bf16",
+        "prompt_price_per_m": 0.06,
+        "completion_price_per_m": 0.15,
+        "source_url": "https://openrouter.ai/qwen/qwen-2.5-coder-32b-instruct",
+        "doc_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+        "verified_date": "2026-11-01"
+    },
+    "deepseek/deepseek-chat": {
+        "pinned_provider": "DeepSeek",
+        "quantization": "fp8",
+        "prompt_price_per_m": 0.14,
+        "completion_price_per_m": 0.28,
+        "source_url": "https://openrouter.ai/deepseek/deepseek-chat",
+        "doc_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+        "verified_date": "2026-11-01"
+    },
+}
+
 DEFAULT_PRICING = {
-    "meta-llama/llama-3.3-70b-instruct": {"prompt": 0.12, "completion": 0.30},
-    "qwen/qwen-2.5-coder-32b-instruct": {"prompt": 0.06, "completion": 0.15},
-    "deepseek/deepseek-chat": {"prompt": 0.15, "completion": 0.60},
-    "openai/gpt-4o-mini": {"prompt": 0.15, "completion": 0.60},
+    k: {"prompt": v["prompt_price_per_m"], "completion": v["completion_price_per_m"]}
+    for k, v in MODEL_REGISTRY.items()
 }
 
 
@@ -90,15 +119,19 @@ class LLMClient:
         api_key: Optional[str] = None,
         base_url: Optional[str] = None,
         temperature: float = 0.2,
-        pinned_provider: Optional[str] = None,  # e.g., "Anthropic", "OpenAI", "DeepSeek"
+        pinned_provider: Optional[str] = None,
+        quantization: Optional[str] = None,
         pricing: Optional[Dict[str, float]] = None
     ):
         self.model_name = model_name
         self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY") or os.getenv("LLM_API_KEY")
         self.base_url = base_url or os.getenv("OPENAI_BASE_URL") or "https://openrouter.ai/api/v1"
         self.temperature = temperature
-        self.pinned_provider = pinned_provider
-        self.pricing = pricing or DEFAULT_PRICING.get(model_name, {"prompt": 2.0, "completion": 8.0})
+        
+        reg_entry = MODEL_REGISTRY.get(model_name, {})
+        self.pinned_provider = pinned_provider or reg_entry.get("pinned_provider")
+        self.quantization = quantization or reg_entry.get("quantization", "unknown")
+        self.pricing = pricing or DEFAULT_PRICING.get(model_name, {"prompt": 0.20, "completion": 0.60})
 
     def generate(
         self,
@@ -164,6 +197,7 @@ class LLMClient:
                 "model_requested": self.model_name,
                 "system_fingerprint": resp_json.get("system_fingerprint"),
                 "pinned_provider": self.pinned_provider,
+                "quantization": self.quantization,
                 "created_timestamp": resp_json.get("created"),
                 "response_id": resp_json.get("id"),
                 "caller": "native_urllib"
@@ -199,6 +233,7 @@ class LLMClient:
                     "model_requested": self.model_name,
                     "system_fingerprint": getattr(response, "system_fingerprint", None),
                     "pinned_provider": self.pinned_provider,
+                    "quantization": self.quantization,
                     "created_timestamp": getattr(response, "created", None),
                     "response_id": getattr(response, "id", None),
                     "caller": "openai_sdk"

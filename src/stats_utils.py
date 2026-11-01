@@ -117,17 +117,26 @@ def _norm_cdf(z: float) -> float:
 def compute_tost_paired_proportions(
     arm_a_outcomes: List[int],
     arm_b_outcomes: List[int],
-    margin: float = 0.05,
+    margin: float = 0.08,
     alpha: float = 0.05
 ) -> Dict[str, Any]:
     """
-    Two One-Sided Tests (TOST) for equivalence of paired binary proportions.
-    Used when failing to reject H0 in McNemar's test, to rigorously test whether
-    the difference in detection rates is bounded within [-margin, +margin].
+    Two One-Sided Tests (TOST) for statistical equivalence of paired binary proportions.
     
-    H01: p_A - p_B <= -margin
-    H02: p_A - p_B >= +margin
-    Rejection of both H01 and H02 at level alpha establishes statistical equivalence.
+    CRITICAL METHODOLOGICAL NOTE:
+    Equivalence is an independent statistical hypothesis and is NEVER inferred
+    merely from a non-significant McNemar test (p >= 0.05). A failure to reject
+    McNemar's H0 only indicates lack of evidence for a difference. Equivalence is
+    demonstrated ONLY IF both one-sided null hypotheses are simultaneously rejected:
+    
+      H01: p_A - p_B <= -margin
+      H02: p_A - p_B >= +margin
+      
+    Rejection of both H01 and H02 (p_TOST = max(p1, p2) < alpha) bounds the true
+    difference within (-margin, +margin) at (1 - 2*alpha) confidence.
+    
+    Sample size note: For N ~ 200-250 and ~25% discordant pairs, margin = 0.08 is
+    powered at 80% (alpha = 0.05). A tighter margin of 0.05 requires N ~ 500-600.
     """
     if len(arm_a_outcomes) != len(arm_b_outcomes):
         raise ValueError("Arms must have identical lengths for paired evaluation.")

@@ -1,14 +1,21 @@
 {
-  "problem_id": "PILOT_001",
+  "problem_id": "TEMPLATE_001",
   "function_name": "normalize_identifier",
   "docstring": "Normalizes a raw identifier string into snake_case according to strict naming conventions.\n\nArgs:\n    name: The input identifier string.\n    strip_leading_underscores: If True, leading underscores are removed.\n\nReturns:\n    The normalized snake_case string.\n\nRaises:\n    ValueError: If name contains non-alphanumeric characters (except underscores/hyphens) or is empty.",
   "signature": "def normalize_identifier(name: str, strip_leading_underscores: bool = False) -> str:",
   "ref_implementation": "import re\n\ndef normalize_identifier(name: str, strip_leading_underscores: bool = False) -> str:\n    if not name or not isinstance(name, str):\n        raise ValueError('Identifier cannot be empty')\n    if not re.match(r'^[a-zA-Z0-9_-]+$', name):\n        raise ValueError('Invalid characters in identifier')\n    \n    s = re.sub(r'[-\\s]+', '_', name)\n    s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\\1_\\2', s)\n    s = re.sub(r'([a-z\\d])([A-Z])', r'\\1_\\2', s).lower()\n    s = re.sub(r'_+', '_', s)\n    \n    if strip_leading_underscores:\n        s = s.lstrip('_')\n    return s",
   "ref_test": "def test_normalize():\n    assert normalize_identifier('camelCase') == 'camel_case'\n    assert normalize_identifier('PascalCase') == 'pascal_case'\n    assert normalize_identifier('kebab-case-test') == 'kebab_case_test'\n    assert normalize_identifier('_privateVar', strip_leading_underscores=True) == 'private_var'\n    assert normalize_identifier('_privateVar', strip_leading_underscores=False) == '_private_var'\n    assert normalize_identifier('HTTPRequest') == 'http_request'\n    \n    try:\n        normalize_identifier('')\n        assert False, 'Should raise ValueError for empty string'\n    except ValueError:\n        pass\n        \n    try:\n        normalize_identifier('invalid@char')\n        assert False, 'Should raise ValueError for invalid chars'\n    except ValueError:\n        pass\n\ntest_normalize()",
   "repo_url": "https://github.com/example/verified-repo",
-  "commit_hash": "a1b2c3d4e5f6...",
-  "commit_date": "2025-01-15T14:30:00Z",
+  "commit_hash": "a1b2c3d4e5f67890123456789abcdef012345678",
+  "commit_date": "2025-08-15T14:30:00Z",
   "verified_post_cutoff": true,
-  "safety_margin_months": 7,
-  "author": "open-source-contributor"
+  "temporal_threshold": "2025-07-01",
+  "safety_margin_months": 8,
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
 }
