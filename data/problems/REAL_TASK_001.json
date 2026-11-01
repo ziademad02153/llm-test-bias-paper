@@ -1,0 +1,20 @@
+{
+  "problem_id": "REAL_TASK_001",
+  "function_name": "parse_github_url",
+  "signature": "def parse_github_url(url: str) -> Optional[Tuple[str, str]]:",
+  "docstring": "Parse a GitHub URL to extract owner and repo name.\n\nHandles http/https prefixes, www prefixes, and .git extensions.\nReturns None if the target is not a valid GitHub repository URL.\n\nArgs:\n    url: GitHub URL string to parse.\n\nReturns:\n    Tuple of (owner, repo) or None if invalid.",
+  "ref_implementation": "import re\nfrom urllib.parse import urlparse\nfrom typing import Optional, Tuple\n\ndef is_github_url(target: str) -> bool:\n    if not isinstance(target, str):\n        return False\n    github_patterns = [\n        r'^https?://github\\.com/',\n        r'^https?://www\\.github\\.com/',\n        r'^github\\.com/',\n        r'^www\\.github\\.com/'\n    ]\n    for pattern in github_patterns:\n        if re.match(pattern, target, re.IGNORECASE):\n            return True\n    return False\n\ndef parse_github_url(url: str) -> Optional[Tuple[str, str]]:\n    if not is_github_url(url):\n        return None\n    url = url.strip()\n    if not url.startswith(('http://', 'https://')):\n        url = 'https://' + url\n    try:\n        parsed = urlparse(url)\n        path_parts = parsed.path.strip('/').split('/')\n        if len(path_parts) >= 2:\n            owner = path_parts[0]\n            repo = path_parts[1]\n            if repo.endswith('.git'):\n                repo = repo[:-4]\n            return (owner, repo)\n    except Exception:\n        pass\n    return None\n",
+  "ref_test": "def test_parse_github_url():\n    assert parse_github_url('https://github.com/torvalds/linux') == ('torvalds', 'linux')\n    assert parse_github_url('https://www.github.com/psf/black.git') == ('psf', 'black')\n    assert parse_github_url('github.com/pallets/flask') == ('pallets', 'flask')\n    assert parse_github_url('https://gitlab.com/owner/repo') is None\n    assert parse_github_url('not a url') is None\n    assert parse_github_url('') is None\n\ntest_parse_github_url()\n",
+  "repo_url": "https://github.com/TryMightyAI/mighty-security",
+  "commit_hash": "197847a934165eb361e19d51bca69cfa46e3dc0c",
+  "commit_date": "2025-08-19T02:18:22Z",
+  "author": "Johnny Hung",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

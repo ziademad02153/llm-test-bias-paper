@@ -1,0 +1,20 @@
+{
+  "problem_id": "REAL_TASK_004",
+  "function_name": "validate_tags",
+  "signature": "def validate_tags(tags: str, valid_tag_set: set[str]) -> Tuple[bool, str]:",
+  "docstring": "Validate pipe-separated tags string against an allowed set of tags.\n\nRules:\n1. Non-empty string required.\n2. Must contain at least 1 and at most 3 non-empty tags.\n3. Every tag must be present in valid_tag_set.\n\nArgs:\n    tags: Pipe-separated string of tags (e.g. 'coding | python | api').\n    valid_tag_set: Set of recognized tag names.\n\nReturns:\n    Tuple of (is_valid: bool, error_message: str).",
+  "ref_implementation": "from typing import Tuple, Set\n\ndef validate_tags(tags: str, valid_tag_set: Set[str]) -> Tuple[bool, str]:\n    if not tags or not isinstance(tags, str):\n        return False, \"At least one tag is required\"\n    \n    tag_list = [t.strip() for t in tags.split('|') if t.strip()]\n    \n    if len(tag_list) == 0:\n        return False, \"No valid tags provided\"\n    \n    if len(tag_list) > 3:\n        return False, f\"Too many tags ({len(tag_list)}). Maximum 3 tags allowed.\"\n    \n    invalid_tags = [tag for tag in tag_list if tag not in valid_tag_set]\n    if invalid_tags:\n        return False, f\"Invalid tags: {', '.join(invalid_tags)}\"\n    \n    return True, \"\"\n",
+  "ref_test": "def test_validate_tags():\n    valid_set = {'python', 'api', 'security', 'caching'}\n    assert validate_tags('python | api', valid_set) == (True, '')\n    assert validate_tags('security', valid_set) == (True, '')\n    assert validate_tags('', valid_set)[0] is False\n    assert validate_tags('python | invalid_tag', valid_set)[0] is False\n    assert validate_tags('python | api | security | caching', valid_set)[0] is False\n\ntest_validate_tags()\n",
+  "repo_url": "https://github.com/Danau5tin/tbench-agentic-data-pipeline",
+  "commit_hash": "4489453eb3c2e395a62a7616565e762664bf8b24",
+  "commit_date": "2025-07-28T15:30:53Z",
+  "author": "Dan Austin",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

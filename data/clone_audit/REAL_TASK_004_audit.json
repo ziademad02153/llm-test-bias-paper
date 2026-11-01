@@ -1,0 +1,32 @@
+{
+  "function_name": "validate_tags",
+  "signature": "def validate_tags(tags: str, valid_tag_set: set[str]) -> Tuple[bool, str]:",
+  "repo_url": "https://github.com/Danau5tin/tbench-agentic-data-pipeline",
+  "commit_hash": "4489453eb3c2e395a62a7616565e762664bf8b24",
+  "commit_date": "2025-07-28T15:30:53Z",
+  "audit_timestamp": "2026-11-01T14:26:21.622959+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 27
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "validate_tags",
+    "args_count": 2,
+    "ast_nodes_count": 140,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"validate_tags\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

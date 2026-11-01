@@ -1,0 +1,20 @@
+{
+  "problem_id": "REAL_TASK_005",
+  "function_name": "split_host_port",
+  "signature": "def split_host_port(raw_hostport: str) -> Tuple[str, str]:",
+  "docstring": "Extract host and port from a netloc or 'host:port' string.\n\nStrips userinfo if present (user:pass@host:port).\nHandles IPv6 addresses with or without square brackets.\nReturns (host, port_or_empty).\n\nArgs:\n    raw_hostport: Raw netloc or host:port string.\n\nReturns:\n    Tuple of (host, port_string_or_empty).",
+  "ref_implementation": "import re\nfrom urllib.parse import unquote\nfrom typing import Tuple\n\ndef split_host_port(raw_hostport: str) -> Tuple[str, str]:\n    if not raw_hostport or not isinstance(raw_hostport, str):\n        return \"\", \"\"\n    hp = unquote(raw_hostport.strip())\n    if \"@\" in hp:\n        hp = hp.split(\"@\", 1)[1]\n    if hp.startswith(\"[\"):\n        m = re.match(r\"^\\[(.+?)\\](?::(\\d+))?$\", hp)\n        if m:\n            return m.group(1), (m.group(2) or \"\")\n    if hp.count(\":\") > 1:\n        return hp, \"\"\n    if \":\" in hp:\n        h, p = hp.rsplit(\":\", 1)\n        return h, p\n    return hp, \"\"\n",
+  "ref_test": "def test_split_host_port():\n    assert split_host_port('localhost:8080') == ('localhost', '8080')\n    assert split_host_port('example.com') == ('example.com', '')\n    assert split_host_port('user:pass@192.168.1.1:443') == ('192.168.1.1', '443')\n    assert split_host_port('[2001:db8::1]:8443') == ('2001:db8::1', '8443')\n    assert split_host_port('[2001:db8::1]') == ('2001:db8::1', '')\n    assert split_host_port('2001:db8::1') == ('2001:db8::1', '')\n    assert split_host_port('') == ('', '')\n\ntest_split_host_port()\n",
+  "repo_url": "https://github.com/ShatakVPN/ConfigForge-V2Ray",
+  "commit_hash": "4e20866a327aef3bec6f3596afda3ad09646e502",
+  "commit_date": "2026-11-01T09:22:15Z",
+  "author": "ShatakVPN",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

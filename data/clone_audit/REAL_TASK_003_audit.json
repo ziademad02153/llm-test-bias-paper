@@ -1,0 +1,32 @@
+{
+  "function_name": "get_parent_dn",
+  "signature": "def get_parent_dn(dn: str) -> Optional[str]:",
+  "repo_url": "https://github.com/synacktiv/gpoParser",
+  "commit_hash": "5cfe7aa3556f7c9263620515a33f4ef7afb88c1b",
+  "commit_date": "2026-04-28T09:56:01Z",
+  "audit_timestamp": "2026-11-01T14:26:21.621085+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 301
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "get_parent_dn",
+    "args_count": 1,
+    "ast_nodes_count": 61,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"get_parent_dn\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

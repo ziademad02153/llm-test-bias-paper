@@ -1,0 +1,20 @@
+{
+  "problem_id": "REAL_TASK_003",
+  "function_name": "get_parent_dn",
+  "signature": "def get_parent_dn(dn: str) -> Optional[str]:",
+  "docstring": "Extracts the parent Distinguished Name (DN) by splitting on unescaped commas.\n\nHandles escaped commas (\\,) within RDN values without incorrectly splitting.\nReturns None if the DN has no parent (only 1 RDN or empty).\n\nArgs:\n    dn: The full Distinguished Name string.\n\nReturns:\n    Parent DN string or None.",
+  "ref_implementation": "import re\nfrom typing import Optional\n\ndef get_parent_dn(dn: str) -> Optional[str]:\n    if not dn or not isinstance(dn, str):\n        return None\n    parts = re.split(r'(?<!\\\\),', dn)\n    return ','.join(parts[1:]) if len(parts) > 1 else None\n",
+  "ref_test": "def test_get_parent_dn():\n    assert get_parent_dn('CN=Computers,DC=corp,DC=local') == 'DC=corp,DC=local'\n    assert get_parent_dn('OU=Servers,DC=corp,DC=local') == 'DC=corp,DC=local'\n    # Escaped comma handling\n    assert get_parent_dn('CN=Last\\\\, First,OU=Users,DC=corp,DC=local') == 'OU=Users,DC=corp,DC=local'\n    # Root / no parent\n    assert get_parent_dn('DC=local') is None\n    assert get_parent_dn('') is None\n\ntest_get_parent_dn()\n",
+  "repo_url": "https://github.com/synacktiv/gpoParser",
+  "commit_hash": "5cfe7aa3556f7c9263620515a33f4ef7afb88c1b",
+  "commit_date": "2026-04-28T09:56:01Z",
+  "author": "Synacktiv",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

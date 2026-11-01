@@ -1,0 +1,32 @@
+{
+  "function_name": "split_by_positions",
+  "signature": "def split_by_positions(line: str, positions: List[int]) -> List[str]:",
+  "repo_url": "https://github.com/mpryor/nothing-less",
+  "commit_hash": "cc15dd737bcfc019b81b10508c79a3114318de2f",
+  "commit_date": "2026-05-08T03:58:35Z",
+  "audit_timestamp": "2026-11-01T14:26:21.618935+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 311
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "split_by_positions",
+    "args_count": 2,
+    "ast_nodes_count": 108,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"split_by_positions\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "function_name": "split_host_port",
+  "signature": "def split_host_port(raw_hostport: str) -> Tuple[str, str]:",
+  "repo_url": "https://github.com/ShatakVPN/ConfigForge-V2Ray",
+  "commit_hash": "4e20866a327aef3bec6f3596afda3ad09646e502",
+  "commit_date": "2026-11-01T09:22:15Z",
+  "audit_timestamp": "2026-11-01T14:26:21.624642+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 488
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "split_host_port",
+    "args_count": 1,
+    "ast_nodes_count": 154,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"split_host_port\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

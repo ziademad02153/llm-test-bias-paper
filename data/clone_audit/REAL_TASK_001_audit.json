@@ -1,0 +1,32 @@
+{
+  "function_name": "parse_github_url",
+  "signature": "def parse_github_url(url: str) -> Optional[Tuple[str, str]]:",
+  "repo_url": "https://github.com/TryMightyAI/mighty-security",
+  "commit_hash": "197847a934165eb361e19d51bca69cfa46e3dc0c",
+  "commit_date": "2025-08-19T02:18:22Z",
+  "audit_timestamp": "2026-11-01T14:26:21.616237+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 49
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "is_github_url",
+    "args_count": 1,
+    "ast_nodes_count": 51,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"parse_github_url\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

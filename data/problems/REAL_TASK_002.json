@@ -1,0 +1,20 @@
+{
+  "problem_id": "REAL_TASK_002",
+  "function_name": "split_by_positions",
+  "signature": "def split_by_positions(line: str, positions: List[int]) -> List[str]:",
+  "docstring": "Split a line using fixed character positions.\n\nEach field spans from positions[i] to positions[i+1] (or end-of-line for the last field).\nFields are stripped of surrounding whitespace.\n\nArgs:\n    line: The input text line to slice.\n    positions: List of starting character column indices.\n\nReturns:\n    List of sliced and stripped string fields.",
+  "ref_implementation": "from typing import List\n\ndef split_by_positions(line: str, positions: List[int]) -> List[str]:\n    fields: List[str] = []\n    for i, start in enumerate(positions):\n        end = positions[i + 1] if i + 1 < len(positions) else len(line)\n        field = line[start:end].strip() if start < len(line) else \"\"\n        fields.append(field)\n    return fields\n",
+  "ref_test": "def test_split_by_positions():\n    line = 'PID   USER      COMMAND'\n    positions = [0, 6, 16]\n    assert split_by_positions(line, positions) == ['PID', 'USER', 'COMMAND']\n    \n    line_data = '1234  root      python3 main.py'\n    assert split_by_positions(line_data, positions) == ['1234', 'root', 'python3 main.py']\n    \n    short_line = '12'\n    assert split_by_positions(short_line, [0, 5, 10]) == ['12', '', '']\n    assert split_by_positions('', [0, 5]) == ['', '']\n\ntest_split_by_positions()\n",
+  "repo_url": "https://github.com/mpryor/nothing-less",
+  "commit_hash": "cc15dd737bcfc019b81b10508c79a3114318de2f",
+  "commit_date": "2026-05-08T03:58:35Z",
+  "author": "mpryor",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}
