@@ -73,10 +73,8 @@ To prevent a single flaky assertion from invalidating an entire test suite while
 
 ## 4. Execution Sandbox & Security Isolation
 
-All executions of LLM-generated code and tests must be isolated:
-- **Primary Backend (Containerized):** Docker container with `--network none`, `--memory 512m`, `--cpus 1.0`, and read-only host volume mount.
-- **Secondary Backend (Hardened Subprocess):** Ephemeral temporary directory destroyed upon completion, execution path isolation (`PYTHONNOUSERSITE=1`, empty `PYTHONPATH`), strict timeout enforcement (6.0s), and network lockdown via zeroed socket APIs (`socket.socket = None`).
-- The active backend is recorded in metadata for full experimental transparency.
+- **Benchmark Execution Standard:** All experimental runs reported in the research paper are executed strictly within a **Docker container with `--network none`**, `--memory 512m`, `--cpus 1.0`, and read-only host mounts. Disabling network interfaces at the OS/container kernel level is the sole mechanism that prevents arbitrary socket access or uncontained subprocess calls (`os.system`, `subprocess`).
+- **Development Smoke-Test Backend:** A lightweight local subprocess runner with temporary directories is provided exclusively for quick syntax checks and pipeline sanity testing during local debugging; it is explicitly disclaimed and never represented as a secure sandbox in the manuscript.
 
 ---
 
@@ -108,11 +106,12 @@ Before inspecting comparative detection distributions:
 3. **Execution Stability:** Sandbox timeout / unhandled crash rate $< 5\%$.
 4. **Economic Feasibility:** Projected cost for full benchmark ($N \ge 250$) within budget.
 
-### 6.1 Manual Fault Audit Protocol
-Every faulty implementation harvested during the pilot must be audited manually by the researchers to verify:
-- Is it a genuine semantic/logical defect?
-- Or did it fail due to ambiguity in the `docstring` or an unstated assumption in $T_{\text{ref}}$?
-- All audit verdicts are recorded in `fault_audit.json`. Any implementation failing due to specification ambiguity is discarded from the benchmark.
+### 6.1 Blinded Fault Audit Protocol
+To eliminate observer and confirmation bias:
+- Every candidate faulty implementation ($C_{\text{faulty}}$) harvested by the Coder model is audited **blinded** to condition outcomes.
+- The auditor inspects only: (1) `docstring` + `signature`, (2) $C_{\text{faulty}}$ code, and (3) the failing assertion log from $T_{\text{ref}}$.
+- The auditor classifies the defect as `Genuine_Logic_Bug`, `Docstring_Ambiguity`, or `Unstated_Tref_Assumption`.
+- The inclusion/exclusion decision in `fault_audit.json` must be **finalized and timestamped prior to executing the 2×2 test conditions** ($T_0, T_1, T_2, T_3$) on $C_{\text{faulty}}$. Any problem failing due to ambiguous specifications is discarded.
 
 ---
 
