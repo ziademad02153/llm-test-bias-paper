@@ -110,38 +110,101 @@ class LLMClient:
         Executes generation and returns:
             (generated_text, prompt_tokens, completion_tokens, elapsed_seconds, cost_usd, call_metadata)
         """
-        try:
-            from openai import OpenAI
-        except ImportError:
-            raise ImportError("Please install openai package via `pip install openai` to execute API calls.")
-
-        client = OpenAI(api_key=self.api_key, base_url=self.base_url)
         start = time.perf_counter()
 
-        extra_body = {}
+        payload = {
+            "model": self.model_name,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": self.temperature,
+            "max_tokens": max_tokens
+        }
+        if stop:
+            payload["stop"] = stop
         if self.pinned_provider:
-            # Enforce exact provider in OpenRouter to eliminate non-deterministic routing
-            extra_body["provider"] = {
+            payload["provider"] = {
                 "order": [self.pinned_provider],
                 "allow_fallbacks": False
             }
 
-        response = client.chat.completions.create(
-            model=self.model_name,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=self.temperature,
-            max_tokens=max_tokens,
-            stop=stop,
-            extra_body=extra_body if extra_body else None
-        )
-        elapsed = time.perf_counter() - start
+        # Try native HTTP via urllib first (zero external dependencies required)
+        try:
+            import urllib.request
+            import urllib.error
 
-        content = response.choices[0].message.content or ""
-        content_cleaned = self._clean_code_fences(content)
+            endpoint = self.base_url.rstrip("/") + "/chat/completions"
+            req_data = json.dumps(payload).encode("utf-8")
+            req = urllib.request.Request(
+                endpoint,
+                data=req_data,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {self.api_key or ''}",
+                    "User-Agent": "CodeFirstTestingBenchmark/1.0"
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=30.0) as resp:
+                resp_json = json.loads(resp.read().decode("utf-8"))
+            
+            elapsed = time.perf_counter() - start
+            choices = resp_json.get("choices", [])
+            content = choices[0]["message"]["content"] if choices else ""
+            content_cleaned = self._clean_code_fences(content)
 
-        usage = response.usage
-        prompt_tokens = usage.prompt_tokens if usage else len(prompt.split()) * 2
-        completion_tokens = usage.completion_tokens if usage else len(content.split()) * 2
+            usage = resp_json.get("usage", {})
+            prompt_tokens = usage.get("prompt_tokens", len(prompt.split()) * 2)
+            completion_tokens = usage.get("completion_tokens", len(content.split()) * 2)
+
+            cost_usd = (
+                (prompt_tokens / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
+                (completion_tokens / 1_000_000.0) * self.pricing.get("completion", 0.0)
+            )
+
+            call_metadata = {
+                "model_requested": self.model_name,
+                "system_fingerprint": resp_json.get("system_fingerprint"),
+                "pinned_provider": self.pinned_provider,
+                "created_timestamp": resp_json.get("created"),
+                "response_id": resp_json.get("id"),
+                "caller": "native_urllib"
+            }
+            return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd, call_metadata
+
+        except Exception as urllib_err:
+            # Fallback to openai SDK if installed
+            try:
+                from openai import OpenAI
+                client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+                extra_body = {"provider": payload["provider"]} if "provider" in payload else None
+                response = client.chat.completions.create(
+                    model=self.model_name,
+                    messages=payload["messages"],
+                    temperature=self.temperature,
+                    max_tokens=max_tokens,
+                    stop=stop,
+                    extra_body=extra_body
+                )
+                elapsed = time.perf_counter() - start
+                content = response.choices[0].message.content or ""
+                content_cleaned = self._clean_code_fences(content)
+                usage = response.usage
+                p_tok = usage.prompt_tokens if usage else len(prompt.split()) * 2
+                c_tok = usage.completion_tokens if usage else len(content.split()) * 2
+                cost_usd = (
+                    (p_tok / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
+                    (c_tok / 1_000_000.0) * self.pricing.get("completion", 0.0)
+                )
+                call_metadata = {
+                    "model_requested": self.model_name,
+                    "system_fingerprint": getattr(response, "system_fingerprint", None),
+                    "pinned_provider": self.pinned_provider,
+                    "created_timestamp": getattr(response, "created", None),
+                    "response_id": getattr(response, "id", None),
+                    "caller": "openai_sdk"
+                }
+                return content_cleaned, p_tok, c_tok, elapsed, cost_usd, call_metadata
+            except Exception:
+                raise RuntimeError(f"API request failed: {str(urllib_err)}")
 
         cost_usd = (
             (prompt_tokens / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
