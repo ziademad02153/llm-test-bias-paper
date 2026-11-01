@@ -81,7 +81,8 @@ Instructions:
 
 class LLMClient:
     """
-    Unified client supporting OpenAI-compatible endpoints (OpenAI, DeepSeek, OpenRouter, vLLM, Ollama).
+    Unified client supporting OpenAI-compatible endpoints (OpenAI, DeepSeek, OpenRouter).
+    Includes OpenRouter provider pinning to enforce exact hardware/quantization reproducibility.
     """
     def __init__(
         self,
@@ -89,12 +90,14 @@ class LLMClient:
         api_key: Optional[str] = None,
         base_url: Optional[str] = None,
         temperature: float = 0.2,
+        pinned_provider: Optional[str] = None,  # e.g., "Anthropic", "OpenAI", "DeepSeek"
         pricing: Optional[Dict[str, float]] = None
     ):
         self.model_name = model_name
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY")
-        self.base_url = base_url or os.getenv("OPENAI_BASE_URL")
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY") or os.getenv("LLM_API_KEY")
+        self.base_url = base_url or os.getenv("OPENAI_BASE_URL") or "https://openrouter.ai/api/v1"
         self.temperature = temperature
+        self.pinned_provider = pinned_provider
         self.pricing = pricing or DEFAULT_PRICING.get(model_name, {"prompt": 2.0, "completion": 8.0})
 
     def generate(
@@ -102,10 +105,10 @@ class LLMClient:
         prompt: str,
         max_tokens: int = 1500,
         stop: Optional[list] = None
-    ) -> Tuple[str, int, int, float, float]:
+    ) -> Tuple[str, int, int, float, float, Dict[str, Any]]:
         """
         Executes generation and returns:
-            (generated_text, prompt_tokens, completion_tokens, elapsed_seconds, cost_usd)
+            (generated_text, prompt_tokens, completion_tokens, elapsed_seconds, cost_usd, call_metadata)
         """
         try:
             from openai import OpenAI
@@ -115,17 +118,25 @@ class LLMClient:
         client = OpenAI(api_key=self.api_key, base_url=self.base_url)
         start = time.perf_counter()
 
+        extra_body = {}
+        if self.pinned_provider:
+            # Enforce exact provider in OpenRouter to eliminate non-deterministic routing
+            extra_body["provider"] = {
+                "order": [self.pinned_provider],
+                "allow_fallbacks": False
+            }
+
         response = client.chat.completions.create(
             model=self.model_name,
             messages=[{"role": "user", "content": prompt}],
             temperature=self.temperature,
             max_tokens=max_tokens,
-            stop=stop
+            stop=stop,
+            extra_body=extra_body if extra_body else None
         )
         elapsed = time.perf_counter() - start
 
         content = response.choices[0].message.content or ""
-        # Clean markdown code block fences if present
         content_cleaned = self._clean_code_fences(content)
 
         usage = response.usage
@@ -137,7 +148,15 @@ class LLMClient:
             (completion_tokens / 1_000_000.0) * self.pricing.get("completion", 0.0)
         )
 
-        return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd
+        call_metadata = {
+            "model_requested": self.model_name,
+            "system_fingerprint": getattr(response, "system_fingerprint", None),
+            "pinned_provider": self.pinned_provider,
+            "created_timestamp": getattr(response, "created", None),
+            "response_id": getattr(response, "id", None)
+        }
+
+        return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd, call_metadata
 
     @staticmethod
     def _clean_code_fences(text: str) -> str:
@@ -156,7 +175,7 @@ def run_coder_phase(problem: ProblemSpec, coder_client: LLMClient) -> Dict[str, 
         signature=problem.signature,
         docstring=problem.docstring
     )
-    code, p_tok, c_tok, elapsed, cost = coder_client.generate(prompt)
+    code, p_tok, c_tok, elapsed, cost, meta = coder_client.generate(prompt)
     return {
         "problem_id": problem.problem_id,
         "coder_model": coder_client.model_name,
@@ -164,7 +183,8 @@ def run_coder_phase(problem: ProblemSpec, coder_client: LLMClient) -> Dict[str, 
         "prompt_tokens": p_tok,
         "completion_tokens": c_tok,
         "elapsed_sec": round(elapsed, 3),
-        "cost_usd": round(cost, 6)
+        "cost_usd": round(cost, 6),
+        "meta": meta
     }
 
 
@@ -189,7 +209,7 @@ def run_oracle_phase(
             implementation=faulty_code
         )
 
-    test_code, p_tok, c_tok, elapsed, cost = tester_client.generate(prompt)
+    test_code, p_tok, c_tok, elapsed, cost, meta = tester_client.generate(prompt)
     return {
         "problem_id": problem.problem_id,
         "condition": condition.value,
@@ -198,5 +218,6 @@ def run_oracle_phase(
         "prompt_tokens": p_tok,
         "completion_tokens": c_tok,
         "elapsed_sec": round(elapsed, 3),
-        "cost_usd": round(cost, 6)
+        "cost_usd": round(cost, 6),
+        "meta": meta
     }
