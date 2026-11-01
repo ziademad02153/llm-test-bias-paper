@@ -169,12 +169,13 @@ class LLMClient:
                 "caller": "native_urllib"
             }
             return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd, call_metadata
-
         except Exception as urllib_err:
-            # Fallback to openai SDK if installed
+            # Fallback to openai SDK if installed (dynamically loaded to avoid static linter errors)
             try:
-                from openai import OpenAI
-                client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+                import importlib
+                openai_mod = importlib.import_module("openai")
+                openai_cls = getattr(openai_mod, "OpenAI")
+                client = openai_cls(api_key=self.api_key, base_url=self.base_url)
                 extra_body = {"provider": payload["provider"]} if "provider" in payload else None
                 response = client.chat.completions.create(
                     model=self.model_name,
@@ -205,21 +206,6 @@ class LLMClient:
                 return content_cleaned, p_tok, c_tok, elapsed, cost_usd, call_metadata
             except Exception:
                 raise RuntimeError(f"API request failed: {str(urllib_err)}")
-
-        cost_usd = (
-            (prompt_tokens / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
-            (completion_tokens / 1_000_000.0) * self.pricing.get("completion", 0.0)
-        )
-
-        call_metadata = {
-            "model_requested": self.model_name,
-            "system_fingerprint": getattr(response, "system_fingerprint", None),
-            "pinned_provider": self.pinned_provider,
-            "created_timestamp": getattr(response, "created", None),
-            "response_id": getattr(response, "id", None)
-        }
-
-        return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd, call_metadata
 
     @staticmethod
     def _clean_code_fences(text: str) -> str:
