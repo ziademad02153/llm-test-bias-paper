@@ -1,0 +1,9 @@
+repo,commit_hash,function_name,category,decision,reason,timestamp
+TryMightyAI/mighty-security,197847a934165eb361e19d51bca69cfa46e3dc0c,parse_github_url,String Parsing / URL Normalization,INCLUDED,"Passed all 4 filters; pure standard library (urllib.parse, re); standalone purity.",2026-11-01T14:24:00Z
+mpryor/nothing-less,cc15dd737bcfc019b81b10508c79a3114318de2f,split_by_positions,Tabular Parsing / Character Slicing,INCLUDED,Passed all 4 filters; pure standard library; standalone slice logic.,2026-11-01T14:24:30Z
+synacktiv/gpoParser,5cfe7aa3556f7c9263620515a33f4ef7afb88c1b,get_parent_dn,String / LDAP Parsing,INCLUDED,Passed all 4 filters; regex lookbehind for LDAP escaping; standalone purity.,2026-11-01T14:24:45Z
+Danau5tin/tbench-agentic-data-pipeline,4489453eb3c2e395a62a7616565e762664bf8b24,validate_tags,Validation / Boundary Constraints,INCLUDED,Passed all 4 filters; pipe-separated tag parsing and set containment.,2026-11-01T14:24:55Z
+ShatakVPN/ConfigForge-V2Ray,4e20866a327aef3bec6f3596afda3ad09646e502,split_host_port,Network Netloc / IPv6 Parsing,INCLUDED,Passed all 4 filters; handles IPv6 brackets and userinfo stripping cleanly.,2026-11-01T14:25:05Z
+karanb192/algo-sensei,25ea970f82c545d8a665f402da908af0ef9a72b9,claim_invitation,Cache / Session State,EXCLUDED,Failed purity filter: accesses filesystem and os.environ directly; not standalone.,2026-11-01T14:18:00Z
+synacktiv/gpoParser,5cfe7aa3556f7c9263620515a33f4ef7afb88c1b,build_dn_cache_remotely,LDAP / Network Protocol,EXCLUDED,Failed purity filter: initiates network LDAP connection; violates Docker --network none requirement.,2026-11-01T14:19:00Z
+ShatakVPN/ConfigForge-V2Ray,4e20866a327aef3bec6f3596afda3ad09646e502,fetch_data,Network I/O,EXCLUDED,Failed purity filter: performs live HTTP requests via httpx/requests; violates network containment.,2026-11-01T14:23:00Z
