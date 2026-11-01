@@ -1,0 +1,1 @@
+timestamp,problem_id,phase,condition,model,prompt_tokens,completion_tokens,total_tokens,cost_usd,elapsed_sec,retries,status

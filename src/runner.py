@@ -305,3 +305,27 @@ def run_oracle_phase(
         "cost_usd": round(cost, 6),
         "meta": meta
     }
+
+
+def log_real_token_usage(
+    problem_id: str,
+    phase: str,
+    condition: str,
+    model: str,
+    prompt_tokens: int,
+    completion_tokens: int,
+    cost_usd: float,
+    elapsed_sec: float,
+    retries: int = 0,
+    status: str = "SUCCESS",
+    csv_path: Optional[str] = None
+) -> None:
+    """Appends exact live token and cost accounting record to real_tokens.csv."""
+    from datetime import datetime, timezone
+    target_path = Path(csv_path) if csv_path else (project_root / "data" / "real_tokens.csv")
+    total_tokens = prompt_tokens + completion_tokens
+    timestamp = datetime.now(timezone.utc).isoformat()
+    row = f"{timestamp},{problem_id},{phase},{condition},{model},{prompt_tokens},{completion_tokens},{total_tokens},{cost_usd:.6f},{elapsed_sec:.3f},{retries},{status}\n"
+    with open(target_path, "a", encoding="utf-8") as f:
+        f.write(row)
+
