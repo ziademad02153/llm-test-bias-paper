@@ -51,3 +51,4 @@ htmlcov/
 # Docker / Temporary execution artifacts
 *.tmp
 temp_execution/
+*.zip

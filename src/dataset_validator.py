@@ -33,12 +33,20 @@ def validate_problem_definition(problem_data: Dict[str, Any]) -> Tuple[bool, str
         if field not in problem_data or not problem_data[field]:
             return False, f"Missing or empty required field: {field}"
 
-    # Verify temporal cutoff
-    commit_date = problem_data.get("commit_date", "")
-    if commit_date < "2025-07-01":
-        return False, f"Temporal violation: commit_date ({commit_date}) is prior to cutoff 2025-07-01"
+    # Verify temporal cutoff using datetime parsing (mentor recommendation)
+    from datetime import datetime, timezone
+    cutoff_dt = datetime(2025, 7, 1, 0, 0, 0, tzinfo=timezone.utc)
+    date_str = str(problem_data.get("commit_date", "")).replace("Z", "+00:00")
+    try:
+        parsed_dt = datetime.fromisoformat(date_str)
+        if parsed_dt.tzinfo is None:
+            parsed_dt = parsed_dt.replace(tzinfo=timezone.utc)
+        if parsed_dt < cutoff_dt:
+            return False, f"Temporal violation: commit_date ({parsed_dt.isoformat()}) is prior to cutoff 2025-07-01T00:00:00Z"
+    except Exception as e:
+        return False, f"Invalid commit_date ISO format: {date_str} ({e})"
 
-    # Verify screening flags
+    # Verify screening flags and audit evidence
     checks = problem_data.get("screening_checks", {})
     required_checks = [
         "temporal_gate_pass", "net_new_provenance_pass",

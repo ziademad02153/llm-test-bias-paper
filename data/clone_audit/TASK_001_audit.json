@@ -1,0 +1,32 @@
+{
+  "function_name": "resolve_token_bucket_window",
+  "signature": "def resolve_token_bucket_window(current_tokens: float, capacity: float, fill_rate_per_sec: float, elapsed_seconds: float, requested_tokens: float) -> Tuple[bool, float, float]:",
+  "repo_url": "https://github.com/cloud-stream-infra/rate-limiter-core",
+  "commit_hash": "e4f8a12903b4827d0912384a59f1c8e71b2390a1",
+  "commit_date": "2025-07-14T11:22:00Z",
+  "audit_timestamp": "2026-11-01T13:56:05.847292+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 13
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "resolve_token_bucket_window",
+    "args_count": 5,
+    "ast_nodes_count": 167,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"resolve_token_bucket_window\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}

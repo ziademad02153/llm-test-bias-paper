@@ -1,0 +1,32 @@
+{
+  "function_name": "canonicalize_nested_query",
+  "signature": "def canonicalize_nested_query(params: Dict[str, Any]) -> str:",
+  "repo_url": "https://github.com/api-gateway-tools/url-serializer-py",
+  "commit_hash": "c7a912d0981e4b563721f049a8823b1297d021f4",
+  "commit_date": "2025-08-03T16:45:00Z",
+  "audit_timestamp": "2026-11-01T13:56:05.849330+00:00",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "days_after_cutoff": 33
+  },
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "canonicalize_nested_query",
+    "args_count": 1,
+    "ast_nodes_count": 288,
+    "forbidden_calls_found": [],
+    "docstring_present": false
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"canonicalize_nested_query\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
+  }
+}
