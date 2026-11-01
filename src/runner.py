@@ -18,12 +18,12 @@ if str(project_root) not in sys.path:
 from src.schema import ExperimentalCondition, ProblemSpec
 
 
-# Pricing catalog ($ per 1 Million tokens) - updated for empirical cost calculation
+# Pricing catalog ($ per 1 Million tokens) - OpenRouter rates verified November 2026
 DEFAULT_PRICING = {
-    "gpt-4o-2024-08-06": {"prompt": 2.50, "completion": 10.00},
-    "gpt-4o-mini": {"prompt": 0.15, "completion": 0.60},
-    "claude-3-5-sonnet-20241022": {"prompt": 3.00, "completion": 15.00},
-    "deepseek-chat": {"prompt": 0.14, "completion": 0.28},
+    "meta-llama/llama-3.3-70b-instruct": {"prompt": 0.12, "completion": 0.30},
+    "qwen/qwen-2.5-coder-32b-instruct": {"prompt": 0.06, "completion": 0.15},
+    "deepseek/deepseek-chat": {"prompt": 0.15, "completion": 0.60},
+    "openai/gpt-4o-mini": {"prompt": 0.15, "completion": 0.60},
 }
 
 
