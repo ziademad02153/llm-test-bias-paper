@@ -113,3 +113,23 @@ class GitHubMiner:
                 "ai_markers_found": False
             }
         }
+
+    @staticmethod
+    def sample_candidates_deterministically(
+        candidate_pool: List[Dict[str, Any]],
+        sample_size: int = 30,
+        random_seed: int = 42
+    ) -> List[Dict[str, Any]]:
+        """
+        Samples candidate tasks deterministically using a fixed pseudo-random seed.
+        Eliminates subjective cherry-picking by pre-registering the seed (Seed=42).
+        """
+        import random
+        sorted_pool = sorted(
+            candidate_pool,
+            key=lambda c: (c.get("repo_url", ""), c.get("commit_hash", ""), c.get("function_name", ""))
+        )
+        rng = random.Random(random_seed)
+        if len(sorted_pool) <= sample_size:
+            return sorted_pool
+        return rng.sample(sorted_pool, sample_size)
