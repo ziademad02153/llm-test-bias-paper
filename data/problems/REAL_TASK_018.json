@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_018",
+  "function_name": "evaluate_circuit_breaker_transition",
+  "category": "State Machines/Retries",
+  "docstring": "Transitions circuit breaker state between CLOSED, OPEN, and HALF_OPEN based on failures, timeout, and call outcome.",
+  "signature": "def evaluate_circuit_breaker_transition(state: str, failure_count: int, failure_threshold: int, last_failure_time: float, current_time: float, recovery_timeout: float, call_succeeded: bool) -> tuple[str, int, float]:",
+  "ref_implementation": "def evaluate_circuit_breaker_transition(state: str, failure_count: int, failure_threshold: int, last_failure_time: float, current_time: float, recovery_timeout: float, call_succeeded: bool) -> tuple[str, int, float]:\n    \"\"\"Transitions circuit breaker state between CLOSED, OPEN, and HALF_OPEN based on failures, timeout, and call outcome.\n    Returns (new_state, new_failure_count, new_last_failure_time).\n    \"\"\"\n    valid_states = {\"CLOSED\", \"OPEN\", \"HALF_OPEN\"}\n    if state not in valid_states:\n        raise ValueError(f\"Invalid state: {state}\")\n\n    # Check recovery timeout for OPEN state\n    if state == \"OPEN\":\n        if (current_time - last_failure_time) >= recovery_timeout:\n            state = \"HALF_OPEN\"\n        else:\n            return (\"OPEN\", failure_count, last_failure_time)\n\n    if state == \"HALF_OPEN\":\n        if call_succeeded:\n            return (\"CLOSED\", 0, last_failure_time)\n        else:\n            return (\"OPEN\", failure_count + 1, current_time)\n\n    # State is CLOSED\n    if call_succeeded:\n        return (\"CLOSED\", 0, last_failure_time)\n    else:\n        new_count = failure_count + 1\n        if new_count >= failure_threshold:\n            return (\"OPEN\", new_count, current_time)\n        else:\n            return (\"CLOSED\", new_count, current_time)\n",
+  "ref_test": "def test_circuit_breaker():\n    # Success in CLOSED resets failures\n    s, c, t = evaluate_circuit_breaker_transition(\"CLOSED\", 2, 3, 0.0, 10.0, 60.0, True)\n    assert s == \"CLOSED\"\n    assert c == 0\n\n    # Failure in CLOSED increments\n    s, c, t = evaluate_circuit_breaker_transition(\"CLOSED\", 2, 3, 0.0, 10.0, 60.0, False)\n    assert s == \"OPEN\"\n    assert c == 3\n    assert t == 10.0\n\n    # OPEN before recovery stays OPEN\n    s, c, t = evaluate_circuit_breaker_transition(\"OPEN\", 3, 3, 10.0, 30.0, 60.0, False)\n    assert s == \"OPEN\"\n\n    # OPEN after recovery moves to HALF_OPEN and evaluates call\n    s, c, t = evaluate_circuit_breaker_transition(\"OPEN\", 3, 3, 10.0, 80.0, 60.0, True)\n    assert s == \"CLOSED\"\n    assert c == 0\n\n    raised = False\n    try:\n        evaluate_circuit_breaker_transition(\"UNKNOWN\", 0, 3, 0.0, 1.0, 1.0, True)\n    except ValueError:\n        raised = True\n    assert raised\n",
+  "repo_url": "https://github.com/Llucs/backon",
+  "commit_hash": "9b685085d56221c548c26bbffb9aa9b48624be9e",
+  "commit_date": "2026-10-31T16:18:28Z",
+  "author": "Llucs",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "function_name": "check_sliding_window_rate_limit",
+  "signature": "def check_sliding_window_rate_limit(timestamps: list[float], current_time: float, limit: int, window_seconds: float) -> tuple[bool, list[float]]:",
+  "repo_url": "https://github.com/vladlen-codes/ratelink",
+  "commit_hash": "eb17878fa35ff653528b9f1d0b166014459ba4ae",
+  "commit_date": "2026-03-13T13:47:53Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-03-13T13:47:53Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 118.04,
+    "backend": "hardened_subprocess"
+  }
+}

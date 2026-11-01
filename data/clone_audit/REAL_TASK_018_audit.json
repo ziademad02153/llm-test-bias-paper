@@ -1,0 +1,17 @@
+{
+  "function_name": "evaluate_circuit_breaker_transition",
+  "signature": "def evaluate_circuit_breaker_transition(state: str, failure_count: int, failure_threshold: int, last_failure_time: float, current_time: float, recovery_timeout: float, call_succeeded: bool) -> tuple[str, int, float]:",
+  "repo_url": "https://github.com/Llucs/backon",
+  "commit_hash": "9b685085d56221c548c26bbffb9aa9b48624be9e",
+  "commit_date": "2026-10-31T16:18:28Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-10-31T16:18:28Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 157.2,
+    "backend": "hardened_subprocess"
+  }
+}

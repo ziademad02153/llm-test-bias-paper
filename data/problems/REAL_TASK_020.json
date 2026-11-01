@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_020",
+  "function_name": "detect_dag_cycle_and_ancestors",
+  "category": "Graphs/Trees",
+  "docstring": "Traverses directed graph to detect cycles and compute all reachable ancestors for each node.",
+  "signature": "def detect_dag_cycle_and_ancestors(nodes: list[str], edges: list[tuple[str, str]]) -> tuple[bool, dict[str, set[str]]]:",
+  "ref_implementation": "from collections import defaultdict, deque\n\ndef detect_dag_cycle_and_ancestors(nodes: list[str], edges: list[tuple[str, str]]) -> tuple[bool, dict[str, set[str]]]:\n    \"\"\"Traverses directed graph to detect cycles and compute all reachable ancestors for each node.\n    edges: list of (parent, child).\n    Returns (has_cycle: bool, ancestors_dict: dict[str, set[str]]).\n    \"\"\"\n    adj = defaultdict(list)\n    in_degree = {n: 0 for n in nodes}\n    parents = defaultdict(set)\n\n    for u, v in edges:\n        if u in in_degree and v in in_degree:\n            adj[u].append(v)\n            in_degree[v] += 1\n            parents[v].add(u)\n\n    queue = deque([n for n in nodes if in_degree[n] == 0])\n    visited_count = 0\n    ancestors = {n: set() for n in nodes}\n\n    while queue:\n        curr = queue.popleft()\n        visited_count += 1\n        for nxt in adj[curr]:\n            ancestors[nxt].add(curr)\n            ancestors[nxt].update(ancestors[curr])\n            in_degree[nxt] -= 1\n            if in_degree[nxt] == 0:\n                queue.append(nxt)\n\n    has_cycle = (visited_count != len(nodes))\n    return (has_cycle, ancestors)\n",
+  "ref_test": "def test_dag_ancestors():\n    nodes = [\"A\", \"B\", \"C\"]\n    edges = [(\"A\", \"B\"), (\"B\", \"C\")]\n    has_cycle, anc = detect_dag_cycle_and_ancestors(nodes, edges)\n    assert not has_cycle\n    assert anc[\"A\"] == set()\n    assert anc[\"B\"] == {\"A\"}\n    assert anc[\"C\"] == {\"A\", \"B\"}\n\n    # Cycle test\n    c_nodes = [\"1\", \"2\"]\n    c_edges = [(\"1\", \"2\"), (\"2\", \"1\")]\n    has_c, _ = detect_dag_cycle_and_ancestors(c_nodes, c_edges)\n    assert has_c is True\n",
+  "repo_url": "https://github.com/Alpha-Park/genpark-dag-topological-sort-dependency-resolver-skill",
+  "commit_hash": "1c28477ff9ea3ce8bb2e811dc3fa675ae6bca1f4",
+  "commit_date": "2026-09-29T11:46:16Z",
+  "author": "GenPark",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_017",
+  "function_name": "check_sliding_window_rate_limit",
+  "category": "State Machines/Retries",
+  "docstring": "Evaluates sliding window log rate limiter, evicts expired timestamps, and appends current_time if allowed.",
+  "signature": "def check_sliding_window_rate_limit(timestamps: list[float], current_time: float, limit: int, window_seconds: float) -> tuple[bool, list[float]]:",
+  "ref_implementation": "def check_sliding_window_rate_limit(timestamps: list[float], current_time: float, limit: int, window_seconds: float) -> tuple[bool, list[float]]:\n    \"\"\"Evaluates sliding window log rate limiter, evicts expired timestamps, and appends current_time if allowed.\"\"\"\n    if limit <= 0 or window_seconds <= 0:\n        raise ValueError(\"Limit and window_seconds must be positive.\")\n    cutoff = current_time - window_seconds\n    valid_ts = [t for t in timestamps if t > cutoff]\n    if len(valid_ts) < limit:\n        valid_ts.append(current_time)\n        return (True, valid_ts)\n    return (False, valid_ts)\n",
+  "ref_test": "def test_sliding_window():\n    allowed, ts = check_sliding_window_rate_limit([], 10.0, 2, 5.0)\n    assert allowed is True\n    assert ts == [10.0]\n\n    allowed, ts = check_sliding_window_rate_limit(ts, 12.0, 2, 5.0)\n    assert allowed is True\n    assert ts == [10.0, 12.0]\n\n    # Rejection at limit\n    allowed, ts = check_sliding_window_rate_limit(ts, 13.0, 2, 5.0)\n    assert allowed is False\n    assert ts == [10.0, 12.0]\n\n    # After window expiration (10.0 drops off at 15.1)\n    allowed, ts = check_sliding_window_rate_limit(ts, 15.5, 2, 5.0)\n    assert allowed is True\n    assert ts == [12.0, 15.5]\n\n    raised = False\n    try:\n        check_sliding_window_rate_limit([], 1.0, 0, 5.0)\n    except ValueError:\n        raised = True\n    assert raised\n",
+  "repo_url": "https://github.com/vladlen-codes/ratelink",
+  "commit_hash": "eb17878fa35ff653528b9f1d0b166014459ba4ae",
+  "commit_date": "2026-03-13T13:47:53Z",
+  "author": "Vladlen",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}
