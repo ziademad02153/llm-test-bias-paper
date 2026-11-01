@@ -1,0 +1,19 @@
+{
+  "problem_id": "TASK_003",
+  "function_name": "merge_overlapping_intervals_with_weights",
+  "signature": "def merge_overlapping_intervals_with_weights(intervals: List[Tuple[float, float, float]]) -> List[Tuple[float, float, float]]:",
+  "docstring": "Partitions overlapping continuous 1D intervals into disjoint, contiguous segments where each segment has a constant total aggregated weight.\n\nEach input interval is a tuple of (start, end, weight), with start < end.\nWhen multiple intervals overlap, their weights sum together across the intersection.\nAdjacent segments with the same combined weight are merged.\n\nArgs:\n    intervals: List of (start, end, weight) tuples.\n\nReturns:\n    List of disjoint (start, end, total_weight) tuples sorted by start time,\n    where total_weight is rounded to 4 decimal places. Only segments with\n    total_weight != 0.0 are returned.\n\nRaises:\n    TypeError: If intervals is not a list.\n    ValueError: If any interval has start >= end or invalid tuple formatting.",
+  "ref_implementation": "from typing import List, Tuple\n\ndef merge_overlapping_intervals_with_weights(\n    intervals: List[Tuple[float, float, float]]\n) -> List[Tuple[float, float, float]]:\n    if not isinstance(intervals, list):\n        raise TypeError('Intervals must be a list')\n    if not intervals:\n        return []\n\n    for it in intervals:\n        if not (isinstance(it, (list, tuple)) and len(it) == 3):\n            raise ValueError('Each interval must be a (start, end, weight) tuple')\n        s, e, w = it\n        if s >= e:\n            raise ValueError(f'Start ({s}) must be strictly less than end ({e})')\n\n    points = sorted(set([s for s, e, w in intervals] + [e for s, e, w in intervals]))\n    \n    segments = []\n    for i in range(len(points) - 1):\n        seg_start = points[i]\n        seg_end = points[i + 1]\n        w_sum = sum(w for s, e, w in intervals if s <= seg_start and e >= seg_end)\n        w_sum = round(w_sum, 4)\n        if abs(w_sum) > 1e-9:\n            segments.append((round(seg_start, 4), round(seg_end, 4), w_sum))\n\n    if not segments:\n        return []\n\n    merged = [segments[0]]\n    for cur in segments[1:]:\n        prev_s, prev_e, prev_w = merged[-1]\n        cur_s, cur_e, cur_w = cur\n        if abs(prev_e - cur_s) < 1e-9 and abs(prev_w - cur_w) < 1e-9:\n            merged[-1] = (prev_s, cur_e, prev_w)\n        else:\n            merged.append(cur)\n\n    return merged\n",
+  "ref_test": "def test_merge_intervals():\n    # Simple overlapping case\n    # (0, 10, 1.0) and (5, 15, 2.0)\n    # Segments: [0, 5) -> 1.0, [5, 10) -> 3.0, [10, 15) -> 2.0\n    res = merge_overlapping_intervals_with_weights([(0, 10, 1.0), (5, 15, 2.0)])\n    assert res == [(0.0, 5.0, 1.0), (5.0, 10.0, 3.0), (10.0, 15.0, 2.0)]\n\n    # Disjoint intervals\n    res_disjoint = merge_overlapping_intervals_with_weights([(0, 2, 5.0), (4, 6, 3.0)])\n    assert res_disjoint == [(0.0, 2.0, 5.0), (4.0, 6.0, 3.0)]\n\n    # Empty list\n    assert merge_overlapping_intervals_with_weights([]) == []\n\n    # Invalid interval start >= end\n    try:\n        merge_overlapping_intervals_with_weights([(5, 5, 1.0)])\n        assert False, 'Should fail on start == end'\n    except ValueError:\n        pass\n\ntest_merge_intervals()\n",
+  "repo_url": "https://github.com/scientific-opt-py/interval-scheduler-py",
+  "commit_hash": "f901b2a47e83421d01938502a82910384729108b",
+  "commit_date": "2025-09-19T09:15:00Z",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}
