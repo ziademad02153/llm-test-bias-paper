@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_015",
+  "function_name": "compute_fibonacci_backoff_sequence",
+  "category": "State Machines/Retries",
+  "docstring": "Generates Fibonacci retry backoff delays bounded by optional max_value.",
+  "signature": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:",
+  "ref_implementation": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:\n    \"\"\"Generates Fibonacci retry backoff delays bounded by optional max_value.\"\"\"\n    if attempts <= 0:\n        return []\n    a = 1\n    b = 1\n    delays = []\n    for _ in range(attempts):\n        val = float(a)\n        if max_value is not None and val > max_value:\n            val = float(max_value)\n        delays.append(val)\n        a, b = b, a + b\n    return delays\n",
+  "ref_test": "def test_fibonacci_backoff():\n    seq = compute_fibonacci_backoff_sequence(6)\n    assert seq == [1.0, 1.0, 2.0, 3.0, 5.0, 8.0]\n\n    seq_cap = compute_fibonacci_backoff_sequence(5, max_value=2.5)\n    assert seq_cap == [1.0, 1.0, 2.0, 2.5, 2.5]\n\n    assert compute_fibonacci_backoff_sequence(0) == []\n",
+  "repo_url": "https://github.com/Llucs/backon",
+  "commit_hash": "9b685085d56221c548c26bbffb9aa9b48624be9e",
+  "commit_date": "2026-10-31T16:18:28Z",
+  "author": "Llucs",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

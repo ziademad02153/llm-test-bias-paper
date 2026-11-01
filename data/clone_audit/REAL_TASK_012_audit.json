@@ -1,0 +1,17 @@
+{
+  "function_name": "compute_interval_duration_and_bounds",
+  "signature": "def compute_interval_duration_and_bounds(start: int | None, end: int | None) -> dict:",
+  "repo_url": "https://github.com/ashenfad/calgebra",
+  "commit_hash": "476c3e65da58bff6e6413ae588daf5196d9f7818",
+  "commit_date": "2026-03-20T02:58:21Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-03-20T02:58:21Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 123.02,
+    "backend": "hardened_subprocess"
+  }
+}

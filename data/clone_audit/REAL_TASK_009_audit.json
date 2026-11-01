@@ -1,0 +1,17 @@
+{
+  "function_name": "rb_tree_search",
+  "signature": "def rb_tree_search(items: list[tuple[int, str]], query_key: int) -> str | None:",
+  "repo_url": "https://github.com/Alpha-Park/genpark-red-black-tree-index-skill",
+  "commit_hash": "33a021d7e2eecdd77a5b172a6b47c0c1b75df9c1",
+  "commit_date": "2026-10-24T13:49:32Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-10-24T13:49:32Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 108.41,
+    "backend": "hardened_subprocess"
+  }
+}

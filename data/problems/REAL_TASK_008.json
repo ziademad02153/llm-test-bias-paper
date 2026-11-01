@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_008",
+  "function_name": "resolve_dag_order",
+  "category": "Graphs/Trees",
+  "docstring": "Computes valid execution order and cycle detection for task DAGs using Kahn's algorithm.",
+  "signature": "def resolve_dag_order(tasks: list[str], dependencies: dict[str, list[str]]) -> dict:",
+  "ref_implementation": "from collections import defaultdict, deque\n\ndef resolve_dag_order(tasks: list[str], dependencies: dict[str, list[str]]) -> dict:\n    \"\"\"Computes valid execution order and cycle detection for task DAGs using Kahn's algorithm.\"\"\"\n    in_degree = {t: 0 for t in tasks}\n    adj = defaultdict(list)\n\n    for t, parents in dependencies.items():\n        if t in in_degree:\n            for p in parents:\n                adj[p].append(t)\n                in_degree[t] = in_degree.get(t, 0) + 1\n\n    queue = deque([t for t in tasks if in_degree[t] == 0])\n    order = []\n\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for neighbor in adj[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n\n    has_cycle = len(order) != len(tasks)\n    unresolved = [t for t in tasks if t not in order]\n\n    return {\n        \"has_cycle\": has_cycle,\n        \"execution_order\": order if not has_cycle else [],\n        \"unresolved_tasks\": unresolved\n    }\n",
+  "ref_test": "def test_resolve_dag():\n    tasks = [\"build\", \"test\", \"deploy\"]\n    deps = {\"test\": [\"build\"], \"deploy\": [\"test\"]}\n    res = resolve_dag_order(tasks, deps)\n    assert not res[\"has_cycle\"]\n    assert res[\"execution_order\"] == [\"build\", \"test\", \"deploy\"]\n    assert res[\"unresolved_tasks\"] == []\n\n    # Cycle test\n    tasks_c = [\"A\", \"B\"]\n    deps_c = {\"A\": [\"B\"], \"B\": [\"A\"]}\n    res_c = resolve_dag_order(tasks_c, deps_c)\n    assert res_c[\"has_cycle\"]\n    assert res_c[\"execution_order\"] == []\n    assert set(res_c[\"unresolved_tasks\"]) == {\"A\", \"B\"}\n",
+  "repo_url": "https://github.com/Alpha-Park/genpark-dag-topological-sort-dependency-resolver-skill",
+  "commit_hash": "1c28477ff9ea3ce8bb2e811dc3fa675ae6bca1f4",
+  "commit_date": "2026-09-29T11:46:16Z",
+  "author": "GenPark",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

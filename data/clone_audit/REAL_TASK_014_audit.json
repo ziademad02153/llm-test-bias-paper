@@ -1,0 +1,17 @@
+{
+  "function_name": "compute_exponential_backoff_sequence",
+  "signature": "def compute_exponential_backoff_sequence(attempts: int, base: float = 2.0, factor: float = 1.0, max_value: float | None = None) -> list[float]:",
+  "repo_url": "https://github.com/Llucs/backon",
+  "commit_hash": "9b685085d56221c548c26bbffb9aa9b48624be9e",
+  "commit_date": "2026-10-31T16:18:28Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-10-31T16:18:28Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 106.05,
+    "backend": "hardened_subprocess"
+  }
+}

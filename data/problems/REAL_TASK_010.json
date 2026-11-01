@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_010",
+  "function_name": "find_conflicting_reservations",
+  "category": "Graphs/Trees",
+  "docstring": "Uses interval tree subtree max_end bounds to find all reservations overlapping a target window [start, end).",
+  "signature": "def find_conflicting_reservations(reservations: list[tuple[int, int, str]], query_start: int, query_end: int) -> list[str]:",
+  "ref_implementation": "class IntervalNode:\n    def __init__(self, start: int, end: int, res_id: str):\n        self.start = start\n        self.end = end\n        self.res_id = res_id\n        self.max_end = end\n        self.left = None\n        self.right = None\n\ndef find_conflicting_reservations(reservations: list[tuple[int, int, str]], query_start: int, query_end: int) -> list[str]:\n    \"\"\"Uses interval tree subtree max_end bounds to find all reservations overlapping a target window [start, end).\"\"\"\n    if query_start >= query_end or not reservations:\n        return []\n\n    root = None\n\n    def insert(node, start, end, res_id):\n        if node is None:\n            return IntervalNode(start, end, res_id)\n        if start < node.start:\n            node.left = insert(node.left, start, end, res_id)\n        else:\n            node.right = insert(node.right, start, end, res_id)\n        best = node.end\n        if node.left and node.left.max_end > best:\n            best = node.left.max_end\n        if node.right and node.right.max_end > best:\n            best = node.right.max_end\n        node.max_end = best\n        return node\n\n    for s, e, rid in reservations:\n        root = insert(root, s, e, rid)\n\n    conflicts = []\n\n    def collect_overlaps(node):\n        if node is None:\n            return\n        if node.left and node.left.max_end > query_start:\n            collect_overlaps(node.left)\n        if node.start < query_end and query_start < node.end:\n            conflicts.append(node.res_id)\n        if node.right and node.start < query_end and node.right.max_end > query_start:\n            collect_overlaps(node.right)\n\n    collect_overlaps(root)\n    return conflicts\n",
+  "ref_test": "def test_interval_tree_conflicts():\n    reservations = [(60, 120, \"R1\"), (150, 210, \"R2\"), (200, 260, \"R3\")]\n    # Query overlaps R1\n    assert find_conflicting_reservations(reservations, 100, 140) == [\"R1\"]\n    # Query overlaps R2 and R3\n    assert find_conflicting_reservations(reservations, 180, 220) == [\"R2\", \"R3\"]\n    # Touching intervals half-open do not overlap\n    assert find_conflicting_reservations(reservations, 120, 150) == []\n    # Empty query or invalid bounds\n    assert find_conflicting_reservations(reservations, 150, 150) == []\n",
+  "repo_url": "https://github.com/bhavatharaniselvaraj/EV-charging-Allocation-System_Python",
+  "commit_hash": "efd356a4be5a045da57b8577bbfe6b2a4c28f1e5",
+  "commit_date": "2026-10-21T16:31:25Z",
+  "author": "bhavatharaniselvaraj",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

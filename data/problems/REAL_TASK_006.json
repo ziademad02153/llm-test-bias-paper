@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_006",
+  "function_name": "get_consistent_hash_node",
+  "category": "Algorithms/Search",
+  "docstring": "Consistent Hash Ring with Virtual Nodes (vnodes).\nDistributes keys across physical nodes using MD5 hash bisecting.",
+  "signature": "def get_consistent_hash_node(nodes: list[str], key: str, vnodes_per_node: int = 3) -> str | None:",
+  "ref_implementation": "import hashlib\nimport bisect\n\ndef get_consistent_hash_node(nodes: list[str], key: str, vnodes_per_node: int = 3) -> str | None:\n    \"\"\"Consistent Hash Ring with Virtual Nodes (vnodes).\n    Distributes keys across physical nodes using MD5 hash bisecting.\n    \"\"\"\n    if not nodes:\n        return None\n    ring = []\n    for node_id in sorted(nodes):\n        for v in range(vnodes_per_node):\n            v_key = f\"{node_id}#vnode{v}\"\n            h = int(hashlib.md5(v_key.encode('utf-8')).hexdigest()[:8], 16)\n            bisect.insort(ring, (h, node_id))\n    h_key = int(hashlib.md5(key.encode('utf-8')).hexdigest()[:8], 16)\n    idx = bisect.bisect_right(ring, (h_key, \"\"))\n    if idx == len(ring):\n        idx = 0\n    return ring[idx][1]\n",
+  "ref_test": "def test_consistent_hash():\n    nodes = [\"server-A\", \"server-B\", \"server-C\"]\n    assert get_consistent_hash_node([], \"user123\") is None\n    node1 = get_consistent_hash_node(nodes, \"user123\")\n    assert node1 in nodes\n    # Deterministic mapping\n    assert get_consistent_hash_node(nodes, \"user123\") == node1\n    # Different key maps\n    node2 = get_consistent_hash_node(nodes, \"session_456\")\n    assert node2 in nodes\n",
+  "repo_url": "https://github.com/alphaparkinc/genpark-consistent-hash-ring-vnodes-skill",
+  "commit_hash": "7dd66023eb41a54128f731c3bf79c29f270a4a82",
+  "commit_date": "2026-09-10T01:35:56Z",
+  "author": "GenPark",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

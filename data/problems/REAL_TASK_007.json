@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_007",
+  "function_name": "sort_document_reading_order",
+  "category": "Algorithms/Search",
+  "docstring": "Sorts 2D text bounding boxes into reading order (banners first, then column by column top-down).",
+  "signature": "def sort_document_reading_order(blocks: list[dict], page_width: float = 612.0, column_gutter_threshold: float = 30.0) -> dict:",
+  "ref_implementation": "def sort_document_reading_order(blocks: list[dict], page_width: float = 612.0, column_gutter_threshold: float = 30.0) -> dict:\n    \"\"\"Sorts 2D text bounding boxes into reading order (banners first, then column by column top-down).\"\"\"\n    midpoint = page_width / 2.0\n    left_column = []\n    right_column = []\n    full_width_headers = []\n\n    for b in blocks:\n        left = b.get(\"left\", 0)\n        width = b.get(\"width\", 0)\n        right = left + width\n        if width > page_width * 0.65:\n            full_width_headers.append(b)\n        elif right <= midpoint + column_gutter_threshold:\n            left_column.append(b)\n        else:\n            right_column.append(b)\n\n    full_width_headers.sort(key=lambda x: x.get(\"top\", 0))\n    left_column.sort(key=lambda x: x.get(\"top\", 0))\n    right_column.sort(key=lambda x: x.get(\"top\", 0))\n\n    ordered_sequence = full_width_headers + left_column + right_column\n    serialized_text = \"\\n\".join(b.get(\"text\", \"\") for b in ordered_sequence)\n\n    return {\n        \"total_blocks\": len(blocks),\n        \"layout_detected\": \"two_column_with_banner\" if (left_column and right_column) else \"single_column\",\n        \"ordered_blocks\": ordered_sequence,\n        \"serialized_text\": serialized_text\n    }\n",
+  "ref_test": "def test_sort_reading_order():\n    blocks = [\n        {\"text\": \"Right Article\", \"left\": 350, \"top\": 120, \"width\": 200},\n        {\"text\": \"Main Headline\", \"left\": 20, \"top\": 10, \"width\": 550},\n        {\"text\": \"Left Article\", \"left\": 30, \"top\": 100, \"width\": 200}\n    ]\n    res = sort_document_reading_order(blocks)\n    assert res[\"total_blocks\"] == 3\n    assert res[\"layout_detected\"] == \"two_column_with_banner\"\n    assert res[\"ordered_blocks\"][0][\"text\"] == \"Main Headline\"\n    assert res[\"ordered_blocks\"][1][\"text\"] == \"Left Article\"\n    assert res[\"ordered_blocks\"][2][\"text\"] == \"Right Article\"\n",
+  "repo_url": "https://github.com/Alpha-Park/genpark-document-visual-reading-order-topological-sorter-skill",
+  "commit_hash": "8029c7332d0013f9c6233486db9ca3dbf0ee3a37",
+  "commit_date": "2026-09-06T12:52:46Z",
+  "author": "GenPark",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

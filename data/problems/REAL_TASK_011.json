@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_011",
+  "function_name": "check_half_open_overlap",
+  "category": "Scheduling/Intervals",
+  "docstring": "Determines whether two half-open intervals [s1, e1) and [s2, e2) overlap strictly.",
+  "signature": "def check_half_open_overlap(s1: int, e1: int, s2: int, e2: int) -> bool:",
+  "ref_implementation": "def check_half_open_overlap(s1: int, e1: int, s2: int, e2: int) -> bool:\n    \"\"\"Determines whether two half-open intervals [s1, e1) and [s2, e2) overlap strictly.\n    Touching intervals (e1 == s2 or e2 == s1) do not overlap.\n    \"\"\"\n    if s1 >= e1 or s2 >= e2:\n        return False\n    return s1 < e2 and s2 < e1\n",
+  "ref_test": "def test_half_open_overlap():\n    assert check_half_open_overlap(10, 20, 15, 25) is True\n    assert check_half_open_overlap(10, 20, 20, 30) is False  # touching\n    assert check_half_open_overlap(20, 30, 10, 20) is False  # touching reverse\n    assert check_half_open_overlap(10, 20, 30, 40) is False  # disjoint\n    assert check_half_open_overlap(10, 30, 15, 25) is True   # contained\n    assert check_half_open_overlap(20, 10, 5, 15) is False   # invalid interval\n",
+  "repo_url": "https://github.com/bhavatharaniselvaraj/EV-charging-Allocation-System_Python",
+  "commit_hash": "efd356a4be5a045da57b8577bbfe6b2a4c28f1e5",
+  "commit_date": "2026-10-21T16:31:25Z",
+  "author": "bhavatharaniselvaraj",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

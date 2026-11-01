@@ -1,0 +1,17 @@
+{
+  "function_name": "check_half_open_overlap",
+  "signature": "def check_half_open_overlap(s1: int, e1: int, s2: int, e2: int) -> bool:",
+  "repo_url": "https://github.com/bhavatharaniselvaraj/EV-charging-Allocation-System_Python",
+  "commit_hash": "efd356a4be5a045da57b8577bbfe6b2a4c28f1e5",
+  "commit_date": "2026-10-21T16:31:25Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-10-21T16:31:25Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 105.36,
+    "backend": "hardened_subprocess"
+  }
+}

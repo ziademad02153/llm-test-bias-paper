@@ -1,0 +1,17 @@
+{
+  "function_name": "get_consistent_hash_node",
+  "signature": "def get_consistent_hash_node(nodes: list[str], key: str, vnodes_per_node: int = 3) -> str | None:",
+  "repo_url": "https://github.com/alphaparkinc/genpark-consistent-hash-ring-vnodes-skill",
+  "commit_hash": "7dd66023eb41a54128f731c3bf79c29f270a4a82",
+  "commit_date": "2026-09-10T01:35:56Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-09-10T01:35:56Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 144.93,
+    "backend": "hardened_subprocess"
+  }
+}

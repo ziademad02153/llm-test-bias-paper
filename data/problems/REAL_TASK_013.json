@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_013",
+  "function_name": "intersect_intervals",
+  "category": "Scheduling/Intervals",
+  "docstring": "Computes intersection of two intervals supporting unbounded endpoints (None).",
+  "signature": "def intersect_intervals(s1: int | None, e1: int | None, s2: int | None, e2: int | None) -> tuple[int | None, int | None] | None:",
+  "ref_implementation": "def intersect_intervals(s1: int | None, e1: int | None, s2: int | None, e2: int | None) -> tuple[int | None, int | None] | None:\n    \"\"\"Computes intersection of two intervals supporting unbounded endpoints (None).\n    Returns (start, end) of intersection or None if empty.\n    \"\"\"\n    # Compute max of starts\n    if s1 is None and s2 is None:\n        start = None\n    elif s1 is None:\n        start = s2\n    elif s2 is None:\n        start = s1\n    else:\n        start = max(s1, s2)\n\n    # Compute min of ends\n    if e1 is None and e2 is None:\n        end = None\n    elif e1 is None:\n        end = e2\n    elif e2 is None:\n        end = e1\n    else:\n        end = min(e1, e2)\n\n    # Check for empty intersection\n    if start is not None and end is not None and start >= end:\n        return None\n\n    return (start, end)\n",
+  "ref_test": "def test_intersect():\n    assert intersect_intervals(10, 20, 15, 25) == (15, 20)\n    assert intersect_intervals(10, 20, 20, 30) is None\n    assert intersect_intervals(None, 50, 20, 80) == (20, 50)\n    assert intersect_intervals(None, None, 10, None) == (10, None)\n    assert intersect_intervals(50, 100, 10, 40) is None\n",
+  "repo_url": "https://github.com/ashenfad/calgebra",
+  "commit_hash": "476c3e65da58bff6e6413ae588daf5196d9f7818",
+  "commit_date": "2026-03-20T02:58:21Z",
+  "author": "Adam Ashenfelter",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

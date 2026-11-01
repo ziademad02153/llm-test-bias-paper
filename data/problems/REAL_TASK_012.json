@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_012",
+  "function_name": "compute_interval_duration_and_bounds",
+  "category": "Scheduling/Intervals",
+  "docstring": "Computes finite sentinel bounds and duration in seconds for bounded or unbounded intervals.",
+  "signature": "def compute_interval_duration_and_bounds(start: int | None, end: int | None) -> dict:",
+  "ref_implementation": "import sys\n\nNEG_INF = -(sys.maxsize - 1)\nPOS_INF = sys.maxsize - 1\n\ndef compute_interval_duration_and_bounds(start: int | None, end: int | None) -> dict:\n    \"\"\"Computes finite sentinel bounds and duration in seconds for bounded or unbounded intervals.\n    None represents unbounded past (-inf) or future (+inf).\n    \"\"\"\n    if start is not None and end is not None:\n        if start > end:\n            raise ValueError(f\"Interval start ({start}) must be <= end ({end})\")\n\n    finite_start = start if start is not None else NEG_INF\n    finite_end = end if end is not None else POS_INF\n    duration = (end - start) if (start is not None and end is not None) else None\n    is_unbounded = (start is None or end is None)\n\n    return {\n        \"finite_start\": finite_start,\n        \"finite_end\": finite_end,\n        \"duration\": duration,\n        \"is_unbounded\": is_unbounded\n    }\n",
+  "ref_test": "def test_interval_bounds():\n    res = compute_interval_duration_and_bounds(100, 250)\n    assert res[\"finite_start\"] == 100\n    assert res[\"finite_end\"] == 250\n    assert res[\"duration\"] == 150\n    assert not res[\"is_unbounded\"]\n\n    res_unbounded = compute_interval_duration_and_bounds(50, None)\n    assert res_unbounded[\"finite_start\"] == 50\n    assert res_unbounded[\"duration\"] is None\n    assert res_unbounded[\"is_unbounded\"]\n\n    raised = False\n    try:\n        compute_interval_duration_and_bounds(300, 100)\n    except ValueError:\n        raised = True\n    assert raised\n",
+  "repo_url": "https://github.com/ashenfad/calgebra",
+  "commit_hash": "476c3e65da58bff6e6413ae588daf5196d9f7818",
+  "commit_date": "2026-03-20T02:58:21Z",
+  "author": "Adam Ashenfelter",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}

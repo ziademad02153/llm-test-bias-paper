@@ -52,3 +52,4 @@ htmlcov/
 *.tmp
 temp_execution/
 *.zip
+scratch/

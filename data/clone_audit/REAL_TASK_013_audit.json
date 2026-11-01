@@ -1,0 +1,17 @@
+{
+  "function_name": "intersect_intervals",
+  "signature": "def intersect_intervals(s1: int | None, e1: int | None, s2: int | None, e2: int | None) -> tuple[int | None, int | None] | None:",
+  "repo_url": "https://github.com/ashenfad/calgebra",
+  "commit_hash": "476c3e65da58bff6e6413ae588daf5196d9f7818",
+  "commit_date": "2026-03-20T02:58:21Z",
+  "temporal_gate": {
+    "threshold": "2025-07-01T00:00:00Z",
+    "verified_post_cutoff": true,
+    "commit_date": "2026-03-20T02:58:21Z"
+  },
+  "sandbox_validation": {
+    "status": "PASSED",
+    "elapsed_ms": 100.85,
+    "backend": "hardened_subprocess"
+  }
+}

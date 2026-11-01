@@ -1,0 +1,21 @@
+{
+  "problem_id": "REAL_TASK_016",
+  "function_name": "evaluate_token_bucket",
+  "category": "State Machines/Retries",
+  "docstring": "Evaluates token bucket rate limit request, refills tokens based on elapsed time, and returns (allowed, remaining, new_last_refill).",
+  "signature": "def evaluate_token_bucket(capacity: float, refill_rate: float, refill_period: float, current_tokens: float, last_refill_time: float, request_time: float, cost: float = 1.0) -> tuple[bool, float, float]:",
+  "ref_implementation": "def evaluate_token_bucket(capacity: float, refill_rate: float, refill_period: float, current_tokens: float, last_refill_time: float, request_time: float, cost: float = 1.0) -> tuple[bool, float, float]:\n    \"\"\"Evaluates token bucket rate limit request, refills tokens based on elapsed time, and returns (allowed, remaining, new_last_refill).\"\"\"\n    if capacity <= 0 or refill_rate <= 0 or refill_period <= 0 or cost <= 0:\n        raise ValueError(\"Bucket parameters and cost must be positive numbers.\")\n\n    elapsed = max(0.0, request_time - last_refill_time)\n    tokens_to_add = (elapsed / refill_period) * refill_rate\n    refilled_tokens = min(capacity, current_tokens + tokens_to_add)\n\n    if refilled_tokens >= cost:\n        return (True, refilled_tokens - cost, request_time)\n    else:\n        return (False, refilled_tokens, request_time)\n",
+  "ref_test": "def test_token_bucket():\n    # Full bucket allows cost 1\n    allowed, rem, t = evaluate_token_bucket(10.0, 1.0, 1.0, 10.0, 0.0, 0.0, 1.0)\n    assert allowed is True\n    assert rem == 9.0\n\n    # Empty bucket without elapsed time rejects\n    allowed, rem, t = evaluate_token_bucket(10.0, 1.0, 1.0, 0.5, 0.0, 0.0, 1.0)\n    assert allowed is False\n    assert rem == 0.5\n\n    # Empty bucket after 2 seconds refills 2 tokens -> allows cost 1\n    allowed, rem, t = evaluate_token_bucket(10.0, 1.0, 1.0, 0.0, 0.0, 2.0, 1.0)\n    assert allowed is True\n    assert rem == 1.0\n\n    raised = False\n    try:\n        evaluate_token_bucket(-1.0, 1.0, 1.0, 0.0, 0.0, 1.0)\n    except ValueError:\n        raised = True\n    assert raised\n",
+  "repo_url": "https://github.com/vladlen-codes/ratelink",
+  "commit_hash": "eb17878fa35ff653528b9f1d0b166014459ba4ae",
+  "commit_date": "2026-03-13T13:47:53Z",
+  "author": "Vladlen",
+  "temporal_threshold": "2025-07-01",
+  "screening_checks": {
+    "temporal_gate_pass": true,
+    "net_new_provenance_pass": true,
+    "pre_2024_clone_absence_pass": true,
+    "ai_authorship_absence_pass": true,
+    "standalone_functional_purity_pass": true
+  }
+}
