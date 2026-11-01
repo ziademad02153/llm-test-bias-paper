@@ -109,6 +109,68 @@ def compute_contingency_table(
     }
 
 
+def _norm_cdf(z: float) -> float:
+    """Standard normal cumulative distribution function."""
+    return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+
+
+def compute_tost_paired_proportions(
+    arm_a_outcomes: List[int],
+    arm_b_outcomes: List[int],
+    margin: float = 0.05,
+    alpha: float = 0.05
+) -> Dict[str, Any]:
+    """
+    Two One-Sided Tests (TOST) for equivalence of paired binary proportions.
+    Used when failing to reject H0 in McNemar's test, to rigorously test whether
+    the difference in detection rates is bounded within [-margin, +margin].
+    
+    H01: p_A - p_B <= -margin
+    H02: p_A - p_B >= +margin
+    Rejection of both H01 and H02 at level alpha establishes statistical equivalence.
+    """
+    if len(arm_a_outcomes) != len(arm_b_outcomes):
+        raise ValueError("Arms must have identical lengths for paired evaluation.")
+
+    n = len(arm_a_outcomes)
+    if n == 0:
+        return {"equivalent": False, "p_tost": 1.0}
+
+    b = sum(1 for x, y in zip(arm_a_outcomes, arm_b_outcomes) if x == 1 and y == 0)
+    c = sum(1 for x, y in zip(arm_a_outcomes, arm_b_outcomes) if x == 0 and y == 1)
+
+    diff = (b - c) / n
+    # Paired standard error for difference in proportions
+    var_diff = (b + c - ((b - c) ** 2) / n) / (n ** 2)
+    se_diff = math.sqrt(max(var_diff, 1e-9))
+
+    # Two one-sided Z statistics
+    z1 = (diff + margin) / se_diff
+    z2 = (margin - diff) / se_diff
+
+    p1 = 1.0 - _norm_cdf(z1)
+    p2 = 1.0 - _norm_cdf(z2)
+    p_tost = max(p1, p2)
+
+    is_equivalent = (p_tost < alpha)
+    # 100*(1 - 2*alpha)% confidence interval corresponding to TOST
+    z_crit = 1.644853  # for alpha = 0.05 (90% CI covers two one-sided alpha tests)
+    ci_tost_lower = diff - z_crit * se_diff
+    ci_tost_upper = diff + z_crit * se_diff
+
+    return {
+        "n": n,
+        "diff_proportions": round(diff, 4),
+        "margin": margin,
+        "se_diff": round(se_diff, 4),
+        "z1": round(z1, 4),
+        "z2": round(z2, 4),
+        "p_tost": round(p_tost, 5),
+        "is_equivalent": is_equivalent,
+        "ci_tost_90": (round(ci_tost_lower, 4), round(ci_tost_upper, 4))
+    }
+
+
 def export_glmm_dataset(
     records: List[Dict[str, Any]],
     output_csv_path: str
@@ -140,3 +202,4 @@ def export_glmm_dataset(
                 "detects_fault": 1 if r["detects_fault"] else 0,
                 "execution_time_ms": round(r.get("execution_time_ms", 0.0), 2)
             })
+
