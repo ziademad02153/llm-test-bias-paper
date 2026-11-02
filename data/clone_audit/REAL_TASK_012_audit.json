@@ -4,14 +4,29 @@
   "repo_url": "https://github.com/ashenfad/calgebra",
   "commit_hash": "476c3e65da58bff6e6413ae588daf5196d9f7818",
   "commit_date": "2026-03-20T02:58:21Z",
+  "audit_timestamp": "2026-11-02T22:02:04.133560+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,
-    "commit_date": "2026-03-20T02:58:21Z"
+    "days_after_cutoff": 262
   },
-  "sandbox_validation": {
-    "status": "PASSED",
-    "elapsed_ms": 123.02,
-    "backend": "hardened_subprocess"
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "compute_interval_duration_and_bounds",
+    "args_count": 2,
+    "ast_nodes_count": 130,
+    "forbidden_calls_found": [],
+    "docstring_present": true
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"compute_interval_duration_and_bounds\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
   }
 }

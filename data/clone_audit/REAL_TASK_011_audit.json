@@ -4,14 +4,29 @@
   "repo_url": "https://github.com/bhavatharaniselvaraj/EV-charging-Allocation-System_Python",
   "commit_hash": "efd356a4be5a045da57b8577bbfe6b2a4c28f1e5",
   "commit_date": "2026-10-21T16:31:25Z",
+  "audit_timestamp": "2026-11-02T22:02:04.131511+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,
-    "commit_date": "2026-10-21T16:31:25Z"
+    "days_after_cutoff": 477
   },
-  "sandbox_validation": {
-    "status": "PASSED",
-    "elapsed_ms": 105.36,
-    "backend": "hardened_subprocess"
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "check_half_open_overlap",
+    "args_count": 4,
+    "ast_nodes_count": 50,
+    "forbidden_calls_found": [],
+    "docstring_present": true
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"check_half_open_overlap\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
   }
 }

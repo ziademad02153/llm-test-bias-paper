@@ -4,14 +4,29 @@
   "repo_url": "https://github.com/Alpha-Park/genpark-dag-topological-sort-dependency-resolver-skill",
   "commit_hash": "1c28477ff9ea3ce8bb2e811dc3fa675ae6bca1f4",
   "commit_date": "2026-09-29T11:46:16Z",
+  "audit_timestamp": "2026-11-02T22:02:04.123642+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,
-    "commit_date": "2026-09-29T11:46:16Z"
+    "days_after_cutoff": 455
   },
-  "sandbox_validation": {
-    "status": "PASSED",
-    "elapsed_ms": 120.59,
-    "backend": "hardened_subprocess"
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "resolve_dag_order",
+    "args_count": 2,
+    "ast_nodes_count": 235,
+    "forbidden_calls_found": [],
+    "docstring_present": true
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"resolve_dag_order\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
   }
 }

@@ -4,14 +4,29 @@
   "repo_url": "https://github.com/Alpha-Park/genpark-red-black-tree-index-skill",
   "commit_hash": "33a021d7e2eecdd77a5b172a6b47c0c1b75df9c1",
   "commit_date": "2026-10-24T13:49:32Z",
+  "audit_timestamp": "2026-11-02T22:02:04.127452+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,
-    "commit_date": "2026-10-24T13:49:32Z"
+    "days_after_cutoff": 480
   },
-  "sandbox_validation": {
-    "status": "PASSED",
-    "elapsed_ms": 108.41,
-    "backend": "hardened_subprocess"
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "rb_tree_search",
+    "args_count": 2,
+    "ast_nodes_count": 719,
+    "forbidden_calls_found": [],
+    "docstring_present": true
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"rb_tree_search\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
   }
 }

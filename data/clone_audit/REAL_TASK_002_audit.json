@@ -4,7 +4,7 @@
   "repo_url": "https://github.com/mpryor/nothing-less",
   "commit_hash": "cc15dd737bcfc019b81b10508c79a3114318de2f",
   "commit_date": "2026-05-08T03:58:35Z",
-  "audit_timestamp": "2026-11-01T14:26:21.618935+00:00",
+  "audit_timestamp": "2026-11-02T22:02:04.096352+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,

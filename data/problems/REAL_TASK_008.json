@@ -1,7 +1,7 @@
 {
   "problem_id": "REAL_TASK_008",
   "function_name": "resolve_dag_order",
-  "category": "Graphs/Trees",
+  "category": "Algorithms/Search",
   "docstring": "Computes valid execution order and cycle detection for task DAGs using Kahn's algorithm.",
   "signature": "def resolve_dag_order(tasks: list[str], dependencies: dict[str, list[str]]) -> dict:",
   "ref_implementation": "from collections import defaultdict, deque\n\ndef resolve_dag_order(tasks: list[str], dependencies: dict[str, list[str]]) -> dict:\n    \"\"\"Computes valid execution order and cycle detection for task DAGs using Kahn's algorithm.\"\"\"\n    in_degree = {t: 0 for t in tasks}\n    adj = defaultdict(list)\n\n    for t, parents in dependencies.items():\n        if t in in_degree:\n            for p in parents:\n                adj[p].append(t)\n                in_degree[t] = in_degree.get(t, 0) + 1\n\n    queue = deque([t for t in tasks if in_degree[t] == 0])\n    order = []\n\n    while queue:\n        node = queue.popleft()\n        order.append(node)\n        for neighbor in adj[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n\n    has_cycle = len(order) != len(tasks)\n    unresolved = [t for t in tasks if t not in order]\n\n    return {\n        \"has_cycle\": has_cycle,\n        \"execution_order\": order if not has_cycle else [],\n        \"unresolved_tasks\": unresolved\n    }\n",

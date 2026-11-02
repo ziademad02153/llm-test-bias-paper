@@ -1,7 +1,7 @@
 {
   "problem_id": "REAL_TASK_015",
   "function_name": "compute_fibonacci_backoff_sequence",
-  "category": "State Machines/Retries",
+  "category": "Algorithms/Search",
   "docstring": "Generates Fibonacci retry backoff delays bounded by optional max_value.",
   "signature": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:",
   "ref_implementation": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:\n    \"\"\"Generates Fibonacci retry backoff delays bounded by optional max_value.\"\"\"\n    if attempts <= 0:\n        return []\n    a = 1\n    b = 1\n    delays = []\n    for _ in range(attempts):\n        val = float(a)\n        if max_value is not None and val > max_value:\n            val = float(max_value)\n        delays.append(val)\n        a, b = b, a + b\n    return delays\n",

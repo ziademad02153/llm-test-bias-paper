@@ -17,5 +17,5 @@
     "ai_authorship_absence_pass": true,
     "standalone_functional_purity_pass": true
   },
-  "category": "Algorithms/Search"
+  "category": "Parsing/String"
 }

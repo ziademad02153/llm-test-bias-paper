@@ -4,14 +4,29 @@
   "repo_url": "https://github.com/vladlen-codes/ratelink",
   "commit_hash": "eb17878fa35ff653528b9f1d0b166014459ba4ae",
   "commit_date": "2026-03-13T13:47:53Z",
+  "audit_timestamp": "2026-11-02T22:02:04.144868+00:00",
   "temporal_gate": {
     "threshold": "2025-07-01T00:00:00Z",
     "verified_post_cutoff": true,
-    "commit_date": "2026-03-13T13:47:53Z"
+    "days_after_cutoff": 255
   },
-  "sandbox_validation": {
-    "status": "PASSED",
-    "elapsed_ms": 118.04,
-    "backend": "hardened_subprocess"
+  "ast_purity_metrics": {
+    "is_valid": true,
+    "function_name": "check_sliding_window_rate_limit",
+    "args_count": 4,
+    "ast_nodes_count": 108,
+    "forbidden_calls_found": [],
+    "docstring_present": true
+  },
+  "pre_2024_clone_audit": {
+    "methodology": "AST Token N-Gram & Exact Substring Match",
+    "github_code_search_query": "\"check_sliding_window_rate_limit\" in:file language:python created:<2024-01-01",
+    "max_token_similarity_ratio": 0.08,
+    "clone_absence_verified": true
+  },
+  "ai_authorship_audit": {
+    "commit_message_screened": true,
+    "pr_metadata_screened": true,
+    "ai_markers_found": false
   }
 }
