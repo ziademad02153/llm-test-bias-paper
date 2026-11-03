@@ -21,6 +21,9 @@ class SandboxStatus:
     SANDBOX_ERROR = "SANDBOX_ERROR"
 
 
+import functools
+
+@functools.lru_cache(maxsize=1)
 def is_docker_available() -> bool:
     """Checks whether Docker daemon is active and responsive."""
     try:
