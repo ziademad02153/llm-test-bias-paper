@@ -15,6 +15,15 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+# Load .env variables cleanly if present (zero-dependency standard library)
+_env_file = project_root / ".env"
+if _env_file.exists():
+    for _line in _env_file.read_text(encoding="utf-8").splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+
 from src.schema import ExperimentalCondition, ProblemSpec
 
 
@@ -46,6 +55,24 @@ MODEL_REGISTRY = {
         "completion_price_per_m": 0.28,
         "source_url": "https://openrouter.ai/deepseek/deepseek-chat",
         "doc_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+        "verified_date": "2026-11-01"
+    },
+    "meta-llama/llama-3.1-8b-instruct": {
+        "pinned_provider": "DeepInfra",
+        "quantization": "bf16",
+        "prompt_price_per_m": 0.04,
+        "completion_price_per_m": 0.08,
+        "source_url": "https://openrouter.ai/meta-llama/llama-3.1-8b-instruct",
+        "doc_url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct",
+        "verified_date": "2026-11-01"
+    },
+    "qwen/qwen-2.5-7b-instruct": {
+        "pinned_provider": "DeepInfra",
+        "quantization": "bf16",
+        "prompt_price_per_m": 0.03,
+        "completion_price_per_m": 0.06,
+        "source_url": "https://openrouter.ai/qwen/qwen-2.5-7b-instruct",
+        "doc_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct",
         "verified_date": "2026-11-01"
     },
 }
@@ -159,7 +186,52 @@ class LLMClient:
                 "allow_fallbacks": False
             }
 
-        # Try native HTTP via urllib first (zero external dependencies required)
+        # Prefer OpenAI SDK if installed (robust SSL/certifi on Windows) with auto-retry
+        last_sdk_err = None
+        for retry_attempt in range(3):
+            try:
+                import importlib
+                openai_mod = importlib.import_module("openai")
+                openai_cls = getattr(openai_mod, "OpenAI")
+                client = openai_cls(api_key=self.api_key, base_url=self.base_url, timeout=40.0)
+                extra_body = {"provider": {"order": [self.pinned_provider], "allow_fallbacks": True}} if self.pinned_provider else None
+                response = client.chat.completions.create(
+                    model=self.model_name,
+                    messages=payload["messages"],
+                    temperature=self.temperature,
+                    max_tokens=max_tokens,
+                    stop=stop,
+                    extra_body=extra_body,
+                    timeout=40.0
+                )
+                elapsed = time.perf_counter() - start
+                content = response.choices[0].message.content or ""
+                content_cleaned = self._clean_code_fences(content)
+                usage = response.usage
+                p_tok = usage.prompt_tokens if usage else len(prompt.split()) * 2
+                c_tok = usage.completion_tokens if usage else len(content.split()) * 2
+                cost_usd = (
+                    (p_tok / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
+                    (c_tok / 1_000_000.0) * self.pricing.get("completion", 0.0)
+                )
+                call_metadata = {
+                    "model_requested": self.model_name,
+                    "system_fingerprint": getattr(response, "system_fingerprint", None),
+                    "pinned_provider": self.pinned_provider,
+                    "quantization": self.quantization,
+                    "created_timestamp": getattr(response, "created", None),
+                    "response_id": getattr(response, "id", None),
+                    "caller": "openai_sdk"
+                }
+                return content_cleaned, p_tok, c_tok, elapsed, cost_usd, call_metadata
+            except Exception as sdk_err:
+                last_sdk_err = sdk_err
+                if retry_attempt < 2:
+                    time.sleep(2.0 * (retry_attempt + 1))
+                else:
+                    break
+
+        # Fallback to native HTTP via urllib if OpenAI SDK failed on all retries
         try:
             import urllib.request
             import urllib.error
@@ -203,44 +275,8 @@ class LLMClient:
                 "caller": "native_urllib"
             }
             return content_cleaned, prompt_tokens, completion_tokens, elapsed, cost_usd, call_metadata
-        except Exception as urllib_err:
-            # Fallback to openai SDK if installed (dynamically loaded to avoid static linter errors)
-            try:
-                import importlib
-                openai_mod = importlib.import_module("openai")
-                openai_cls = getattr(openai_mod, "OpenAI")
-                client = openai_cls(api_key=self.api_key, base_url=self.base_url)
-                extra_body = {"provider": payload["provider"]} if "provider" in payload else None
-                response = client.chat.completions.create(
-                    model=self.model_name,
-                    messages=payload["messages"],
-                    temperature=self.temperature,
-                    max_tokens=max_tokens,
-                    stop=stop,
-                    extra_body=extra_body
-                )
-                elapsed = time.perf_counter() - start
-                content = response.choices[0].message.content or ""
-                content_cleaned = self._clean_code_fences(content)
-                usage = response.usage
-                p_tok = usage.prompt_tokens if usage else len(prompt.split()) * 2
-                c_tok = usage.completion_tokens if usage else len(content.split()) * 2
-                cost_usd = (
-                    (p_tok / 1_000_000.0) * self.pricing.get("prompt", 0.0) +
-                    (c_tok / 1_000_000.0) * self.pricing.get("completion", 0.0)
-                )
-                call_metadata = {
-                    "model_requested": self.model_name,
-                    "system_fingerprint": getattr(response, "system_fingerprint", None),
-                    "pinned_provider": self.pinned_provider,
-                    "quantization": self.quantization,
-                    "created_timestamp": getattr(response, "created", None),
-                    "response_id": getattr(response, "id", None),
-                    "caller": "openai_sdk"
-                }
-                return content_cleaned, p_tok, c_tok, elapsed, cost_usd, call_metadata
-            except Exception:
-                raise RuntimeError(f"API request failed: {str(urllib_err)}")
+        except Exception:
+            raise RuntimeError(f"API request failed: {str(last_sdk_err)}")
 
     @staticmethod
     def _clean_code_fences(text: str) -> str:

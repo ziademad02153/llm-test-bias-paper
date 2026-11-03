@@ -1,0 +1,168 @@
+timestamp,problem_id,function_name,category,coder_model,attempt,decision,reason,passed_asserts,failed_asserts,error_asserts,total_asserts
+2026-11-03T09:49:07Z,REAL_TASK_001,parse_github_url,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 5/6 and failed 1/6 assertions without runtime crashes [Hard],5,1,0,6
+2026-11-03T09:49:12Z,REAL_TASK_002,split_by_positions,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 2/4 and failed 2/4 assertions without runtime crashes [Medium],2,2,0,4
+2026-11-03T09:49:38Z,REAL_TASK_003,get_parent_dn,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 2/5 and failed 3/5 assertions without runtime crashes [Medium],2,3,0,5
+2026-11-03T09:49:49Z,REAL_TASK_004,validate_tags,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:00Z,REAL_TASK_004,validate_tags,Parsing/String,meta-llama/llama-3.3-70b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:06Z,REAL_TASK_004,validate_tags,Parsing/String,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:12Z,REAL_TASK_004,validate_tags,Parsing/String,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:16Z,REAL_TASK_004,validate_tags,Parsing/String,deepseek/deepseek-chat,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:21Z,REAL_TASK_004,validate_tags,Parsing/String,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T09:50:30Z,REAL_TASK_005,split_host_port,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 3 assertions,3,1,3,7
+2026-11-03T09:50:44Z,REAL_TASK_005,split_host_port,Parsing/String,meta-llama/llama-3.3-70b-instruct,2,ACCEPTED_LOGIC_FAULT,Passed 3/7 and failed 4/7 assertions without runtime crashes [Medium],3,4,0,7
+2026-11-03T09:51:16Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:51:34Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,2,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 1 assertions,3,0,1,4
+2026-11-03T09:51:40Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:51:49Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:51:54Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,deepseek/deepseek-chat,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:52:01Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:52:44Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T09:53:12Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,2,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T09:53:26Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,5,0,5
+2026-11-03T09:53:43Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,5,0,5
+2026-11-03T09:53:53Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,deepseek/deepseek-chat,5,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T09:54:08Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T09:54:30Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 4 assertions,2,0,4,6
+2026-11-03T09:54:44Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,2,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,6,0,6
+2026-11-03T09:54:53Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,6,0,6
+2026-11-03T09:55:02Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,6,0,6
+2026-11-03T09:55:08Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,deepseek/deepseek-chat,5,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,6,6
+2026-11-03T09:55:16Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,6,6
+2026-11-03T09:56:13Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,4,4
+2026-11-03T09:58:38Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,2,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,4,4
+2026-11-03T09:59:03Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T09:59:39Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:00:15Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,deepseek/deepseek-chat,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:00:28Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:00:50Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:01:29Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:01:44Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:01:59Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:02:10Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,deepseek/deepseek-chat,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:02:24Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:02:34Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:02:47Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:02:49Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:02:52Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:02:56Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,deepseek/deepseek-chat,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:02:59Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),6,0,0,6
+2026-11-03T10:03:16Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,2,1,5,8
+2026-11-03T10:03:27Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,2,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,2,1,5,8
+2026-11-03T10:03:33Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,3,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,1,2,5,8
+2026-11-03T10:03:35Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,8
+2026-11-03T10:03:36Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,8
+2026-11-03T10:03:37Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,8
+2026-11-03T10:03:39Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:40Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:41Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:43Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:44Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:46Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:03:47Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:48Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:50Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:51Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:52Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:54Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:55Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:56Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:58Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:03:59Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:04:00Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:04:02Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,3
+2026-11-03T10:04:03Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:05Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:06Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:07Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:09Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:10Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,7
+2026-11-03T10:04:12Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:13Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:14Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:15Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:17Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:18Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:20Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:21Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:22Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:23Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:25Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:26Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,9
+2026-11-03T10:04:28Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:29Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:30Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:31Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:33Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:34Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,4
+2026-11-03T10:04:35Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:04:37Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,2,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:04:38Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,3,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:04:39Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,4,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:04:41Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,deepseek/deepseek-chat,5,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:04:42Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,deepseek/deepseek-chat,6,API_ERROR,API request failed: Connection error.,0,0,0,5
+2026-11-03T10:50:55Z,REAL_TASK_004,validate_tags,Parsing/String,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T10:51:01Z,REAL_TASK_004,validate_tags,Parsing/String,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T10:51:12Z,REAL_TASK_004,validate_tags,Parsing/String,meta-llama/llama-3.1-8b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),5,0,0,5
+2026-11-03T10:51:35Z,REAL_TASK_004,validate_tags,Parsing/String,meta-llama/llama-3.1-8b-instruct,4,ACCEPTED_LOGIC_FAULT,Passed 4/5 and failed 1/5 assertions [Hard],4,1,0,5
+2026-11-03T10:51:51Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:52:01Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:52:10Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,4,0,4
+2026-11-03T10:52:21Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,4,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 1 assertions,3,0,1,4
+2026-11-03T10:52:23Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,qwen/qwen-2.5-7b-instruct,5,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,4,0,4
+2026-11-03T10:52:31Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:52:46Z,REAL_TASK_006,get_consistent_hash_node,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,7,ACCEPTED_LOGIC_FAULT,Passed 2/4 and failed 2/4 assertions [Medium],2,2,0,4
+2026-11-03T10:53:05Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:53:14Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,5,0,5
+2026-11-03T10:53:30Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:53:46Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:53:49Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,qwen/qwen-2.5-7b-instruct,5,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:54:00Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:54:18Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,7,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,5,0,5
+2026-11-03T10:54:28Z,REAL_TASK_007,sort_document_reading_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,8,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,5,0,5
+2026-11-03T10:54:49Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 4 assertions,2,0,4,6
+2026-11-03T10:54:57Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,6,0,6
+2026-11-03T10:55:31Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,3,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,6,6
+2026-11-03T10:55:59Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,6,0,6
+2026-11-03T10:56:01Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,qwen/qwen-2.5-7b-instruct,5,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,6,6
+2026-11-03T10:56:08Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,deepseek/deepseek-chat,6,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,6,6
+2026-11-03T10:56:17Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,7,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 4 assertions,2,0,4,6
+2026-11-03T10:56:27Z,REAL_TASK_008,resolve_dag_order,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,8,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,6,0,6
+2026-11-03T10:57:14Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,4,0,4
+2026-11-03T10:57:39Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:57:41Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.1-8b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,4,0,4
+2026-11-03T10:57:42Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.1-8b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,4,0,4
+2026-11-03T10:57:48Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,qwen/qwen-2.5-7b-instruct,5,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 3 assertions,1,0,3,4
+2026-11-03T10:58:11Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:58:44Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,7,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,4,0,4
+2026-11-03T10:59:09Z,REAL_TASK_009,rb_tree_search,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,8,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:59:20Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),4,0,0,4
+2026-11-03T10:59:37Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,0,4,4
+2026-11-03T11:00:09Z,REAL_TASK_010,find_conflicting_reservations,Graphs/Trees,meta-llama/llama-3.1-8b-instruct,3,ACCEPTED_LOGIC_FAULT,Passed 1/4 and failed 3/4 assertions [Easy],1,3,0,4
+2026-11-03T11:00:50Z,REAL_TASK_011,check_half_open_overlap,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 5/6 and failed 1/6 assertions [Hard],5,1,0,6
+2026-11-03T11:00:59Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,2,1,5,8
+2026-11-03T11:01:05Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,2,1,5,8
+2026-11-03T11:01:30Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.1-8b-instruct,3,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,8,0,8
+2026-11-03T11:02:00Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.1-8b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (RUNTIME_EXCEPTION),0,8,0,8
+2026-11-03T11:02:01Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,qwen/qwen-2.5-7b-instruct,5,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,2,1,5,8
+2026-11-03T11:02:06Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,deepseek/deepseek-chat,6,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,1,7,8
+2026-11-03T11:02:24Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,7,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 7 assertions,1,0,7,8
+2026-11-03T11:02:28Z,REAL_TASK_012,compute_interval_duration_and_bounds,Scheduling/Intervals,qwen/qwen-2.5-coder-32b-instruct,8,REJECTED_RUNTIME_ERROR,Candidate threw unhandled runtime exceptions on 5 assertions,1,2,5,8
+2026-11-03T11:02:39Z,REAL_TASK_013,intersect_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 4/5 and failed 1/5 assertions [Hard],4,1,0,5
+2026-11-03T11:02:52Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:02:56Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:16Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.1-8b-instruct,3,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:32Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.1-8b-instruct,4,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:33Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,qwen/qwen-2.5-7b-instruct,5,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:37Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,deepseek/deepseek-chat,6,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:47Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,7,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:51Z,REAL_TASK_014,compute_exponential_backoff_sequence,State Machines/Retries,qwen/qwen-2.5-coder-32b-instruct,8,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:03:58Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,meta-llama/llama-3.3-70b-instruct,1,REJECTED_CLEAN,Candidate passed 100% of reference assertions (no fault present),3,0,0,3
+2026-11-03T11:04:02Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,qwen/qwen-2.5-coder-32b-instruct,2,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,3,0,3
+2026-11-03T11:04:19Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,3,REJECTED_GROSS_FAILURE,Candidate failed 100% of reference assertions (gross interface/logic failure),0,3,0,3
+2026-11-03T11:04:35Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,meta-llama/llama-3.1-8b-instruct,4,REJECTED_SANDBOX_CRASH,Execution crashed before assertions completed (SYNTAX_ERROR),0,3,0,3
+2026-11-03T11:04:37Z,REAL_TASK_015,compute_fibonacci_backoff_sequence,Algorithms/Search,qwen/qwen-2.5-7b-instruct,5,ACCEPTED_LOGIC_FAULT,Passed 1/3 and failed 2/3 assertions [Easy],1,2,0,3
+2026-11-03T11:04:42Z,REAL_TASK_016,evaluate_token_bucket,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 6/7 and failed 1/7 assertions [Hard],6,1,0,7
+2026-11-03T11:04:52Z,REAL_TASK_017,check_sliding_window_rate_limit,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 8/9 and failed 1/9 assertions [Hard],8,1,0,9
+2026-11-03T11:05:25Z,REAL_TASK_018,evaluate_circuit_breaker_transition,State Machines/Retries,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 7/9 and failed 2/9 assertions [Hard],7,2,0,9
+2026-11-03T11:05:30Z,REAL_TASK_019,merge_overlapping_intervals,Scheduling/Intervals,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 3/4 and failed 1/4 assertions [Hard],3,1,0,4
+2026-11-03T11:05:41Z,REAL_TASK_020,detect_dag_cycle_and_ancestors,Graphs/Trees,meta-llama/llama-3.3-70b-instruct,1,ACCEPTED_LOGIC_FAULT,Passed 2/5 and failed 3/5 assertions [Medium],2,3,0,5
