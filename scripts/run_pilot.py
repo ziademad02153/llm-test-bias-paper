@@ -247,18 +247,30 @@ def run_pilot_study(
     df_glmm.to_csv(glmm_csv_path, index=False, encoding="utf-8")
     print(f"\n[Step 2] Exported {len(df_glmm)} trial observations to {glmm_csv_path.name}")
 
-    # Statistical Evaluation
-    contingency = compute_contingency_table(t0_outcomes, t1_outcomes)
-    tost_res = compute_tost_paired_proportions(t0_outcomes, t1_outcomes, margin=0.08)
+    # Statistical Evaluations across all 4 condition pairs
+    comp_t0_t1 = compute_contingency_table(t0_outcomes, t1_outcomes)
+    tost_t0_t1 = compute_tost_paired_proportions(t0_outcomes, t1_outcomes, margin=0.08)
+
+    comp_t0_t2 = compute_contingency_table(t0_outcomes, t2_outcomes)
+    tost_t0_t2 = compute_tost_paired_proportions(t0_outcomes, t2_outcomes, margin=0.08)
+
+    comp_t1_t2 = compute_contingency_table(t1_outcomes, t2_outcomes)
+    tost_t1_t2 = compute_tost_paired_proportions(t1_outcomes, t2_outcomes, margin=0.08)
+
+    comp_t0_t3 = compute_contingency_table(t0_outcomes, t3_outcomes)
+    tost_t0_t3 = compute_tost_paired_proportions(t0_outcomes, t3_outcomes, margin=0.08)
 
     elapsed_total = time.perf_counter() - start_time
 
     # Generate Summary Report
-    p_val_str = f"{contingency.get('p_value', 0.0):.6f}" if contingency.get('p_value') is not None else "N/A"
-    tost_diff_str = f"{tost_res.get('diff_proportions', 0.0):+.4f}" if tost_res.get('diff_proportions') is not None else "N/A"
-    ci_bounds = tost_res.get('ci_tost_90', (0.0, 0.0))
-    ci_lower = f"{ci_bounds[0]:.4f}"
-    ci_upper = f"{ci_bounds[1]:.4f}"
+    def fmt_p(val):
+        return f"{val:.6f}" if val is not None else "N/A"
+
+    def fmt_diff(val):
+        return f"{val:+.4f}" if val is not None else "N/A"
+
+    def fmt_ci(ci):
+        return f"[{ci[0]:+.4f}, {ci[1]:+.4f}]" if ci else "N/A"
 
     report_lines = [
         f"# Pilot Study Execution Report (N={sample_size})",
@@ -284,16 +296,60 @@ def run_pilot_study(
         f"| **T2** | Code-First, Cross Model | {len(t2_outcomes)} | **{sum(t2_outcomes) / len(t2_outcomes) * 100:.1f}%** |",
         f"| **T3** | Spec-Only, Cross Model | {len(t3_outcomes)} | **{sum(t3_outcomes) / len(t3_outcomes) * 100:.1f}%** |",
         "",
-        "## 3. Inferential Statistics (Paired Comparisons)",
+        "## 3. Inferential Statistics & 2x2 Contingency Tables",
         "",
-        f"- **McNemar Exact Test (T0 vs T1):**",
-        f"  - Concordant Pairs (a/d): {contingency.get('concordant_both_detected', 0)} / {contingency.get('concordant_neither_detected', 0)}",
-        f"  - Discordant Pairs (b/c): {contingency.get('b_t0_detect_t1_miss', 0)} / {contingency.get('c_t1_detect_t0_miss', 0)}",
-        f"  - Exact Binomial P-Value: **{p_val_str}**",
-        f"- **TOST Paired Equivalence Test (Delta = ±0.08):**",
-        f"  - Risk Difference: **{tost_diff_str}**",
-        f"  - 90% Confidence Interval: **[{ci_lower}, {ci_upper}]**",
-        f"  - Equivalence Established: **{tost_res.get('is_equivalent', False)}**",
+        "### A. Primary Comparison: T0 (Spec-Same) vs T1 (Code-Same)",
+        "Tests H1 (Exposure Bias: Spec-only outperforms Code-first in fault detection):",
+        "",
+        "| | T1 Detect (1) | T1 Miss (0) | Total |",
+        "| :--- | :---: | :---: | :---: |",
+        f"| **T0 Detect (1)** | a = {comp_t0_t1['a_both_detect']} | b = {comp_t0_t1['b_armA_only']} | {comp_t0_t1['a_both_detect'] + comp_t0_t1['b_armA_only']} |",
+        f"| **T0 Miss (0)** | c = {comp_t0_t1['c_armB_only']} | d = {comp_t0_t1['d_both_miss']} | {comp_t0_t1['c_armB_only'] + comp_t0_t1['d_both_miss']} |",
+        f"| **Total** | {comp_t0_t1['a_both_detect'] + comp_t0_t1['c_armB_only']} | {comp_t0_t1['b_armA_only'] + comp_t0_t1['d_both_miss']} | {sample_size} |",
+        "",
+        f"- **Concordant Pairs (a + d):** {comp_t0_t1['a_both_detect'] + comp_t0_t1['d_both_miss']} (Both detected: {comp_t0_t1['a_both_detect']}, Both missed: {comp_t0_t1['d_both_miss']})",
+        f"- **Discordant Pairs (b + c):** {comp_t0_t1['discordant_pairs']} (T0 only: {comp_t0_t1['b_armA_only']}, T1 only: {comp_t0_t1['c_armB_only']})",
+        f"- **McNemar Test:** {comp_t0_t1['method']}, p = **{fmt_p(comp_t0_t1['p_value'])}**",
+        f"- **Paired Proportion Difference (T0 - T1):** **{fmt_diff(tost_t0_t1['diff_proportions'])}** (90% CI: {fmt_ci(tost_t0_t1['ci_tost_90'])})",
+        f"- **TOST Equivalence (Margin = ±0.08):** p_TOST = {tost_t0_t1['p_tost']:.5f} -> Equivalence: **{tost_t0_t1['is_equivalent']}**",
+        "",
+        "### B. Cross-Model Attenuation: T0 (Spec-Same) vs T2 (Code-Cross)",
+        "Tests H2 (Cross-model mitigation of code exposure):",
+        "",
+        "| | T2 Detect (1) | T2 Miss (0) | Total |",
+        "| :--- | :---: | :---: | :---: |",
+        f"| **T0 Detect (1)** | a = {comp_t0_t2['a_both_detect']} | b = {comp_t0_t2['b_armA_only']} | {comp_t0_t2['a_both_detect'] + comp_t0_t2['b_armA_only']} |",
+        f"| **T0 Miss (0)** | c = {comp_t0_t2['c_armB_only']} | d = {comp_t0_t2['d_both_miss']} | {comp_t0_t2['c_armB_only'] + comp_t0_t2['d_both_miss']} |",
+        f"| **Total** | {comp_t0_t2['a_both_detect'] + comp_t0_t2['c_armB_only']} | {comp_t0_t2['b_armA_only'] + comp_t0_t2['d_both_miss']} | {sample_size} |",
+        "",
+        f"- **Discordant Pairs (b/c):** b = {comp_t0_t2['b_armA_only']} (T0 only), c = {comp_t0_t2['c_armB_only']} (T2 only) -> Total: {comp_t0_t2['discordant_pairs']}",
+        f"- **McNemar Test:** p = **{fmt_p(comp_t0_t2['p_value'])}**",
+        f"- **Paired Proportion Difference (T0 - T2):** **{fmt_diff(tost_t0_t2['diff_proportions'])}** (90% CI: {fmt_ci(tost_t0_t2['ci_tost_90'])})",
+        "",
+        "### C. Model-Family Effect: T1 (Code-Same) vs T2 (Code-Cross)",
+        "Direct comparison of same-family vs cross-family under identical code exposure:",
+        "",
+        "| | T2 Detect (1) | T2 Miss (0) | Total |",
+        "| :--- | :---: | :---: | :---: |",
+        f"| **T1 Detect (1)** | a = {comp_t1_t2['a_both_detect']} | b = {comp_t1_t2['b_armA_only']} | {comp_t1_t2['a_both_detect'] + comp_t1_t2['b_armA_only']} |",
+        f"| **T1 Miss (0)** | c = {comp_t1_t2['c_armB_only']} | d = {comp_t1_t2['d_both_miss']} | {comp_t1_t2['c_armB_only'] + comp_t1_t2['d_both_miss']} |",
+        f"| **Total** | {comp_t1_t2['a_both_detect'] + comp_t1_t2['c_armB_only']} | {comp_t1_t2['b_armA_only'] + comp_t1_t2['d_both_miss']} | {sample_size} |",
+        "",
+        f"- **Discordant Pairs (b/c):** b = {comp_t1_t2['b_armA_only']} (T1 only), c = {comp_t1_t2['c_armB_only']} (T2 only) -> Total: {comp_t1_t2['discordant_pairs']}",
+        f"- **McNemar Test:** p = **{fmt_p(comp_t1_t2['p_value'])}**",
+        f"- **Paired Proportion Difference (T1 - T2):** **{fmt_diff(tost_t1_t2['diff_proportions'])}** (90% CI: {fmt_ci(tost_t1_t2['ci_tost_90'])})",
+        "",
+        "### D. Baseline Model Equivalence: T0 (Spec-Same) vs T3 (Spec-Cross)",
+        "Verifies that tester models have equivalent baseline capability in the absence of code exposure:",
+        "",
+        "| | T3 Detect (1) | T3 Miss (0) | Total |",
+        "| :--- | :---: | :---: | :---: |",
+        f"| **T0 Detect (1)** | a = {comp_t0_t3['a_both_detect']} | b = {comp_t0_t3['b_armA_only']} | {comp_t0_t3['a_both_detect'] + comp_t0_t3['b_armA_only']} |",
+        f"| **T0 Miss (0)** | c = {comp_t0_t3['c_armB_only']} | d = {comp_t0_t3['d_both_miss']} | {comp_t0_t3['c_armB_only'] + comp_t0_t3['d_both_miss']} |",
+        f"| **Total** | {comp_t0_t3['a_both_detect'] + comp_t0_t3['c_armB_only']} | {comp_t0_t3['b_armA_only'] + comp_t0_t3['d_both_miss']} | {sample_size} |",
+        "",
+        f"- **Discordant Pairs:** b = {comp_t0_t3['b_armA_only']}, c = {comp_t0_t3['c_armB_only']} -> Total: {comp_t0_t3['discordant_pairs']}",
+        f"- **TOST Equivalence (Margin = ±0.08):** p_TOST = **{tost_t0_t3['p_tost']:.5f}** -> Equivalence: **{tost_t0_t3['is_equivalent']}**",
         "",
         "## 4. Token & Cost Accounting",
         "",

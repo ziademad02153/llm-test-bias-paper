@@ -1,121 +1,121 @@
 trial_id,problem_id,condition,exposure,family,coder_model,tester_model,category,detected,c_ref_valid,valid_test_count,tokens_used,cost_usd,latency_sec
-REAL_TASK_020_T0_SPEC_SAME_1,REAL_TASK_020,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.309
-REAL_TASK_020_T1_CODE_SAME_1,REAL_TASK_020,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.261
-REAL_TASK_020_T2_CODE_CROSS_1,REAL_TASK_020,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.26
-REAL_TASK_020_T3_SPEC_CROSS_1,REAL_TASK_020,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.255
-REAL_TASK_006_T0_SPEC_SAME_2,REAL_TASK_006,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.282
-REAL_TASK_006_T1_CODE_SAME_2,REAL_TASK_006,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.262
-REAL_TASK_006_T2_CODE_CROSS_2,REAL_TASK_006,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.274
-REAL_TASK_006_T3_SPEC_CROSS_2,REAL_TASK_006,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.296
-REAL_TASK_015_T0_SPEC_SAME_3,REAL_TASK_015,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.26
-REAL_TASK_015_T1_CODE_SAME_3,REAL_TASK_015,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.318
-REAL_TASK_015_T2_CODE_CROSS_3,REAL_TASK_015,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.223
-REAL_TASK_015_T3_SPEC_CROSS_3,REAL_TASK_015,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.196
-REAL_TASK_005_T0_SPEC_SAME_4,REAL_TASK_005,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.229
-REAL_TASK_005_T1_CODE_SAME_4,REAL_TASK_005,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,630,9.7e-05,0.281
-REAL_TASK_005_T2_CODE_CROSS_4,REAL_TASK_005,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.337
-REAL_TASK_005_T3_SPEC_CROSS_4,REAL_TASK_005,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.321
-REAL_TASK_010_T0_SPEC_SAME_5,REAL_TASK_010,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.414
-REAL_TASK_010_T1_CODE_SAME_5,REAL_TASK_010,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.285
-REAL_TASK_010_T2_CODE_CROSS_5,REAL_TASK_010,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.321
-REAL_TASK_010_T3_SPEC_CROSS_5,REAL_TASK_010,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.269
-REAL_TASK_014_T0_SPEC_SAME_6,REAL_TASK_014,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.303
-REAL_TASK_014_T1_CODE_SAME_6,REAL_TASK_014,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.316
+REAL_TASK_020_T0_SPEC_SAME_1,REAL_TASK_020,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.325
+REAL_TASK_020_T1_CODE_SAME_1,REAL_TASK_020,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.324
+REAL_TASK_020_T2_CODE_CROSS_1,REAL_TASK_020,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.365
+REAL_TASK_020_T3_SPEC_CROSS_1,REAL_TASK_020,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.355
+REAL_TASK_006_T0_SPEC_SAME_2,REAL_TASK_006,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.27
+REAL_TASK_006_T1_CODE_SAME_2,REAL_TASK_006,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.251
+REAL_TASK_006_T2_CODE_CROSS_2,REAL_TASK_006,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.258
+REAL_TASK_006_T3_SPEC_CROSS_2,REAL_TASK_006,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.284
+REAL_TASK_015_T0_SPEC_SAME_3,REAL_TASK_015,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.221
+REAL_TASK_015_T1_CODE_SAME_3,REAL_TASK_015,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.204
+REAL_TASK_015_T2_CODE_CROSS_3,REAL_TASK_015,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.212
+REAL_TASK_015_T3_SPEC_CROSS_3,REAL_TASK_015,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.229
+REAL_TASK_005_T0_SPEC_SAME_4,REAL_TASK_005,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.257
+REAL_TASK_005_T1_CODE_SAME_4,REAL_TASK_005,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,630,9.7e-05,0.31
+REAL_TASK_005_T2_CODE_CROSS_4,REAL_TASK_005,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.292
+REAL_TASK_005_T3_SPEC_CROSS_4,REAL_TASK_005,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.309
+REAL_TASK_010_T0_SPEC_SAME_5,REAL_TASK_010,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.341
+REAL_TASK_010_T1_CODE_SAME_5,REAL_TASK_010,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.831
+REAL_TASK_010_T2_CODE_CROSS_5,REAL_TASK_010,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.545
+REAL_TASK_010_T3_SPEC_CROSS_5,REAL_TASK_010,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.583
+REAL_TASK_014_T0_SPEC_SAME_6,REAL_TASK_014,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.355
+REAL_TASK_014_T1_CODE_SAME_6,REAL_TASK_014,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.319
 REAL_TASK_014_T2_CODE_CROSS_6,REAL_TASK_014,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.329
-REAL_TASK_014_T3_SPEC_CROSS_6,REAL_TASK_014,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.265
-REAL_TASK_016_T0_SPEC_SAME_7,REAL_TASK_016,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.213
-REAL_TASK_016_T1_CODE_SAME_7,REAL_TASK_016,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.229
-REAL_TASK_016_T2_CODE_CROSS_7,REAL_TASK_016,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.21
-REAL_TASK_016_T3_SPEC_CROSS_7,REAL_TASK_016,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.205
-REAL_TASK_019_T0_SPEC_SAME_8,REAL_TASK_019,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.205
-REAL_TASK_019_T1_CODE_SAME_8,REAL_TASK_019,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.199
-REAL_TASK_019_T2_CODE_CROSS_8,REAL_TASK_019,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.323
-REAL_TASK_019_T3_SPEC_CROSS_8,REAL_TASK_019,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.276
-REAL_TASK_007_T0_SPEC_SAME_9,REAL_TASK_007,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.307
-REAL_TASK_007_T1_CODE_SAME_9,REAL_TASK_007,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.256
-REAL_TASK_007_T2_CODE_CROSS_9,REAL_TASK_007,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.219
-REAL_TASK_007_T3_SPEC_CROSS_9,REAL_TASK_007,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.207
-REAL_TASK_013_T0_SPEC_SAME_10,REAL_TASK_013,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.23
-REAL_TASK_013_T1_CODE_SAME_10,REAL_TASK_013,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.26
-REAL_TASK_013_T2_CODE_CROSS_10,REAL_TASK_013,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.208
-REAL_TASK_013_T3_SPEC_CROSS_10,REAL_TASK_013,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.212
-REAL_TASK_018_T0_SPEC_SAME_11,REAL_TASK_018,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.325
-REAL_TASK_018_T1_CODE_SAME_11,REAL_TASK_018,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.286
-REAL_TASK_018_T2_CODE_CROSS_11,REAL_TASK_018,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.291
-REAL_TASK_018_T3_SPEC_CROSS_11,REAL_TASK_018,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.304
-REAL_TASK_011_T0_SPEC_SAME_12,REAL_TASK_011,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.245
-REAL_TASK_011_T1_CODE_SAME_12,REAL_TASK_011,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.276
-REAL_TASK_011_T2_CODE_CROSS_12,REAL_TASK_011,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.24
-REAL_TASK_011_T3_SPEC_CROSS_12,REAL_TASK_011,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.221
-REAL_TASK_002_T0_SPEC_SAME_13,REAL_TASK_002,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.224
-REAL_TASK_002_T1_CODE_SAME_13,REAL_TASK_002,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.194
-REAL_TASK_002_T2_CODE_CROSS_13,REAL_TASK_002,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.237
-REAL_TASK_002_T3_SPEC_CROSS_13,REAL_TASK_002,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.248
+REAL_TASK_014_T3_SPEC_CROSS_6,REAL_TASK_014,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.255
+REAL_TASK_016_T0_SPEC_SAME_7,REAL_TASK_016,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.238
+REAL_TASK_016_T1_CODE_SAME_7,REAL_TASK_016,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.272
+REAL_TASK_016_T2_CODE_CROSS_7,REAL_TASK_016,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.296
+REAL_TASK_016_T3_SPEC_CROSS_7,REAL_TASK_016,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.338
+REAL_TASK_019_T0_SPEC_SAME_8,REAL_TASK_019,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.287
+REAL_TASK_019_T1_CODE_SAME_8,REAL_TASK_019,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.294
+REAL_TASK_019_T2_CODE_CROSS_8,REAL_TASK_019,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.481
+REAL_TASK_019_T3_SPEC_CROSS_8,REAL_TASK_019,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.338
+REAL_TASK_007_T0_SPEC_SAME_9,REAL_TASK_007,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.218
+REAL_TASK_007_T1_CODE_SAME_9,REAL_TASK_007,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.252
+REAL_TASK_007_T2_CODE_CROSS_9,REAL_TASK_007,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.275
+REAL_TASK_007_T3_SPEC_CROSS_9,REAL_TASK_007,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.276
+REAL_TASK_013_T0_SPEC_SAME_10,REAL_TASK_013,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.226
+REAL_TASK_013_T1_CODE_SAME_10,REAL_TASK_013,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.202
+REAL_TASK_013_T2_CODE_CROSS_10,REAL_TASK_013,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.197
+REAL_TASK_013_T3_SPEC_CROSS_10,REAL_TASK_013,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.232
+REAL_TASK_018_T0_SPEC_SAME_11,REAL_TASK_018,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.281
+REAL_TASK_018_T1_CODE_SAME_11,REAL_TASK_018,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.298
+REAL_TASK_018_T2_CODE_CROSS_11,REAL_TASK_018,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.34
+REAL_TASK_018_T3_SPEC_CROSS_11,REAL_TASK_018,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.278
+REAL_TASK_011_T0_SPEC_SAME_12,REAL_TASK_011,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.264
+REAL_TASK_011_T1_CODE_SAME_12,REAL_TASK_011,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.263
+REAL_TASK_011_T2_CODE_CROSS_12,REAL_TASK_011,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.247
+REAL_TASK_011_T3_SPEC_CROSS_12,REAL_TASK_011,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.253
+REAL_TASK_002_T0_SPEC_SAME_13,REAL_TASK_002,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.19
+REAL_TASK_002_T1_CODE_SAME_13,REAL_TASK_002,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.27
+REAL_TASK_002_T2_CODE_CROSS_13,REAL_TASK_002,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.261
+REAL_TASK_002_T3_SPEC_CROSS_13,REAL_TASK_002,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.259
 REAL_TASK_012_T0_SPEC_SAME_14,REAL_TASK_012,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.213
-REAL_TASK_012_T1_CODE_SAME_14,REAL_TASK_012,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.216
+REAL_TASK_012_T1_CODE_SAME_14,REAL_TASK_012,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.169
 REAL_TASK_012_T2_CODE_CROSS_14,REAL_TASK_012,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.178
-REAL_TASK_012_T3_SPEC_CROSS_14,REAL_TASK_012,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.211
-REAL_TASK_003_T0_SPEC_SAME_15,REAL_TASK_003,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.356
-REAL_TASK_003_T1_CODE_SAME_15,REAL_TASK_003,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.257
-REAL_TASK_003_T2_CODE_CROSS_15,REAL_TASK_003,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,0,1,1,660,0.000104,0.247
-REAL_TASK_003_T3_SPEC_CROSS_15,REAL_TASK_003,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.417
-REAL_TASK_017_T0_SPEC_SAME_16,REAL_TASK_017,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.217
-REAL_TASK_017_T1_CODE_SAME_16,REAL_TASK_017,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.226
-REAL_TASK_017_T2_CODE_CROSS_16,REAL_TASK_017,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.251
-REAL_TASK_017_T3_SPEC_CROSS_16,REAL_TASK_017,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.34
-REAL_TASK_008_T0_SPEC_SAME_17,REAL_TASK_008,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.275
-REAL_TASK_008_T1_CODE_SAME_17,REAL_TASK_008,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.239
-REAL_TASK_008_T2_CODE_CROSS_17,REAL_TASK_008,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.231
-REAL_TASK_008_T3_SPEC_CROSS_17,REAL_TASK_008,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.237
-REAL_TASK_009_T0_SPEC_SAME_18,REAL_TASK_009,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.287
-REAL_TASK_009_T1_CODE_SAME_18,REAL_TASK_009,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.312
-REAL_TASK_009_T2_CODE_CROSS_18,REAL_TASK_009,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.3
-REAL_TASK_009_T3_SPEC_CROSS_18,REAL_TASK_009,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.239
-REAL_TASK_001_T0_SPEC_SAME_19,REAL_TASK_001,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.29
-REAL_TASK_001_T1_CODE_SAME_19,REAL_TASK_001,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.265
-REAL_TASK_001_T2_CODE_CROSS_19,REAL_TASK_001,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.292
-REAL_TASK_001_T3_SPEC_CROSS_19,REAL_TASK_001,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.275
-REAL_TASK_004_T0_SPEC_SAME_20,REAL_TASK_004,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.278
-REAL_TASK_004_T1_CODE_SAME_20,REAL_TASK_004,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.22
-REAL_TASK_004_T2_CODE_CROSS_20,REAL_TASK_004,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,0,1,1,660,0.000104,0.2
-REAL_TASK_004_T3_SPEC_CROSS_20,REAL_TASK_004,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.215
-REAL_TASK_020_T0_SPEC_SAME_21,REAL_TASK_020,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.231
-REAL_TASK_020_T1_CODE_SAME_21,REAL_TASK_020,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.267
-REAL_TASK_020_T2_CODE_CROSS_21,REAL_TASK_020,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.237
-REAL_TASK_020_T3_SPEC_CROSS_21,REAL_TASK_020,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.197
-REAL_TASK_006_T0_SPEC_SAME_22,REAL_TASK_006,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.266
-REAL_TASK_006_T1_CODE_SAME_22,REAL_TASK_006,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.252
-REAL_TASK_006_T2_CODE_CROSS_22,REAL_TASK_006,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.335
-REAL_TASK_006_T3_SPEC_CROSS_22,REAL_TASK_006,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.276
-REAL_TASK_015_T0_SPEC_SAME_23,REAL_TASK_015,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.28
-REAL_TASK_015_T1_CODE_SAME_23,REAL_TASK_015,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.337
-REAL_TASK_015_T2_CODE_CROSS_23,REAL_TASK_015,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.278
-REAL_TASK_015_T3_SPEC_CROSS_23,REAL_TASK_015,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.229
-REAL_TASK_005_T0_SPEC_SAME_24,REAL_TASK_005,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.241
-REAL_TASK_005_T1_CODE_SAME_24,REAL_TASK_005,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,630,9.7e-05,0.231
-REAL_TASK_005_T2_CODE_CROSS_24,REAL_TASK_005,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.237
-REAL_TASK_005_T3_SPEC_CROSS_24,REAL_TASK_005,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.213
-REAL_TASK_010_T0_SPEC_SAME_25,REAL_TASK_010,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.282
-REAL_TASK_010_T1_CODE_SAME_25,REAL_TASK_010,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.213
-REAL_TASK_010_T2_CODE_CROSS_25,REAL_TASK_010,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.205
-REAL_TASK_010_T3_SPEC_CROSS_25,REAL_TASK_010,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.253
-REAL_TASK_014_T0_SPEC_SAME_26,REAL_TASK_014,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.274
-REAL_TASK_014_T1_CODE_SAME_26,REAL_TASK_014,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.248
-REAL_TASK_014_T2_CODE_CROSS_26,REAL_TASK_014,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.261
-REAL_TASK_014_T3_SPEC_CROSS_26,REAL_TASK_014,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.263
-REAL_TASK_016_T0_SPEC_SAME_27,REAL_TASK_016,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.247
-REAL_TASK_016_T1_CODE_SAME_27,REAL_TASK_016,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.26
-REAL_TASK_016_T2_CODE_CROSS_27,REAL_TASK_016,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.268
-REAL_TASK_016_T3_SPEC_CROSS_27,REAL_TASK_016,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.2
-REAL_TASK_019_T0_SPEC_SAME_28,REAL_TASK_019,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.378
-REAL_TASK_019_T1_CODE_SAME_28,REAL_TASK_019,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.294
-REAL_TASK_019_T2_CODE_CROSS_28,REAL_TASK_019,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.372
-REAL_TASK_019_T3_SPEC_CROSS_28,REAL_TASK_019,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.45
-REAL_TASK_007_T0_SPEC_SAME_29,REAL_TASK_007,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.272
-REAL_TASK_007_T1_CODE_SAME_29,REAL_TASK_007,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.238
-REAL_TASK_007_T2_CODE_CROSS_29,REAL_TASK_007,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.271
-REAL_TASK_007_T3_SPEC_CROSS_29,REAL_TASK_007,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.375
-REAL_TASK_013_T0_SPEC_SAME_30,REAL_TASK_013,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.358
-REAL_TASK_013_T1_CODE_SAME_30,REAL_TASK_013,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.399
-REAL_TASK_013_T2_CODE_CROSS_30,REAL_TASK_013,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.375
-REAL_TASK_013_T3_SPEC_CROSS_30,REAL_TASK_013,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.355
+REAL_TASK_012_T3_SPEC_CROSS_14,REAL_TASK_012,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.186
+REAL_TASK_003_T0_SPEC_SAME_15,REAL_TASK_003,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.176
+REAL_TASK_003_T1_CODE_SAME_15,REAL_TASK_003,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.181
+REAL_TASK_003_T2_CODE_CROSS_15,REAL_TASK_003,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,0,1,1,660,0.000104,0.159
+REAL_TASK_003_T3_SPEC_CROSS_15,REAL_TASK_003,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.191
+REAL_TASK_017_T0_SPEC_SAME_16,REAL_TASK_017,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.29
+REAL_TASK_017_T1_CODE_SAME_16,REAL_TASK_017,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.291
+REAL_TASK_017_T2_CODE_CROSS_16,REAL_TASK_017,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.292
+REAL_TASK_017_T3_SPEC_CROSS_16,REAL_TASK_017,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.241
+REAL_TASK_008_T0_SPEC_SAME_17,REAL_TASK_008,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.327
+REAL_TASK_008_T1_CODE_SAME_17,REAL_TASK_008,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.292
+REAL_TASK_008_T2_CODE_CROSS_17,REAL_TASK_008,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.255
+REAL_TASK_008_T3_SPEC_CROSS_17,REAL_TASK_008,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.222
+REAL_TASK_009_T0_SPEC_SAME_18,REAL_TASK_009,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.25
+REAL_TASK_009_T1_CODE_SAME_18,REAL_TASK_009,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.218
+REAL_TASK_009_T2_CODE_CROSS_18,REAL_TASK_009,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.232
+REAL_TASK_009_T3_SPEC_CROSS_18,REAL_TASK_009,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.273
+REAL_TASK_001_T0_SPEC_SAME_19,REAL_TASK_001,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.382
+REAL_TASK_001_T1_CODE_SAME_19,REAL_TASK_001,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.286
+REAL_TASK_001_T2_CODE_CROSS_19,REAL_TASK_001,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.309
+REAL_TASK_001_T3_SPEC_CROSS_19,REAL_TASK_001,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.333
+REAL_TASK_004_T0_SPEC_SAME_20,REAL_TASK_004,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.266
+REAL_TASK_004_T1_CODE_SAME_20,REAL_TASK_004,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,0,1,1,630,9.7e-05,0.253
+REAL_TASK_004_T2_CODE_CROSS_20,REAL_TASK_004,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,0,1,1,660,0.000104,0.247
+REAL_TASK_004_T3_SPEC_CROSS_20,REAL_TASK_004,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.261
+REAL_TASK_020_T0_SPEC_SAME_21,REAL_TASK_020,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.296
+REAL_TASK_020_T1_CODE_SAME_21,REAL_TASK_020,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.375
+REAL_TASK_020_T2_CODE_CROSS_21,REAL_TASK_020,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.286
+REAL_TASK_020_T3_SPEC_CROSS_21,REAL_TASK_020,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.308
+REAL_TASK_006_T0_SPEC_SAME_22,REAL_TASK_006,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.361
+REAL_TASK_006_T1_CODE_SAME_22,REAL_TASK_006,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.398
+REAL_TASK_006_T2_CODE_CROSS_22,REAL_TASK_006,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.385
+REAL_TASK_006_T3_SPEC_CROSS_22,REAL_TASK_006,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.384
+REAL_TASK_015_T0_SPEC_SAME_23,REAL_TASK_015,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.307
+REAL_TASK_015_T1_CODE_SAME_23,REAL_TASK_015,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.404
+REAL_TASK_015_T2_CODE_CROSS_23,REAL_TASK_015,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.406
+REAL_TASK_015_T3_SPEC_CROSS_23,REAL_TASK_015,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.357
+REAL_TASK_005_T0_SPEC_SAME_24,REAL_TASK_005,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,600,0.000104,0.462
+REAL_TASK_005_T1_CODE_SAME_24,REAL_TASK_005,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Parsing/String,1,1,1,630,9.7e-05,0.633
+REAL_TASK_005_T2_CODE_CROSS_24,REAL_TASK_005,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,660,0.000104,0.543
+REAL_TASK_005_T3_SPEC_CROSS_24,REAL_TASK_005,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Parsing/String,1,1,1,605,0.000104,0.482
+REAL_TASK_010_T0_SPEC_SAME_25,REAL_TASK_010,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,600,0.000104,0.318
+REAL_TASK_010_T1_CODE_SAME_25,REAL_TASK_010,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Graphs/Trees,1,1,1,630,9.7e-05,0.295
+REAL_TASK_010_T2_CODE_CROSS_25,REAL_TASK_010,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,660,0.000104,0.31
+REAL_TASK_010_T3_SPEC_CROSS_25,REAL_TASK_010,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Graphs/Trees,1,1,1,605,0.000104,0.33
+REAL_TASK_014_T0_SPEC_SAME_26,REAL_TASK_014,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.297
+REAL_TASK_014_T1_CODE_SAME_26,REAL_TASK_014,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.269
+REAL_TASK_014_T2_CODE_CROSS_26,REAL_TASK_014,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.282
+REAL_TASK_014_T3_SPEC_CROSS_26,REAL_TASK_014,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.299
+REAL_TASK_016_T0_SPEC_SAME_27,REAL_TASK_016,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,600,0.000104,0.277
+REAL_TASK_016_T1_CODE_SAME_27,REAL_TASK_016,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,State Machines/Retries,1,1,1,630,9.7e-05,0.28
+REAL_TASK_016_T2_CODE_CROSS_27,REAL_TASK_016,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,660,0.000104,0.444
+REAL_TASK_016_T3_SPEC_CROSS_27,REAL_TASK_016,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,State Machines/Retries,1,1,1,605,0.000104,0.338
+REAL_TASK_019_T0_SPEC_SAME_28,REAL_TASK_019,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.383
+REAL_TASK_019_T1_CODE_SAME_28,REAL_TASK_019,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.333
+REAL_TASK_019_T2_CODE_CROSS_28,REAL_TASK_019,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.31
+REAL_TASK_019_T3_SPEC_CROSS_28,REAL_TASK_019,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.291
+REAL_TASK_007_T0_SPEC_SAME_29,REAL_TASK_007,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,600,0.000104,0.293
+REAL_TASK_007_T1_CODE_SAME_29,REAL_TASK_007,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Algorithms/Search,1,1,1,630,9.7e-05,0.277
+REAL_TASK_007_T2_CODE_CROSS_29,REAL_TASK_007,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,660,0.000104,0.307
+REAL_TASK_007_T3_SPEC_CROSS_29,REAL_TASK_007,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Algorithms/Search,1,1,1,605,0.000104,0.318
+REAL_TASK_013_T0_SPEC_SAME_30,REAL_TASK_013,T0_SPEC_SAME,0,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,600,0.000104,0.361
+REAL_TASK_013_T1_CODE_SAME_30,REAL_TASK_013,T1_CODE_SAME,1,0,meta-llama/llama-3.3-70b-instruct,meta-llama/llama-3.3-70b-instruct,Scheduling/Intervals,1,1,1,630,9.7e-05,0.33
+REAL_TASK_013_T2_CODE_CROSS_30,REAL_TASK_013,T2_CODE_CROSS,1,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,660,0.000104,0.34
+REAL_TASK_013_T3_SPEC_CROSS_30,REAL_TASK_013,T3_SPEC_CROSS,0,1,meta-llama/llama-3.3-70b-instruct,deepseek/deepseek-chat,Scheduling/Intervals,1,1,1,605,0.000104,0.309
