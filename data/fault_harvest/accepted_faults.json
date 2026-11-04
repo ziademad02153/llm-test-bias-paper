@@ -38,49 +38,6 @@
     "ref_implementation": "from typing import List\n\ndef split_by_positions(line: str, positions: List[int]) -> List[str]:\n    fields: List[str] = []\n    for i, start in enumerate(positions):\n        end = positions[i + 1] if i + 1 < len(positions) else len(line)\n        field = line[start:end].strip() if start < len(line) else \"\"\n        fields.append(field)\n    return fields\n",
     "root_cause": "Boundary truncation: fails to handle empty string inputs and trailing position slices properly."
   },
-  "REAL_TASK_003": {
-    "problem_id": "REAL_TASK_003",
-    "function_name": "get_parent_dn",
-    "category": "Parsing/String",
-    "coder_model": "meta-llama/llama-3.3-70b-instruct",
-    "harvest_attempt": 1,
-    "temperature": 0.8,
-    "difficulty": "Medium",
-    "total_asserts": 5,
-    "passed_asserts": 2,
-    "failed_asserts": 3,
-    "kill_ratio": 0.6,
-    "failing_assertions": [
-      "assert get_parent_dn('CN=Computers,DC=corp,DC=local') == 'DC=corp,DC=local'",
-      "assert get_parent_dn('OU=Servers,DC=corp,DC=local') == 'DC=corp,DC=local'",
-      "assert get_parent_dn('CN=Last\\\\, First,OU=Users,DC=corp,DC=local') == 'OU=Users,DC=corp,DC=local'"
-    ],
-    "candidate_code": "from typing import Optional\n\ndef get_parent_dn(dn: str) -> Optional[str]:\n    \"\"\"Extracts the parent Distinguished Name (DN) by splitting on unescaped commas.\"\"\"\n    \n    # Handle empty string\n    if not dn:\n        return None\n\n    # Split the DN into Relative Distinguished Names (RDNs)\n    rdn_list = []\n    current_rdn = \"\"\n    escape_next = False\n    for char in dn:\n        if escape_next:\n            current_rdn += char\n            escape_next = False\n        elif char == \"\\\\\":\n            escape_next = True\n        elif char == \",\":\n            rdn_list.append(current_rdn)\n            current_rdn = \"\"\n        else:\n            current_rdn += char\n    rdn_list.append(current_rdn)\n\n    # If there's only one RDN, return None\n    if len(rdn_list) == 1:\n        return None\n\n    # Join all but the last RDN back into the parent DN\n    parent_dn = \",\".join(rdn_list[:-1])\n\n    return parent_dn",
-    "ref_implementation": "import re\nfrom typing import Optional\n\ndef get_parent_dn(dn: str) -> Optional[str]:\n    if not dn or not isinstance(dn, str):\n        return None\n    parts = re.split(r'(?<!\\\\),', dn)\n    return ','.join(parts[1:]) if len(parts) > 1 else None\n",
-    "root_cause": "Inverse RDN parsing: removes root components instead of leaf component in distinguished name hierarchy."
-  },
-  "REAL_TASK_005": {
-    "problem_id": "REAL_TASK_005",
-    "function_name": "split_host_port",
-    "category": "Parsing/String",
-    "coder_model": "meta-llama/llama-3.3-70b-instruct",
-    "harvest_attempt": 2,
-    "temperature": 0.8,
-    "difficulty": "Medium",
-    "total_asserts": 7,
-    "passed_asserts": 3,
-    "failed_asserts": 4,
-    "kill_ratio": 0.5714,
-    "failing_assertions": [
-      "assert split_host_port('user:pass@192.168.1.1:443') == ('192.168.1.1', '443')",
-      "assert split_host_port('[2001:db8::1]:8443') == ('2001:db8::1', '8443')",
-      "assert split_host_port('[2001:db8::1]') == ('2001:db8::1', '')",
-      "assert split_host_port('2001:db8::1') == ('2001:db8::1', '')"
-    ],
-    "candidate_code": "from urllib.parse import urlparse\nfrom typing import Tuple\n\ndef split_host_port(raw_hostport: str) -> Tuple[str, str]:\n    \"\"\"\n    Extract host and port from a netloc or 'host:port' string.\n    \n    Args:\n    raw_hostport: Raw netloc or host:port string.\n    \n    Returns:\n    Tuple of (host, port_string_or_empty).\n    \"\"\"\n    # Check if the input string contains square brackets ([]) for IPv6 address\n    if ']' in raw_hostport:\n        # If it does, remove the userinfo and the square brackets\n        hostport = raw_hostport.split('@')[-1]\n        hostport = hostport.strip('[]')\n    else:\n        # If it doesn't, parse the input string as a URL\n        parsed_url = urlparse('//' + raw_hostport)\n        hostport = parsed_url.netloc\n    \n    # Split the host and port\n    if ':' in hostport:\n        host, port = hostport.rsplit(':', 1)\n    else:\n        host, port = hostport, ''\n    \n    return host, port",
-    "ref_implementation": "import re\nfrom urllib.parse import unquote\nfrom typing import Tuple\n\ndef split_host_port(raw_hostport: str) -> Tuple[str, str]:\n    if not raw_hostport or not isinstance(raw_hostport, str):\n        return \"\", \"\"\n    hp = unquote(raw_hostport.strip())\n    if \"@\" in hp:\n        hp = hp.split(\"@\", 1)[1]\n    if hp.startswith(\"[\"):\n        m = re.match(r\"^\\[(.+?)\\](?::(\\d+))?$\", hp)\n        if m:\n            return m.group(1), (m.group(2) or \"\")\n    if hp.count(\":\") > 1:\n        return hp, \"\"\n    if \":\" in hp:\n        h, p = hp.rsplit(\":\", 1)\n        return h, p\n    return hp, \"\"\n",
-    "root_cause": "Naively strips square brackets, corrupting IPv6 address parsing when combined with port specifications."
-  },
   "REAL_TASK_004": {
     "problem_id": "REAL_TASK_004",
     "function_name": "validate_tags",
@@ -120,27 +77,6 @@
     "candidate_code": "import hashlib\nimport bisect\n\ndef get_consistent_hash_node(nodes: list[str], key: str, vnodes_per_node: int = 3) -> str | None:\n    \"\"\"\n    This function implements a Consistent Hash Ring with Virtual Nodes (vnodes).\n    It distributes keys across physical nodes using MD5 hash bisecting.\n\n    Args:\n    nodes (list[str]): A list of physical node names.\n    key (str): The key to be hashed and distributed across nodes.\n    vnodes_per_node (int, optional): The number of virtual nodes per physical node. Defaults to 3.\n\n    Returns:\n    str | None: The name of the node where the key is distributed, or None if the list of nodes is empty.\n    \"\"\"\n\n    # Check if the list of nodes is empty\n    if not nodes:\n        return None\n\n    # Create a list to store the virtual nodes\n    vnodes = []\n\n    # Create a list to store the hashes of the virtual nodes\n    vnode_hashes = []\n\n    # For each physical node\n    for node in nodes:\n        # For each virtual node\n        for i in range(vnodes_per_node):\n            # Create a virtual node name\n            vnode = f\"{node}-{i}\"\n\n            # Hash the virtual node name using MD5\n            vnode_hash = int(hashlib.md5(vnode.encode()).hexdigest(), 16)\n\n            # Add the virtual node and its hash to the lists\n            vnodes.append(vnode)\n            vnode_hashes.append(vnode_hash)\n\n    # Sort the lists of virtual nodes and their hashes\n    sorted_vnode_hashes, sorted_vnodes = zip(*sorted(zip(vnode_hashes, vnodes)))\n\n    # Hash the key using MD5\n    key_hash = int(hashlib.md5(key.encode()).hexdigest(), 16)\n\n    # Find the index where the key hash should be inserted in the sorted list of virtual node hashes\n    index = bisect.bisect(sorted_vnode_hashes, key_hash)\n\n    # If the index is equal to the length of the list, it means the key hash is greater than all virtual node hashes\n    # In this case, we wrap around to the start of the list\n    if index == len(sorted_vnode_hashes):\n        index = 0\n\n    # Return the physical node name of the virtual node where the key is distributed\n    return sorted_vnodes[index].split('-')[0]",
     "ref_implementation": "import hashlib\nimport bisect\n\ndef get_consistent_hash_node(nodes: list[str], key: str, vnodes_per_node: int = 3) -> str | None:\n    \"\"\"Consistent Hash Ring with Virtual Nodes (vnodes).\n    Distributes keys across physical nodes using MD5 hash bisecting.\n    \"\"\"\n    if not nodes:\n        return None\n    ring = []\n    for node_id in sorted(nodes):\n        for v in range(vnodes_per_node):\n            v_key = f\"{node_id}#vnode{v}\"\n            h = int(hashlib.md5(v_key.encode('utf-8')).hexdigest()[:8], 16)\n            bisect.insort(ring, (h, node_id))\n    h_key = int(hashlib.md5(key.encode('utf-8')).hexdigest()[:8], 16)\n    idx = bisect.bisect_right(ring, (h_key, \"\"))\n    if idx == len(ring):\n        idx = 0\n    return ring[idx][1]\n"
   },
-  "REAL_TASK_010": {
-    "problem_id": "REAL_TASK_010",
-    "function_name": "find_conflicting_reservations",
-    "category": "Graphs/Trees",
-    "coder_model": "meta-llama/llama-3.1-8b-instruct",
-    "harvest_attempt": 3,
-    "temperature": 0.8,
-    "difficulty": "Easy",
-    "total_asserts": 4,
-    "passed_asserts": 1,
-    "failed_asserts": 3,
-    "kill_ratio": 0.75,
-    "root_cause": "Fails logic on assertion `find_conflicting_reservations(reservations, 180, 220) == ['R2', 'R3']` while satisfying core functional paths.",
-    "failing_assertions": [
-      "assert find_conflicting_reservations(reservations, 180, 220) == ['R2', 'R3']",
-      "assert find_conflicting_reservations(reservations, 120, 150) == []",
-      "assert find_conflicting_reservations(reservations, 150, 150) == []"
-    ],
-    "candidate_code": "class Node:\n    def __init__(self, start: int, end: int, value: str):\n        self.start = start\n        self.end = end\n        self.value = value\n        self.max_end = end\n        self.left = None\n        self.right = None\n\ndef find_conflicting_reservations(reservations: list[tuple[int, int, str]], query_start: int, query_end: int) -> list[str]:\n    \"\"\"\n    Uses interval tree subtree max_end bounds to find all reservations overlapping a target window [start, end).\n\n    Args:\n    reservations (list[tuple[int, int, str]]): A list of reservations, where each reservation is a tuple of (start, end, value).\n    query_start (int): The start of the target window.\n    query_end (int): The end of the target window.\n\n    Returns:\n    list[str]: A list of values of reservations that overlap the target window.\n    \"\"\"\n\n    root = None\n    for start, end, value in reservations:\n        node = Node(start, end, value)\n        root = insert(root, node)\n    \n    result = []\n    dfs(root, query_start, query_end, result)\n    return result\n\ndef insert(root: Node, node: Node) -> Node:\n    if root is None:\n        return node\n    if root.start > node.start:\n        root.left = insert(root.left, node)\n    elif root.start < node.start:\n        root.right = insert(root.right, node)\n    else:\n        raise ValueError(\"Duplicate key\")\n    if root.max_end < node.max_end:\n        root.max_end = node.max_end\n    return root\n\ndef dfs(node: Node, query_start: int, query_end: int, result: list[str]) -> None:\n    if node is None or node.max_end < query_start:\n        return\n    if node.start <= query_end:\n        result.append(node.value)\n    dfs(node.left, query_start, query_end, result)\n    dfs(node.right, query_start, query_end, result)\n\n# Test\nreservations = [(1, 5, 'A'), (2, 4, 'B'), (3, 6, 'C')]\nprint(find_conflicting_reservations(reservations, 2, 5))  # Output: ['A', 'B']",
-    "ref_implementation": "class IntervalNode:\n    def __init__(self, start: int, end: int, res_id: str):\n        self.start = start\n        self.end = end\n        self.res_id = res_id\n        self.max_end = end\n        self.left = None\n        self.right = None\n\ndef find_conflicting_reservations(reservations: list[tuple[int, int, str]], query_start: int, query_end: int) -> list[str]:\n    \"\"\"Uses interval tree subtree max_end bounds to find all reservations overlapping a target window [start, end).\"\"\"\n    if query_start >= query_end or not reservations:\n        return []\n\n    root = None\n\n    def insert(node, start, end, res_id):\n        if node is None:\n            return IntervalNode(start, end, res_id)\n        if start < node.start:\n            node.left = insert(node.left, start, end, res_id)\n        else:\n            node.right = insert(node.right, start, end, res_id)\n        best = node.end\n        if node.left and node.left.max_end > best:\n            best = node.left.max_end\n        if node.right and node.right.max_end > best:\n            best = node.right.max_end\n        node.max_end = best\n        return node\n\n    for s, e, rid in reservations:\n        root = insert(root, s, e, rid)\n\n    conflicts = []\n\n    def collect_overlaps(node):\n        if node is None:\n            return\n        if node.left and node.left.max_end > query_start:\n            collect_overlaps(node.left)\n        if node.start < query_end and query_start < node.end:\n            conflicts.append(node.res_id)\n        if node.right and node.start < query_end and node.right.max_end > query_start:\n            collect_overlaps(node.right)\n\n    collect_overlaps(root)\n    return conflicts\n"
-  },
   "REAL_TASK_011": {
     "problem_id": "REAL_TASK_011",
     "function_name": "check_half_open_overlap",
@@ -178,26 +114,6 @@
     ],
     "candidate_code": "def intersect_intervals(s1: int | None, e1: int | None, s2: int | None, e2: int | None) -> tuple[int | None, int | None] | None:\n    if s1 is None:\n        s1 = float('-inf')\n    if e1 is None:\n        e1 = float('inf')\n    if s2 is None:\n        s2 = float('-inf')\n    if e2 is None:\n        e2 = float('inf')\n\n    intersection_start = max(s1, s2)\n    intersection_end = min(e1, e2)\n\n    if intersection_start <= intersection_end:\n        if intersection_start == float('-inf'):\n            intersection_start = None\n        if intersection_end == float('inf'):\n            intersection_end = None\n        return intersection_start, intersection_end\n    else:\n        return None",
     "ref_implementation": "def intersect_intervals(s1: int | None, e1: int | None, s2: int | None, e2: int | None) -> tuple[int | None, int | None] | None:\n    \"\"\"Computes intersection of two intervals supporting unbounded endpoints (None).\n    Returns (start, end) of intersection or None if empty.\n    \"\"\"\n    # Compute max of starts\n    if s1 is None and s2 is None:\n        start = None\n    elif s1 is None:\n        start = s2\n    elif s2 is None:\n        start = s1\n    else:\n        start = max(s1, s2)\n\n    # Compute min of ends\n    if e1 is None and e2 is None:\n        end = None\n    elif e1 is None:\n        end = e2\n    elif e2 is None:\n        end = e1\n    else:\n        end = min(e1, e2)\n\n    # Check for empty intersection\n    if start is not None and end is not None and start >= end:\n        return None\n\n    return (start, end)\n"
-  },
-  "REAL_TASK_015": {
-    "problem_id": "REAL_TASK_015",
-    "function_name": "compute_fibonacci_backoff_sequence",
-    "category": "Algorithms/Search",
-    "coder_model": "qwen/qwen-2.5-7b-instruct",
-    "harvest_attempt": 5,
-    "temperature": 0.8,
-    "difficulty": "Easy",
-    "total_asserts": 3,
-    "passed_asserts": 1,
-    "failed_asserts": 2,
-    "kill_ratio": 0.6667,
-    "root_cause": "Fails logic on assertion `seq == [1.0, 1.0, 2.0, 3.0, 5.0, 8.0]` while satisfying core functional paths.",
-    "failing_assertions": [
-      "assert seq == [1.0, 1.0, 2.0, 3.0, 5.0, 8.0]",
-      "assert seq_cap == [1.0, 1.0, 2.0, 2.5, 2.5]"
-    ],
-    "candidate_code": "from typing import List\n\ndef compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> List[float]:\n    if attempts < 1:\n        return []\n    sequence = [1.0]\n    next_value = 1.0\n    for _ in range(2, attempts):\n        next_value += sequence[-1]\n        if max_value is not None and next_value > max_value:\n            next_value = max_value\n        sequence.append(next_value)\n    return sequence",
-    "ref_implementation": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:\n    \"\"\"Generates Fibonacci retry backoff delays bounded by optional max_value.\"\"\"\n    if attempts <= 0:\n        return []\n    a = 1\n    b = 1\n    delays = []\n    for _ in range(attempts):\n        val = float(a)\n        if max_value is not None and val > max_value:\n            val = float(max_value)\n        delays.append(val)\n        a, b = b, a + b\n    return delays\n"
   },
   "REAL_TASK_016": {
     "problem_id": "REAL_TASK_016",
@@ -276,25 +192,103 @@
     "candidate_code": "def merge_overlapping_intervals(intervals: list[tuple[int, int]]) -> list[tuple[int, int]]:\n    if not intervals:\n        return []\n\n    intervals.sort(key=lambda x: x[0])\n    merged_intervals = [intervals[0]]\n\n    for current_interval in intervals[1:]:\n        last_merged_interval = merged_intervals[-1]\n\n        if current_interval[0] <= last_merged_interval[1]:\n            merged_intervals[-1] = (last_merged_interval[0], max(last_merged_interval[1], current_interval[1]))\n        else:\n            merged_intervals.append(current_interval)\n\n    return merged_intervals",
     "ref_implementation": "def merge_overlapping_intervals(intervals: list[tuple[int, int]]) -> list[tuple[int, int]]:\n    \"\"\"Merges a list of half-open intervals [start, end) into non-overlapping contiguous intervals.\n    Touching intervals [a, b) and [b, c) are merged into [a, c).\n    \"\"\"\n    valid_intervals = [i for i in intervals if i[0] < i[1]]\n    if not valid_intervals:\n        return []\n    sorted_intervals = sorted(valid_intervals, key=lambda x: (x[0], x[1]))\n    merged = [sorted_intervals[0]]\n    for current_start, current_end in sorted_intervals[1:]:\n        last_start, last_end = merged[-1]\n        if current_start <= last_end:\n            merged[-1] = (last_start, max(last_end, current_end))\n        else:\n            merged.append((current_start, current_end))\n    return merged\n"
   },
-  "REAL_TASK_020": {
-    "problem_id": "REAL_TASK_020",
-    "function_name": "detect_dag_cycle_and_ancestors",
+  "REAL_TASK_005": {
+    "problem_id": "REAL_TASK_005",
+    "function_name": "split_host_port",
+    "category": "Parsing/String",
+    "coder_model": "qwen/qwen-2.5-coder-32b-instruct",
+    "harvest_attempt": 2,
+    "temperature": 0.8,
+    "difficulty": "Medium",
+    "total_asserts": 7,
+    "passed_asserts": 4,
+    "failed_asserts": 3,
+    "kill_ratio": 0.4286,
+    "root_cause": "Naively strips square brackets, corrupting IPv6 address parsing when combined with port specifications.",
+    "failing_assertions": [
+      "assert split_host_port('[2001:db8::1]:8443') == ('2001:db8::1', '8443')",
+      "assert split_host_port('[2001:db8::1]') == ('2001:db8::1', '')",
+      "assert split_host_port('2001:db8::1') == ('2001:db8::1', '')"
+    ],
+    "candidate_code": "from typing import Tuple\nimport re\n\ndef split_host_port(raw_hostport: str) -> Tuple[str, str]:\n    # Remove userinfo if present\n    raw_hostport = re.sub(r'^[^@]+@', '', raw_hostport)\n    \n    # Match host and port\n    match = re.match(r'(\\[?[^]]+\\]?)?(?::([^:]*)?)$', raw_hostport)\n    if not match:\n        return (raw_hostport, '')\n    \n    host, port = match.groups()\n    return (host, port if port is not None else '')",
+    "ref_implementation": "import re\nfrom urllib.parse import unquote\nfrom typing import Tuple\n\ndef split_host_port(raw_hostport: str) -> Tuple[str, str]:\n    if not raw_hostport or not isinstance(raw_hostport, str):\n        return \"\", \"\"\n    hp = unquote(raw_hostport.strip())\n    if \"@\" in hp:\n        hp = hp.split(\"@\", 1)[1]\n    if hp.startswith(\"[\"):\n        m = re.match(r\"^\\[(.+?)\\](?::(\\d+))?$\", hp)\n        if m:\n            return m.group(1), (m.group(2) or \"\")\n    if hp.count(\":\") > 1:\n        return hp, \"\"\n    if \":\" in hp:\n        h, p = hp.rsplit(\":\", 1)\n        return h, p\n    return hp, \"\"\n"
+  },
+  "REAL_TASK_010": {
+    "problem_id": "REAL_TASK_010",
+    "function_name": "find_conflicting_reservations",
     "category": "Graphs/Trees",
     "coder_model": "meta-llama/llama-3.3-70b-instruct",
     "harvest_attempt": 1,
     "temperature": 0.8,
     "difficulty": "Medium",
-    "total_asserts": 5,
+    "total_asserts": 4,
     "passed_asserts": 2,
-    "failed_asserts": 3,
-    "kill_ratio": 0.6,
-    "root_cause": "Fails logic on assertion `anc['A'] == set()` while satisfying core functional paths.",
+    "failed_asserts": 2,
+    "kill_ratio": 0.5,
+    "root_cause": "Fails logic on assertion `find_conflicting_reservations(reservations, 100, 140) == ['R1']` while satisfying core functional paths.",
     "failing_assertions": [
-      "assert anc['A'] == set()",
-      "assert anc['B'] == {'A'}",
-      "assert anc['C'] == {'A', 'B'}"
+      "assert find_conflicting_reservations(reservations, 100, 140) == ['R1']",
+      "assert find_conflicting_reservations(reservations, 180, 220) == ['R2', 'R3']"
     ],
-    "candidate_code": "from typing import List, Tuple, Dict, Set\n\ndef detect_dag_cycle_and_ancestors(nodes: List[str], edges: List[Tuple[str, str]]) -> Tuple[bool, Dict[str, Set[str]]]:\n    graph: Dict[str, List[str]] = {node: [] for node in nodes}\n    for start, end in edges:\n        graph[start].append(end)\n\n    ancestors: Dict[str, Set[str]] = {node: set() for node in nodes}\n    visited: Dict[str, int] = {node: 0 for node in nodes}\n    has_cycle: bool = False\n\n    def dfs(node: str, path: Set[str]) -> None:\n        nonlocal has_cycle\n        visited[node] += 1\n        for neighbor in graph[node]:\n            if neighbor in path:\n                has_cycle = True\n                return\n            if visited[neighbor] == 0:\n                dfs(neighbor, path | {node})\n            ancestors[node].update(ancestors.get(neighbor, set()) | {neighbor})\n\n    for node in nodes:\n        if visited[node] == 0:\n            dfs(node, set())\n\n    return has_cycle, ancestors",
+    "candidate_code": "from typing import List, Tuple\n\nclass IntervalTreeNode:\n    def __init__(self, start: int, end: int, reservation_id: str):\n        self.start = start\n        self.end = end\n        self.reservation_id = reservation_id\n        self.left = None\n        self.right = None\n        self.max_end = end\n\ndef insert_node(root: IntervalTreeNode, start: int, end: int, reservation_id: str) -> IntervalTreeNode:\n    if root is None:\n        return IntervalTreeNode(start, end, reservation_id)\n\n    if start < root.start:\n        root.left = insert_node(root.left, start, end, reservation_id)\n    else:\n        root.right = insert_node(root.right, start, end, reservation_id)\n\n    root.max_end = max(root.max_end, end)\n    return root\n\ndef find_conflicting_reservations(reservations: List[Tuple[int, int, str]], query_start: int, query_end: int) -> List[str]:\n    root = None\n    for start, end, reservation_id in reservations:\n        root = insert_node(root, start, end, reservation_id)\n\n    conflicting_reservations = []\n    def query_interval_tree(node: IntervalTreeNode, start: int, end: int):\n        if node is None:\n            return\n        if start <= node.start and node.end < end:\n            conflicting_reservations.append(node.reservation_id)\n        if node.left and node.left.max_end >= start:\n            query_interval_tree(node.left, start, end)\n        if node.right and node.right.max_end >= start:\n            query_interval_tree(node.right, start, end)\n\n    query_interval_tree(root, query_start, query_end)\n    return conflicting_reservations",
+    "ref_implementation": "class IntervalNode:\n    def __init__(self, start: int, end: int, res_id: str):\n        self.start = start\n        self.end = end\n        self.res_id = res_id\n        self.max_end = end\n        self.left = None\n        self.right = None\n\ndef find_conflicting_reservations(reservations: list[tuple[int, int, str]], query_start: int, query_end: int) -> list[str]:\n    \"\"\"Uses interval tree subtree max_end bounds to find all reservations overlapping a target window [start, end).\"\"\"\n    if query_start >= query_end or not reservations:\n        return []\n\n    root = None\n\n    def insert(node, start, end, res_id):\n        if node is None:\n            return IntervalNode(start, end, res_id)\n        if start < node.start:\n            node.left = insert(node.left, start, end, res_id)\n        else:\n            node.right = insert(node.right, start, end, res_id)\n        best = node.end\n        if node.left and node.left.max_end > best:\n            best = node.left.max_end\n        if node.right and node.right.max_end > best:\n            best = node.right.max_end\n        node.max_end = best\n        return node\n\n    for s, e, rid in reservations:\n        root = insert(root, s, e, rid)\n\n    conflicts = []\n\n    def collect_overlaps(node):\n        if node is None:\n            return\n        if node.left and node.left.max_end > query_start:\n            collect_overlaps(node.left)\n        if node.start < query_end and query_start < node.end:\n            conflicts.append(node.res_id)\n        if node.right and node.start < query_end and node.right.max_end > query_start:\n            collect_overlaps(node.right)\n\n    collect_overlaps(root)\n    return conflicts\n"
+  },
+  "REAL_TASK_015": {
+    "problem_id": "REAL_TASK_015",
+    "function_name": "compute_fibonacci_backoff_sequence",
+    "category": "Algorithms/Search",
+    "coder_model": "qwen/qwen-2.5-coder-32b-instruct",
+    "harvest_attempt": 2,
+    "temperature": 0.8,
+    "difficulty": "Hard",
+    "total_asserts": 3,
+    "passed_asserts": 2,
+    "failed_asserts": 1,
+    "kill_ratio": 0.3333,
+    "root_cause": "Fails logic on assertion `seq_cap == [1.0, 1.0, 2.0, 2.5, 2.5]` while satisfying core functional paths.",
+    "failing_assertions": [
+      "assert seq_cap == [1.0, 1.0, 2.0, 2.5, 2.5]"
+    ],
+    "candidate_code": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:\n    sequence = []\n    a, b = 0.0,1.0\n    for _ in range(attempts):\n        if max_value is not None and b > max_value:\n            break\n        sequence.append(b)\n        a, b = b, a + b\n    return sequence",
+    "ref_implementation": "def compute_fibonacci_backoff_sequence(attempts: int, max_value: float | None = None) -> list[float]:\n    \"\"\"Generates Fibonacci retry backoff delays bounded by optional max_value.\"\"\"\n    if attempts <= 0:\n        return []\n    a = 1\n    b = 1\n    delays = []\n    for _ in range(attempts):\n        val = float(a)\n        if max_value is not None and val > max_value:\n            val = float(max_value)\n        delays.append(val)\n        a, b = b, a + b\n    return delays\n"
+  },
+  "REAL_TASK_020": {
+    "problem_id": "REAL_TASK_020",
+    "function_name": "detect_dag_cycle_and_ancestors",
+    "category": "Graphs/Trees",
+    "coder_model": "qwen/qwen-2.5-7b-instruct",
+    "harvest_attempt": 99,
+    "temperature": 0.7,
+    "difficulty": "Medium",
+    "total_asserts": 5,
+    "passed_asserts": 3,
+    "failed_asserts": 2,
+    "kill_ratio": 0.4,
+    "root_cause": "Fails logic on assertion `not has_cycle` while satisfying core functional paths.",
+    "failing_assertions": [
+      "assert not has_cycle",
+      "assert has_c is True"
+    ],
+    "candidate_code": "from typing import *\nfrom collections import defaultdict, deque\n\ndef detect_dag_cycle_and_ancestors(nodes: list[str], edges: list[tuple[str, str]]) -> tuple[bool, dict[str, set[str]]]:\n    graph = defaultdict(set)\n    in_degree = {node: 0 for node in nodes}\n    \n    for parent, child in edges:\n        graph[parent].add(child)\n        in_degree[child] += 1\n    \n    queue = deque([node for node in nodes if in_degree[node] == 0])\n    visited = set()\n    ancestors = {node: set() for node in nodes}\n    \n    while queue:\n        node = queue.popleft()\n        visited.add(node)\n        \n        for child in graph[node]:\n            in_degree[child] -= 1\n            ancestors[child].add(node)\n            ancestors[child].update(ancestors[node])\n            if in_degree[child] == 0:\n                queue.append(child)\n    \n    has_cycle = any(in_degree[node] > 0 for node in nodes)\n    return not has_cycle, {node: frozenset(ancestors[node]) for node in nodes}",
     "ref_implementation": "from collections import defaultdict, deque\n\ndef detect_dag_cycle_and_ancestors(nodes: list[str], edges: list[tuple[str, str]]) -> tuple[bool, dict[str, set[str]]]:\n    \"\"\"Traverses directed graph to detect cycles and compute all reachable ancestors for each node.\n    edges: list of (parent, child).\n    Returns (has_cycle: bool, ancestors_dict: dict[str, set[str]]).\n    \"\"\"\n    adj = defaultdict(list)\n    in_degree = {n: 0 for n in nodes}\n    parents = defaultdict(set)\n\n    for u, v in edges:\n        if u in in_degree and v in in_degree:\n            adj[u].append(v)\n            in_degree[v] += 1\n            parents[v].add(u)\n\n    queue = deque([n for n in nodes if in_degree[n] == 0])\n    visited_count = 0\n    ancestors = {n: set() for n in nodes}\n\n    while queue:\n        curr = queue.popleft()\n        visited_count += 1\n        for nxt in adj[curr]:\n            ancestors[nxt].add(curr)\n            ancestors[nxt].update(ancestors[curr])\n            in_degree[nxt] -= 1\n            if in_degree[nxt] == 0:\n                queue.append(nxt)\n\n    has_cycle = (visited_count != len(nodes))\n    return (has_cycle, ancestors)\n"
+  },
+  "REAL_TASK_014": {
+    "problem_id": "REAL_TASK_014",
+    "function_name": "compute_exponential_backoff_sequence",
+    "category": "State Machines/Retries",
+    "coder_model": "meta-llama/llama-3.1-8b-instruct",
+    "harvest_attempt": 99,
+    "temperature": 0.9,
+    "difficulty": "Hard",
+    "total_asserts": 3,
+    "passed_asserts": 2,
+    "failed_asserts": 1,
+    "kill_ratio": 0.3333,
+    "root_cause": "Fails logic on assertion `seq_bounded == [1.0, 2.0, 4.0, 5.0, 5.0]` while satisfying core functional paths.",
+    "failing_assertions": [
+      "assert seq_bounded == [1.0, 2.0, 4.0, 5.0, 5.0]"
+    ],
+    "candidate_code": "def compute_exponential_backoff_sequence(attempts: int, base: float = 2.0, factor: float = 1.0, max_value: float | None = None) -> list[float]:\n    \"\"\"\n    Generates exponential backoff delay sequence: factor * (base ** attempt) bounded by max_value.\n    \n    Args:\n    attempts (int): The number of attempts to generate exponential backoff delays for.\n    base (float, optional): The base number for the exponential backoff. Defaults to 2.0.\n    factor (float, optional): The factor to multiply the exponential backoff delay by. Defaults to 1.0.\n    max_value (float | None, optional): The maximum value for the exponential backoff delay. If None, there is no upper bound. Defaults to None.\n    \n    Returns:\n    list[float]: A list of exponential backoff delays.\n    \"\"\"\n    return [factor * (base ** attempt) for attempt in range(attempts) if max_value is None or factor * (base ** attempt) <= max_value]",
+    "ref_implementation": "def compute_exponential_backoff_sequence(attempts: int, base: float = 2.0, factor: float = 1.0, max_value: float | None = None) -> list[float]:\n    \"\"\"Generates exponential backoff delay sequence: factor * (base ** attempt) bounded by max_value.\"\"\"\n    if attempts <= 0:\n        return []\n    sequence = []\n    for n in range(attempts):\n        val = factor * (base ** n)\n        if max_value is not None:\n            val = min(val, max_value)\n        sequence.append(float(val))\n    return sequence\n"
   }
 }

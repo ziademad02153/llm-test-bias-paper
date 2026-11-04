@@ -1,0 +1,2 @@
+"input_md5","observations","problems","singular","optimizer_code","convergence_messages","warnings","problem_intercept_sd","interaction_lrt_p","max_coef_change_nagq15","R_version","lme4_version"
+"bc2bf3e88a0bdb6553e462467b6bcf64",900,15,FALSE,"0","","",1.92233718762336,0.00723786470161465,2.42103165860597e-05,"R version 4.5.0 (2025-04-11)","1.1.37"

@@ -109,8 +109,9 @@ Specification:
 Instructions:
 1. Write 3 to 6 distinct unit test assertions or test functions (e.g., `def test_...(): assert ...`).
 2. Test standard inputs, edge cases (empty inputs, bounds), and exception behavior if specified.
-3. Provide ONLY executable Python test code. Do NOT provide the implementation.
-4. Each test must be completely self-contained.
+3. Provide ONLY executable Python test code.
+4. Do NOT define, stub, or re-implement the function under test (it is ALREADY imported and available in the test namespace).
+5. Prefer simple `assert` statements or standalone `def test_...(): assert ...` functions. Do NOT use `unittest.TestCase` or `unittest.main()`.
 """,
 
     "test_code_first": """You are an expert Python QA engineer. Write a suite of comprehensive unit tests to thoroughly verify the behavior of the following function. You are provided with its specification and an implementation.
@@ -130,9 +131,44 @@ Instructions:
 1. Write 3 to 6 distinct unit test assertions or test functions (e.g., `def test_...(): assert ...`).
 2. Test standard inputs, edge cases (empty inputs, bounds), and exception behavior if specified.
 3. Provide ONLY executable Python test code.
-4. Each test must be completely self-contained.
+4. Do NOT copy, define, or re-implement the function under test into your code (it is ALREADY imported and available in the test namespace).
+5. Prefer simple `assert` statements or standalone `def test_...(): assert ...` functions. Do NOT use `unittest.TestCase` or `unittest.main()`.
 """
 }
+
+
+class KeyManager:
+    _keys: list[str] = []
+    _current_idx: int = 0
+
+    @classmethod
+    def get_keys(cls) -> list[str]:
+        if not cls._keys:
+            raw = os.getenv("OPENROUTER_API_KEYS") or ""
+            if raw:
+                cls._keys = [k.strip() for k in raw.split(",") if k.strip()]
+            if not cls._keys:
+                single = os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY") or ""
+                if single:
+                    cls._keys = [single.strip()]
+        return cls._keys
+
+    @classmethod
+    def get_active_key(cls) -> str:
+        keys = cls.get_keys()
+        if not keys:
+            return ""
+        return keys[cls._current_idx % len(keys)]
+
+    @classmethod
+    def rotate_key(cls) -> str:
+        keys = cls.get_keys()
+        if not keys:
+            return ""
+        cls._current_idx = (cls._current_idx + 1) % len(keys)
+        new_key = keys[cls._current_idx]
+        print(f"[KeyManager] Rotated to API key index {cls._current_idx} ({new_key[:12]}...)", flush=True)
+        return new_key
 
 
 class LLMClient:
@@ -151,7 +187,7 @@ class LLMClient:
         pricing: Optional[Dict[str, float]] = None
     ):
         self.model_name = model_name
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY") or os.getenv("LLM_API_KEY")
+        self.api_key = api_key or KeyManager.get_active_key() or os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY") or os.getenv("LLM_API_KEY")
         self.base_url = base_url or os.getenv("OPENAI_BASE_URL") or "https://openrouter.ai/api/v1"
         self.temperature = temperature
         
@@ -226,6 +262,9 @@ class LLMClient:
                 return content_cleaned, p_tok, c_tok, elapsed, cost_usd, call_metadata
             except Exception as sdk_err:
                 last_sdk_err = sdk_err
+                err_str = str(sdk_err)
+                if any(x in err_str for x in ("402", "credits", "afford", "quota", "rate_limit")):
+                    self.api_key = KeyManager.rotate_key()
                 if retry_attempt < 2:
                     time.sleep(2.0 * (retry_attempt + 1))
                 else:

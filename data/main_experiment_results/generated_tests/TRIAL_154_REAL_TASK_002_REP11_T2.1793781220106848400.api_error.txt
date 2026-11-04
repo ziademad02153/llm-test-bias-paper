@@ -1,0 +1,2 @@
+# API ERROR: API request failed: Error code: 402 - This request requires more credits, or fewer max_tokens. You requested up to 800 tokens, but can only afford 622. To increase, visit https://openrouter.ai/workspaces/default/keys/330f332dc4f478b44ec66b4d83c7405eb25e6b10d7bd4a0f4fda7d7d1f9c83dc and adjust the key's total limit
+# Request failed. Zero synthetic test generated.

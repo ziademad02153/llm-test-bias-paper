@@ -1,0 +1,37 @@
+To: 
+Editor-in-Chief
+Information and Software Technology (INFSOF)
+Elsevier
+
+Date: November 4, 2026
+
+Subject: Submission of Research Paper: "Disentangling Code Exposure from Model Diversity in Automated LLM Test Generation: A 2x2 Factorial Empirical Study"
+
+Dear Editor-in-Chief and Editorial Board,
+
+I am pleased to submit our original empirical research article entitled "Disentangling Code Exposure from Model Diversity in Automated LLM Test Generation: A 2x2 Factorial Empirical Study" for consideration for publication in Information and Software Technology (IST).
+
+Background and Contribution:
+Automated unit test generation using Large Language Models (LLMs) is rapidly transforming software testing workflows. However, two prominent recent empirical studies presented seemingly contradictory conclusions: Konstantinou et al. (2026) observed that exposing an LLM to source code severely impairs test oracle defect detection ("code-first degradation"), whereas Leu et al. (ESEM 2026) reported that employing an independent LLM family to test another model's code yielded no significant benefit under white-box conditions.
+
+Our study bridges this gap by conducting a rigorous 2x2 factorial crossover experiment (N = 225 matched trial quadruplets; 900 recorded evaluations) across 15 verified, organic Python logic defects harvested from frontier open-weight models (Llama 3.3 70B, Qwen 2.5 Coder 32B, Qwen 2.5 7B, Llama 3.1 8B). Using a Generalized Linear Mixed Model (GLMM) with problem random intercepts alongside exact McNemar and TOST equivalence tests:
+1. We confirm a statistically significant negative interaction between code exposure and model diversity (beta = -1.0358, p = 0.0077, OR = 0.355; LRT p = 0.0072).
+2. We demonstrate that model diversity is highly effective under specification-only prompts (defect detection reaches 40.00%), but this advantage is not maintained when test generators are exposed to implementation code (dropping to 18.22%).
+3. We provide an operational deconstruction showing that the code-exposure penalty is largely accompanied by a concurrent decline in test oracle validity and usability on the reference implementation (usable test suite yield drops from 86.2% to 64.9%), indicating that operational degradation in test execution contributes substantially to the observed deficit, rather than requiring an unverified psychological or cognitive confirmation bias explanation.
+
+Suitability for Information and Software Technology:
+This work adheres strictly to empirical software engineering guidelines (Wohlin et al.). It provides actionable implications for software practitioners and multi-agent testing pipelines, showing that decoupling test synthesis from implementation inspection is essential for maximizing test oracle quality.
+
+Author Declarations:
+- The manuscript is an original work that has not been published previously and is not currently under consideration for publication elsewhere.
+- Its publication is approved by the author.
+- The complete replication package (including all 900 generated unit test suites, benchmark tasks, execution logs, Docker evaluation harnesses, and R statistical code) is publicly available at https://github.com/ziademad02153/llm-test-bias-paper.
+- The author has no competing financial or personal interests to declare.
+
+Thank you very much for your time and consideration of this work.
+
+Sincerely,
+
+Ziad Emad Allam
+Independent Researcher, Benha, Egypt
+Email: ziademadbts@gmail.com

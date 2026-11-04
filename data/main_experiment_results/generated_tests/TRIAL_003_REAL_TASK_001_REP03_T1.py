@@ -1,0 +1,45 @@
+from typing import Optional, Tuple
+
+def test_standard_github_url() -> None:
+    """Test standard GitHub URL parsing."""
+    url = "https://github.com/user/repo"
+    expected_output = ("user", "repo")
+    assert parse_github_url(url) == expected_output
+
+def test_github_url_with_www_prefix() -> None:
+    """Test GitHub URL parsing with www prefix."""
+    url = "https://www.github.com/user/repo"
+    expected_output = ("user", "repo")
+    assert parse_github_url(url) == expected_output
+
+def test_github_url_with_git_extension() -> None:
+    """Test GitHub URL parsing with.git extension."""
+    url = "https://github.com/user/repo.git"
+    expected_output = ("user", "repo")
+    assert parse_github_url(url) == expected_output
+
+def test_invalid_github_url() -> None:
+    """Test invalid GitHub URL parsing."""
+    url = "https://example.com/user/repo"
+    expected_output: Optional[Tuple[str, str]] = None
+    assert parse_github_url(url) == expected_output
+
+def test_empty_github_url() -> None:
+    """Test empty GitHub URL parsing."""
+    url = ""
+    expected_output: Optional[Tuple[str, str]] = None
+    assert parse_github_url(url) == expected_output
+
+def test_github_url_with_invalid_path() -> None:
+    """Test GitHub URL parsing with invalid path."""
+    url = "https://github.com/user"
+    expected_output: Optional[Tuple[str, str]] = None
+    assert parse_github_url(url) == expected_output
+
+# Run the tests
+test_standard_github_url()
+test_github_url_with_www_prefix()
+test_github_url_with_git_extension()
+test_invalid_github_url()
+test_empty_github_url()
+test_github_url_with_invalid_path()

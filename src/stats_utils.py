@@ -6,7 +6,7 @@ and contingency table diagnostics using pure Python standard library.
 """
 
 import math
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Optional
 import csv
 
 
@@ -211,4 +211,165 @@ def export_glmm_dataset(
                 "detects_fault": 1 if r["detects_fault"] else 0,
                 "execution_time_ms": round(r.get("execution_time_ms", 0.0), 2)
             })
+
+
+def fit_interaction_logistic_regression(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Fits a 2x2 Factorial Logistic Regression model with Interaction Term:
+        logit(P(Detect)) = beta_0 + beta_exposure*Exposure + beta_model*Model + beta_interaction*(Exposure*Model)
+    
+    Encoding:
+        Exposure: 1 = Code-First (T1, T2), 0 = Spec-Only (T0, T3)
+        Model: 1 = Cross-Model (T2, T3), 0 = Same-Model (T0, T1)
+        Interaction: Exposure * Model (T2 = 1, others = 0)
+    
+    Returns:
+        Dictionary with coefficients, SEs, Wald z, p-values, Odds Ratios (95% CI),
+        and explicit substantive interpretation of the interaction effect.
+    """
+    # Filter valid completed records (exclude API errors)
+    valid_records = [
+        r for r in records
+        if r.get("execution_status") != "API_ERROR" and r.get("status") != "API_ERROR"
+    ]
+    n = len(valid_records)
+    if n < 4:
+        return {"error": "Insufficient valid observations to fit model"}
+
+    # Construct design matrix X (n x 4) and outcome vector y (n)
+    X: List[List[float]] = []
+    y: List[float] = []
+
+    for r in valid_records:
+        exp = 1.0 if r.get("exposure") == "CODE_FIRST" or r.get("condition") in ("T1", "T2") else 0.0
+        mod = 1.0 if r.get("model_identity") == "CROSS_MODEL" or r.get("condition") in ("T2", "T3") else 0.0
+        inter = exp * mod
+        X.append([1.0, exp, mod, inter])
+        y.append(float(r.get("detected", 0)))
+
+    # Newton-Raphson IRLS solver
+    p_dim = 4
+    beta = [0.0] * p_dim
+    inv_J = None
+
+    for iteration in range(25):
+        # Compute probabilities p_i = 1 / (1 + exp(-X_i * beta))
+        p = []
+        for row in X:
+            eta = sum(row[j] * beta[j] for j in range(p_dim))
+            eta = max(min(eta, 20.0), -20.0)  # numerical clipping
+            p.append(1.0 / (1.0 + math.exp(-eta)))
+
+        # Weights w_i = p_i * (1 - p_i)
+        w = [max(pi * (1.0 - pi), 1e-6) for pi in p]
+
+        # Gradient: g = X^T * (y - p)
+        grad = [0.0] * p_dim
+        for i in range(n):
+            err = y[i] - p[i]
+            for j in range(p_dim):
+                grad[j] += X[i][j] * err
+
+        # Hessian: H = - X^T * W * X
+        # Information matrix J = -H = X^T * W * X
+        J = [[0.0] * p_dim for _ in range(p_dim)]
+        for i in range(n):
+            wi = w[i]
+            for j in range(p_dim):
+                for k in range(p_dim):
+                    J[j][k] += X[i][j] * wi * X[i][k]
+
+        # Regularization ridge to avoid singular matrix if any cell is 0
+        for j in range(p_dim):
+            J[j][j] += 1e-4
+
+        # Invert J to obtain Covariance matrix
+        inv_J = _invert_matrix_4x4(J)
+        if inv_J is None:
+            break
+
+        # Update step: delta = inv_J * grad
+        delta = [sum(inv_J[j][k] * grad[k] for k in range(p_dim)) for j in range(p_dim)]
+        beta = [beta[j] + delta[j] for j in range(p_dim)]
+
+        # Check convergence
+        if max(abs(d) for d in delta) < 1e-6:
+            break
+
+    # Extract standard errors, z-scores, p-values, odds ratios
+    var_covar = inv_J if inv_J is not None else [[0.0]*4 for _ in range(4)]
+    term_names = ["Intercept", "Exposure (Code-First)", "Model Diversity (Cross-Model)", "Exposure x Model Interaction"]
+    param_keys = ["intercept", "exposure", "model_diversity", "interaction"]
+    
+    results: Dict[str, Any] = {
+        "n_observations": n,
+        "iterations": iteration + 1,
+        "terms": {}
+    }
+
+    for idx, (name, key) in enumerate(zip(term_names, param_keys)):
+        b = beta[idx]
+        se = math.sqrt(max(var_covar[idx][idx], 1e-9))
+        z = b / se
+        pval = 2.0 * (1.0 - _norm_cdf(abs(z)))
+        odds_ratio = math.exp(b)
+        ci_lower = math.exp(b - 1.96 * se)
+        ci_upper = math.exp(b + 1.96 * se)
+
+        results["terms"][key] = {
+            "name": name,
+            "coef": round(b, 4),
+            "se": round(se, 4),
+            "z": round(z, 4),
+            "p_value": round(pval, 5),
+            "odds_ratio": round(odds_ratio, 4),
+            "ci_95": (round(ci_lower, 4), round(ci_upper, 4))
+        }
+
+    # Substantive interaction interpretation
+    inter_res = results["terms"]["interaction"]
+    if inter_res["p_value"] < 0.05:
+        if inter_res["coef"] > 0:
+            results["substantive_conclusion"] = (
+                f"Significant Positive Interaction (beta={inter_res['coef']:.3f}, p={inter_res['p_value']:.4f}): "
+                "Changing the model provides a significantly LARGER defect detection advantage when inspecting code (Code-First) "
+                "than when working from specification alone."
+            )
+        else:
+            results["substantive_conclusion"] = (
+                f"Significant Negative Interaction (beta={inter_res['coef']:.3f}, p={inter_res['p_value']:.4f}): "
+                "The benefit of changing the model is significantly attenuated under code-first exposure."
+            )
+    else:
+        results["substantive_conclusion"] = (
+            f"No Statistically Significant Interaction (beta={inter_res['coef']:.3f}, p={inter_res['p_value']:.4f}, OR={inter_res['odds_ratio']:.3f}, 95% CI: [{inter_res['ci_95'][0]:.3f}, {inter_res['ci_95'][1]:.3f}]): "
+            "The effect of cross-model diversity operates additively and does not significantly depend on whether the model is exposed to code."
+        )
+
+    return results
+
+
+def _invert_matrix_4x4(A: List[List[float]]) -> Optional[List[List[float]]]:
+    """Inverts a 4x4 matrix using Gauss-Jordan elimination with partial pivoting."""
+    n = 4
+    M = [A[i][:] + [float(i == j) for j in range(n)] for i in range(n)]
+    for i in range(n):
+        pivot = M[i][i]
+        pivot_row = i
+        for k in range(i + 1, n):
+            if abs(M[k][i]) > abs(pivot):
+                pivot = M[k][i]
+                pivot_row = k
+        if pivot_row != i:
+            M[i], M[pivot_row] = M[pivot_row], M[i]
+        if abs(pivot) < 1e-12:
+            return None
+        for j in range(2 * n):
+            M[i][j] /= pivot
+        for k in range(n):
+            if k != i:
+                factor = M[k][i]
+                for j in range(2 * n):
+                    M[k][j] -= factor * M[i][j]
+    return [[M[i][j + n] for j in range(n)] for i in range(n)]
 

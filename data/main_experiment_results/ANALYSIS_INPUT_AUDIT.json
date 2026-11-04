@@ -1,0 +1,27 @@
+{
+  "sha256_csv": "fb868b71e713aceb0f6fb0d641d79162014f0b5c7ae58497671698838907e699",
+  "rows": 900,
+  "trials": 225,
+  "problems": 15,
+  "archived_suites_found": 900,
+  "duplicate_keys": 0,
+  "api_error_rows_retained": 0,
+  "historical_api_failures_occurred": true,
+  "file_sha256": {
+    "scripts/fit_interaction_glmm.R": "255c686723cbb362197f311d84d7fa66b2a2fb44d7c267fff1cb1aa6af6ebc03",
+    "scripts/run_main_experiment.py": "d5953e90e3e3c2df3199b645534f9be77668ca987a77da65d8adee5601e5a93e",
+    "src/evaluator.py": "b1ddb691100dcb5d7bfecfc33eaebe76337fc568b4a3147c95db1436a3fdcba5",
+    "src/sandbox.py": "51aa7e3ff7b629eac878aa1faaf4e322564d295eb4e969558d3947f50f95d68e",
+    "src/runner.py": "945ecc84f5213d70a92d525a91c0ca927410ab3f2bbda0cba9d5ef8936e81aa3",
+    "src/stats_utils.py": "364b1412de732132a57e30df70cd6949213b85547b89f8e10af4a2b8d36835df",
+    "data/fault_harvest/accepted_faults.json": "be007788f31e7a469c91fb2844ae76e6717d49213eeb00721f37110fbedab694",
+    "data\\main_experiment_results\\GLMM_COEFFICIENTS.csv": "bae7a30a3e3d7901d191d0eba45e38a702e93f11b7bb669d16bd64c95b657f50",
+    "data\\main_experiment_results\\GLMM_DIAGNOSTICS.csv": "25840780dc2d75ed3cdf68f1a780aeeb667c3d73ccd6cca3b47f3fc7e980cba2",
+    "data\\main_experiment_results\\GLMM_MODEL.rds": "3e1f31791bf0339c2635c44aa8d6c352ff6ad215d91fa175ff733712b503a314",
+    "data\\main_experiment_results\\GLMM_OUTPUT.txt": "0d1ef0344d67f300cf4d29c56a37e40c036e6d182348fc0195419f8fe23aaf43",
+    "data\\main_experiment_results\\GLMM_RANDOM_SLOPES_OUTPUT.txt": "cdad150d795a8e72819706df741e85dca85f03d7700cdd60e3f6806ebca98084",
+    "data\\main_experiment_results\\GLMM_RANDOM_SLOPES_SENSITIVITY.csv": "049aa2986ec8b8d2c059a8785bcd316b56240c7388d8579a24621f3e0799e78c"
+  },
+  "generated_tests_combined_sha256": "f45a1b1d8b0aeaa0763ade1002df68944a4cfef546f60eb0ba1f7041499fa8c3",
+  "runtime": "Docker image paper2-glmm:local; R 4.5.0; lme4 1.1-37"
+}

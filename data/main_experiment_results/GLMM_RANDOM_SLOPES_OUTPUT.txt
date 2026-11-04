@@ -1,0 +1,44 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: 
+detected ~ exposure + cross_model + coder + (1 + exposure + cross_model +  
+    exposure_cross || problem_id) + exposure:cross_model
+   Data: rows
+Control: control
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+    549.6     602.4    -263.8     527.6       889 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.7983 -0.2527 -0.0717  0.1052  4.8745 
+
+Random effects:
+ Groups       Name           Variance Std.Dev.
+ problem_id   (Intercept)     9.883   3.144   
+ problem_id.1 exposure        2.960   1.720   
+ problem_id.2 cross_model    28.226   5.313   
+ problem_id.3 exposure_cross 75.627   8.696   
+Number of obs: 900, groups:  problem_id, 15
+
+Fixed effects:
+                                       Estimate Std. Error z value Pr(>|z|)  
+(Intercept)                             -0.6839     2.2556  -0.303   0.7617  
+exposure                                -0.8966     0.6346  -1.413   0.1577  
+cross_model                              1.1197     1.5859   0.706   0.4801  
+codermeta-llama/llama-3.3-70b-instruct  -1.0813     2.5107  -0.431   0.6667  
+coderqwen/qwen-2.5-7b-instruct          -2.9962     4.0820  -0.734   0.4629  
+coderqwen/qwen-2.5-coder-32b-instruct    0.5412     3.3858   0.160   0.8730  
+exposure:cross_model                    -7.2365     3.3689  -2.148   0.0317 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) exposr crss_m c-/-3. c/-2.5-7 c/-2.5--
+exposure    -0.024                                       
+cross_model -0.009  0.087                                
+c-/-3.3-70- -0.896 -0.036 -0.041                         
+cdr/-2.5-7- -0.550 -0.032 -0.020  0.501                  
+c/-2.5--32- -0.664 -0.029 -0.044  0.602  0.370           
+expsr:crss_  0.002 -0.122 -0.078  0.015  0.010    0.002  

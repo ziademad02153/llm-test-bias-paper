@@ -1,0 +1,52 @@
+def test_compute_exponential_backoff_sequence_standard_input():
+    attempts = 5
+    base = 2.0
+    factor = 1.0
+    max_value = 100.0
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == attempts
+    assert result == [1.0, 2.0, 4.0, 8.0, 16.0]
+
+def test_compute_exponential_backoff_sequence_empty_inputs():
+    attempts = 0
+    base = 2.0
+    factor = 1.0
+    max_value = 100.0
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == 0
+
+def test_compute_exponential_backoff_sequence_max_value_bound():
+    attempts = 10
+    base = 2.0
+    factor = 1.0
+    max_value = 100.0
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == attempts
+    assert result[-1] <= max_value
+
+def test_compute_exponential_backoff_sequence_factor_zero():
+    attempts = 5
+    base = 2.0
+    factor = 0.0
+    max_value = 100.0
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == attempts
+    assert result == [0.0, 0.0, 0.0, 0.0, 0.0]
+
+def test_compute_exponential_backoff_sequence_max_value_none():
+    attempts = 5
+    base = 2.0
+    factor = 1.0
+    max_value = None
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == attempts
+    assert result[-1] > 100.0
+
+def test_compute_exponential_backoff_sequence_base_zero():
+    attempts = 5
+    base = 0.0
+    factor = 1.0
+    max_value = 100.0
+    result = compute_exponential_backoff_sequence(attempts, base, factor, max_value)
+    assert len(result) == attempts
+    assert result == [0.0, 0.0, 0.0, 0.0, 0.0]

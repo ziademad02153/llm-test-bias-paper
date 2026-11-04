@@ -48,8 +48,32 @@ htmlcov/
 *.swp
 *.swo
 
-# Docker / Temporary execution artifacts
-*.tmp
-temp_execution/
-*.zip
+# Temporary / OS files
+.DS_Store
+Thumbs.db
+tmp/
 scratch/
+
+# LaTeX compilation intermediates
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+
+# Ignore test scratch scripts containing API keys
+scripts/test_key1_free.py
+scripts/test_new_keys.py
+scripts/test_two_keys.py
+scripts/check_keys_balance.py
+
+# Ignore partial / dryrun runs
+data/dryrun_results/
+data/dryrun_results_v2/
+data/main_results_partial_archive/
+data/test_api_error_isolation/
+data/test_checkpoint_experiment/
+
+# Archives
+*.zip
+!supplementary_material.zip

@@ -68,6 +68,30 @@ try:
 except Exception:
     pass
 
+# --- Compatibility Shims (e.g. pytest without external deps) ---
+try:
+    import pytest
+except ImportError:
+    import types
+    class _RaisesContext:
+        def __init__(self, expected_exc):
+            self.expected_exc = expected_exc
+            self.value = None
+        def __enter__(self):
+            return self
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            if exc_type is None:
+                raise AssertionError("DID NOT RAISE " + str(self.expected_exc))
+            if issubclass(exc_type, self.expected_exc):
+                self.value = exc_val
+                return True
+            return False
+    _pytest_shim = types.ModuleType("pytest")
+    _pytest_shim.raises = _RaisesContext
+    _pytest_shim.approx = lambda x, **kw: x
+    _pytest_shim.fail = lambda msg="": (_ for _ in ()).throw(AssertionError(msg))
+    sys.modules["pytest"] = _pytest_shim
+
 # --- Implementation under Test ---
 {implementation_code}
 
@@ -121,9 +145,9 @@ except Exception:
 
             if proc.returncode == 0:
                 return SandboxStatus.PASSED, output.strip(), elapsed_ms, backend_name
-            elif "AssertionError" in proc.stderr:
+            elif "AssertionError" in proc.stderr or "AssertionError" in output:
                 return SandboxStatus.FAILED_ASSERTION, output.strip(), elapsed_ms, backend_name
-            elif "SyntaxError" in proc.stderr:
+            elif "SyntaxError" in proc.stderr or "SyntaxError" in output:
                 return SandboxStatus.SYNTAX_ERROR, output.strip(), elapsed_ms, backend_name
             else:
                 return SandboxStatus.RUNTIME_EXCEPTION, output.strip(), elapsed_ms, backend_name

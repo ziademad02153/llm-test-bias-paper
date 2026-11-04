@@ -296,43 +296,44 @@ def run_extended_harvesting(
                 decision = "REJECTED_RUNTIME_ERROR"
                 reason = f"Candidate threw unhandled runtime exceptions on {errors} assertions"
             elif passed >= 1 and failed >= 1:
-                decision = "ACCEPTED_LOGIC_FAULT"
                 kill_ratio = round(failed / total_asserts, 4)
-
-                if kill_ratio <= 0.334:
-                    diff_class = "Hard"
-                elif kill_ratio <= 0.60:
-                    diff_class = "Medium"
+                if kill_ratio > 0.50:
+                    decision = "REJECTED_EXCEEDS_50PCT_KILL_RATIO"
+                    reason = f"Candidate failed {failed}/{total_asserts} ({kill_ratio*100:.1f}%), exceeding pre-registered protocol threshold of <= 50%"
                 else:
-                    diff_class = "Easy"
+                    decision = "ACCEPTED_LOGIC_FAULT"
+                    if kill_ratio <= 0.334:
+                        diff_class = "Hard"
+                    else:
+                        diff_class = "Medium"
 
-                failing_stmts = [r["stmt"] for r in eval_res["details"] if r["status"] == "FAIL_ASSERT"]
-                root_cause = synthesize_root_cause(prob_id, fn_name, failing_stmts, cand_code)
+                    failing_stmts = [r["stmt"] for r in eval_res["details"] if r["status"] == "FAIL_ASSERT"]
+                    root_cause = synthesize_root_cause(prob_id, fn_name, failing_stmts, cand_code)
 
-                reason = f"Passed {passed}/{total_asserts} and failed {failed}/{total_asserts} assertions [{diff_class}]"
-                task_harvested = True
+                    reason = f"Passed {passed}/{total_asserts} and failed {failed}/{total_asserts} assertions [{diff_class}]"
+                    task_harvested = True
 
-                accepted_faults[prob_id] = {
-                    "problem_id": prob_id,
-                    "function_name": fn_name,
-                    "category": cat,
-                    "coder_model": model_name,
-                    "harvest_attempt": attempt,
-                    "temperature": temp,
-                    "difficulty": diff_class,
-                    "total_asserts": total_asserts,
-                    "passed_asserts": passed,
-                    "failed_asserts": failed,
-                    "kill_ratio": kill_ratio,
-                    "root_cause": root_cause,
-                    "failing_assertions": failing_stmts,
-                    "candidate_code": cand_code,
-                    "ref_implementation": ref_impl
-                }
-                print(f"    >>> ACCEPTED! ({diff_class}, Kill: {failed}/{total_asserts} = {kill_ratio:.1%})", flush=True)
-                print(f"        Root Cause: {root_cause}", flush=True)
+                    accepted_faults[prob_id] = {
+                        "problem_id": prob_id,
+                        "function_name": fn_name,
+                        "category": cat,
+                        "coder_model": model_name,
+                        "harvest_attempt": attempt,
+                        "temperature": temp,
+                        "difficulty": diff_class,
+                        "total_asserts": total_asserts,
+                        "passed_asserts": passed,
+                        "failed_asserts": failed,
+                        "kill_ratio": kill_ratio,
+                        "root_cause": root_cause,
+                        "failing_assertions": failing_stmts,
+                        "candidate_code": cand_code,
+                        "ref_implementation": ref_impl
+                    }
+                    print(f"    >>> ACCEPTED! ({diff_class}, Kill: {failed}/{total_asserts} = {kill_ratio:.1%})", flush=True)
+                    print(f"        Root Cause: {root_cause}", flush=True)
 
-                faults_json_file.write_text(json.dumps(accepted_faults, indent=2, ensure_ascii=False), encoding="utf-8")
+                    faults_json_file.write_text(json.dumps(accepted_faults, indent=2, ensure_ascii=False), encoding="utf-8")
             else:
                 decision = "REJECTED_OTHER"
                 reason = "Did not satisfy Konstantinou inclusion bounds"

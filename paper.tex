@@ -1,0 +1,396 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!70!black
+}
+
+\title{\textbf{Disentangling Code Exposure from Model Diversity in Automated LLM Test Generation: A $2 \times 2$ Factorial Empirical Study}}
+
+\author{\textbf{Ziad Emad Allam}}
+\date{Independent Researcher, Benha, Egypt \\ \texttt{ziademadbts@gmail.com}\\[1em] November 4, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Context:} Recent empirical investigations into Large Language Model (LLM) test generation report conflicting findings: exposing test generators to code impairs defect detection (``code-first degradation''), yet pairing different models under white-box code visibility yields negligible improvements.
+\textbf{Objective:} We conduct a $2 \times 2$ factorial crossover experiment to disentangle the effect of Code Exposure (Specification-Only vs. Code-First) from Model Diversity (Same Coder vs. Cross-Family Architecture).
+\textbf{Method:} Evaluating $N=225$ matched trial quadruplets (900 recorded condition evaluations across 15 verified, organic Python logic defects harvested from Llama~3.3~70B, Qwen~2.5~Coder~32B, and Qwen~2.5~7B), we analyze defect detection using a hierarchical Generalized Linear Mixed Model (GLMM) with problem random intercepts, supported by paired exact tests.
+\textbf{Results:} The primary protocol GLMM confirms a statistically significant negative interaction between code exposure and model diversity ($\beta = -1.0358, p = 0.0077, \text{OR} = 0.355$, 95\% CI: $[0.166, 0.760]$; Likelihood-Ratio Test $p = 0.0072$). In trial-level comparisons, code exposure reduces defect detection from $33.78\%$ to $24.44\%$ for the same model ($\Delta = -9.33$ percentage points, exact McNemar $p = 0.0046$). Under code exposure, cross-family diversity yields no significant gain ($24.44\%$ vs. $18.22\%$, $p = 0.0649$), and equivalence within an $8\%$ margin is not demonstrated ($p_{\text{TOST}} = 0.2841$). Descriptively, this drop is accompanied by reduced test suite usability ($86.2\%$ to $64.9\%$), with conditional detection rates among usable suites being closer ($39.18\%$ vs. $37.67\%$).
+\textbf{Conclusion:} Within the evaluated tasks and model configurations, the benefit of model diversity depends critically on prompt exposure: cross-model diversity achieves peak detection under specification-only prompts ($40.00\%$), but this advantage vanishes under code exposure.
+\end{abstract}
+
+\vspace{0.5em}
+\noindent\textbf{Keywords:} LLM Test Generation, Code-First Bias, Model Diversity, Empirical Software Engineering, Generalized Linear Mixed Models (GLMM), Oracle Problem, Information and Software Technology.
+
+
+\section{Introduction}
+\label{sec:intro}
+
+Automated unit test generation using Large Language Models (LLMs) has emerged as an active area of empirical software engineering research~\cite{chen2021humaneval, lemieux2023codamosa, schafer2024testpilot}. In contrast to traditional search-based software testing (SBST), generative LLMs synthesize human-readable assertions and execution inputs directly from natural language specifications and existing source code.
+
+However, two recent empirical investigations have raised critical, unresolved questions regarding the configuration of LLM test generation workflows:
+\begin{enumerate}
+    \item \textbf{Code-First Exposure Degradation:} Konstantinou, Tambon, and Papadakis~\cite{konstantinou2026codefirst} evaluated multiple foundation models across HumanEval+ and BigCodeBench, finding that prompting an LLM with an existing implementation severely degrades the fault-detection capability of the generated test suites relative to prompting with specifications alone (a drop from $18$--$33\%$ down to $5$--$17\%$). This phenomenon has been described as a code-first degradation in test oracle efficacy.
+    \item \textbf{Invariance to Model Diversity under Code Exposure:} Conversely, Leu, Oertel, and Hebig~\cite{leu2026modeldiversity} evaluated whether deploying an independent, distinct LLM family to test code authored by another model could mitigate oracle deficiencies. In an empirical study on Elixir, they found no statistically significant difference between same-model and different-model test generators ($p = 0.152$), concluding that architectural diversity did not yield detectable benefits.
+\end{enumerate}
+
+Crucially, these prior studies varied distinct operational dimensions. While Konstantinou et al.~\cite{konstantinou2026codefirst} examined code exposure within single-model workflows, Leu et al.~\cite{leu2026modeldiversity} evaluated model diversity strictly in a white-box setting (where the implementation was always visible to the test generator), lacking a specification-only baseline. Consequently, it remains an open question whether model diversity is fundamentally ineffective, or whether the presence of implementation code overrides the potential gains of architectural diversity.
+
+To resolve this empirical tension, we design a balanced $2 \times 2$ factorial crossover experiment. We isolate two independent experimental factors:
+\begin{itemize}
+    \item \textbf{Factor A (Code Exposure):} Specification-Only ($T_0, T_3$) vs. Code-First ($T_1, T_2$).
+    \item \textbf{Factor B (Model Identity):} Intra-Family Same Coder ($T_0, T_1$) vs. Cross-Family Evaluator ($T_2, T_3$).
+\end{itemize}
+
+Evaluating $N=225$ matched trial quadruplets (900 condition evaluations) across 15 verified, organic Python logic defects harvested from modern open-weight LLMs (Llama~3.3~70B, Qwen~2.5~Coder~32B, and Qwen~2.5~7B), we address three specific research questions:
+\begin{itemize}
+    \item \textbf{RQ1 (Code-First Effect):} Does exposing the test-generating model to implementation code decrease defect detection relative to generating tests from specifications alone ($T_0$ vs. $T_1$)?
+    \item \textbf{RQ2 (Model Diversity \& Equivalence under Code):} Holding code exposure constant, does employing an independent model family provide equivalent or superior defect detection compared to the authoring model ($T_1$ vs. $T_2$)?
+    \item \textbf{RQ3 (Factorial Interaction):} Does the effect of cross-model diversity significantly depend on whether the model is exposed to implementation code, as estimated by a hierarchical Generalized Linear Mixed Model?
+\end{itemize}
+
+\section{Benchmark Design \& Defect Harvesting}
+\label{sec:benchmark}
+
+\subsection{Natural Logic Defects vs. Synthetic Mutants}
+A central consideration in empirical testing literature is the relationship between synthetic mutants and real-world software defects. While landmark empirical work by Just et al.~\cite{just2014mutants} demonstrated that mutant detection is positively correlated with real fault detection, their findings also established that a non-trivial fraction of real faults (up to $17\%$) are not coupled to standard mutation operators, and that artificial mutants frequently model localized, syntactic perturbations rather than complex multi-statement algorithmic logic errors. Furthermore, empirical evaluations by Liu et al.~\cite{liu2023evalplus} emphasize that code synthesized by LLMs frequently passes superficial syntax and sanity checks while harboring subtle edge-case logic defects that require semantically rich test oracles to expose.
+
+To examine test generation under ecologically valid conditions, our benchmark consists entirely of \textbf{15 natural, organic logic faults} produced by open-weight LLMs during functional code synthesis. The tasks were sampled from public GitHub repositories containing clean reference implementations ($C_{\text{ref}}$) and comprehensive golden unit test suites, spanning five distinct software categories: String Parsing, Algorithmic Search, Interval Scheduling, State Machines / Rate Limiting, and Graph Structures. A complete provenance manifest detailing each task's source repository, commit hash, author, and licensing status is provided in the replication package.
+
+\subsection{Defect Harvesting and Verification Protocol}
+Candidate faulty implementations ($C_{\text{faulty}}$) were harvested by prompting frontier open-weight models across various sampling temperatures ($T \in \{0.7, 0.8, 0.9, 1.0\}$). Each candidate was filtered using objective criteria:
+\begin{enumerate}
+    \item \textbf{Syntactic Viability:} The implementation must be syntactically valid, compile cleanly, execute on standard inputs without unhandled runtime crashes, and preserve the exact signature and docstring.
+    \item \textbf{Empirical Defect Boundary:} The candidate must fail at least one assertion in the golden test suite, but no more than $50.0\%$ of golden test cases ($\text{Kill Ratio} \le 50.0\%$).
+\end{enumerate}
+
+Table~\ref{tab:benchmark_tasks} lists the complete set of 15 verified benchmark tasks, generated directly from the archived dataset manifest (\texttt{accepted\_faults.json}). 
+Ten tasks represent \textit{Hard} defects (kill ratio $\le 33.4\%$) and five represent \textit{Medium} defects ($33.4\% - 50.0\%$). In all 15 tasks, the authoring model was a member of the Llama or Qwen families; DeepSeek-V3 was employed exclusively as an independent cross-model evaluator during testing, rather than as a defect generator.
+
+\begin{table*}[t]
+\centering
+\caption{The 15 Verified Natural LLM Logic Defects (Generated Directly from \texttt{accepted\_faults.json}).}
+\label{tab:benchmark_tasks}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllcccc}
+\toprule
+\textbf{Task ID} & \textbf{Full Function Name} & \textbf{Category} & \textbf{Difficulty} & \textbf{Kill Ratio (Fraction)} & \textbf{Authoring Model (Coder)} & \textbf{Temp.} \\
+\midrule
+\texttt{REAL\_TASK\_001} & \texttt{parse\_github\_url} & Parsing/String & Hard & 16.7\% (1/6) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_002} & \texttt{split\_by\_positions} & Parsing/String & Medium & 50.0\% (2/4) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_004} & \texttt{validate\_tags} & Parsing/String & Hard & 20.0\% (1/5) & \texttt{meta-llama/llama-3.1-8b-instruct} & $T=1.0$ \\
+\texttt{REAL\_TASK\_005} & \texttt{split\_host\_port} & Parsing/String & Medium & 42.9\% (3/7) & \texttt{qwen/qwen-2.5-coder-32b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_006} & \texttt{get\_consistent\_hash\_node} & Algorithms/Search & Medium & 50.0\% (2/4) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=1.0$ \\
+\texttt{REAL\_TASK\_010} & \texttt{find\_conflicting\_reservations} & Graphs/Trees & Medium & 50.0\% (2/4) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_011} & \texttt{check\_half\_open\_overlap} & Scheduling/Intervals & Hard & 16.7\% (1/6) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_013} & \texttt{intersect\_intervals} & Scheduling/Intervals & Hard & 20.0\% (1/5) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_014} & \texttt{compute\_exponential\_backoff\_sequence} & State Machines/Retries & Hard & 33.3\% (1/3) & \texttt{meta-llama/llama-3.1-8b-instruct} & $T=0.9$ \\
+\texttt{REAL\_TASK\_015} & \texttt{compute\_fibonacci\_backoff\_sequence} & Algorithms/Search & Hard & 33.3\% (1/3) & \texttt{qwen/qwen-2.5-coder-32b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_016} & \texttt{evaluate\_token\_bucket} & State Machines/Retries & Hard & 14.3\% (1/7) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_017} & \texttt{check\_sliding\_window\_rate\_limit} & State Machines/Retries & Hard & 11.1\% (1/9) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_018} & \texttt{evaluate\_circuit\_breaker\_transition} & State Machines/Retries & Hard & 22.2\% (2/9) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_019} & \texttt{merge\_overlapping\_intervals} & Scheduling/Intervals & Hard & 25.0\% (1/4) & \texttt{meta-llama/llama-3.3-70b-instruct} & $T=0.8$ \\
+\texttt{REAL\_TASK\_020} & \texttt{detect\_dag\_cycle\_and\_ancestors} & Graphs/Trees & Medium & 40.0\% (2/5) & \texttt{qwen/qwen-2.5-7b-instruct} & $T=0.7$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\section{Experimental Methodology}
+\label{sec:methodology}
+
+\subsection{\texorpdfstring{$2 \times 2$}{2x2} Factorial Crossover Design}
+To evaluate code exposure and model diversity without confounding task difficulty, each trial evaluates an identical problem across four permuted conditions:
+\begin{itemize}
+    \item \textbf{$T_0$ (Spec-Only, Same Model):} The authoring model generates tests provided solely with the docstring and function signature.
+    \item \textbf{$T_1$ (Code-First, Same Model):} The authoring model generates tests provided with the docstring, signature, and its own faulty implementation ($C_{\text{faulty}}$).
+    \item \textbf{$T_2$ (Code-First, Cross-Family Model):} An independent model family generates tests provided with the docstring, signature, and $C_{\text{faulty}}$.
+    \item \textbf{$T_3$ (Spec-Only, Cross-Family Model):} The independent model family generates tests provided solely with the docstring and function signature.
+\end{itemize}
+
+\subsection{Model Configuration, Prompting, and Reproducibility}
+To ensure reproducibility, all generation requests were executed via the OpenRouter unified API with a pre-registered global seed $S=42$, sampling temperature $T=0.2$, and a generation limit of $\text{max\_tokens}=800$.
+Evaluated open-weight models reflect exact pinned provider backends and precision configurations:
+\begin{itemize}
+    \item \textbf{Coder Models (Defect Synthesis):}
+    \begin{itemize}
+        \item \texttt{meta-llama/llama-3.3-70b-instruct} (DeepInfra, bf16)
+        \item \texttt{qwen/qwen-2.5-coder-32b-instruct} (DeepInfra, bf16)
+        \item \texttt{meta-llama/llama-3.1-8b-instruct} (DeepInfra, bf16)
+        \item \texttt{qwen/qwen-2.5-7b-instruct} (DeepInfra, bf16)
+    \end{itemize}
+    \item \textbf{Cross-Family Evaluator Models:}
+    \begin{itemize}
+        \item \texttt{deepseek/deepseek-chat} (DeepSeek-V3, fp8, hosted by DeepSeek) for Llama tasks.
+        \item \texttt{meta-llama/llama-3.3-70b-instruct} (DeepInfra, bf16) for Qwen-authored tasks.
+    \end{itemize}
+\end{itemize}
+
+Test generators received standardized prompt templates across all conditions:
+\begin{itemize}
+    \item \textbf{Specification-Only Prompt ($T_0, T_3$):} Provided the function signature and docstring: \textit{``You are an expert Python QA engineer. Write a suite of comprehensive unit tests to thoroughly verify the behavior of the following function based ONLY on its specification... Write 3 to 6 distinct unit test assertions or test functions... Do NOT define, stub, or re-implement the function under test... Prefer simple assert statements or standalone def test\_...(): assert ... functions. Do NOT use unittest.TestCase or unittest.main().''}
+    \item \textbf{Code-First Prompt ($T_1, T_2$):} Provided the signature, docstring, and faulty implementation code under the header \textit{``Implementation under Test: \dots''}, followed by identical instructions requesting 3 to 6 assertions.
+\end{itemize}
+
+\subsection{Execution Environment \& Evaluator Implementation}
+All test executions were performed in an isolated ephemeral Docker container (\texttt{python:3.11-slim}) with a default per-run timeout of \textbf{6.0 seconds}. The evaluator implements a multi-stage slicing pipeline:
+\begin{enumerate}
+    \item \textbf{AST Sanitization:} The raw test output is parsed into an abstract syntax tree. Colliding imports, re-definitions of the target function, and invocations of \texttt{unittest.main()} are stripped to prevent early script termination.
+    \item \textbf{Test-Case Slicing:} The suite is decomposed into individual standalone test cases $\{t_1, \dots, t_k\}$ (standalone test functions, test class methods, or top-level assertion blocks).
+    \item \textbf{Reference Execution ($C_{\text{ref}}$):} Each test case $t_j$ is executed individually against the reference implementation $C_{\text{ref}}$. Test cases passing $100\%$ on $C_{\text{ref}}$ are retained in the valid subset $T_{\text{valid}}$.
+    \item \textbf{Oracle Validity Definition ($V$):} In accordance with the evaluator implementation, a test suite is classified as a \textit{usable valid oracle} ($V=1$) if and only if it produces \textbf{at least one valid test case} ($|T_{\text{valid}}| \ge 1$). A suite is considered \textit{strictly clean} on reference if all generated test cases pass on $C_{\text{ref}}$ ($|T_{\text{valid}}| = k$).
+    \item \textbf{Defect Detection ($D$):} If $V=0$ (no valid test cases), defect detection is marked as $D=0$. If $V=1$, the valid test cases $T_{\text{valid}}$ are executed individually against the faulty implementation $C_{\text{faulty}}$. A defect is marked as detected ($D=1$) if at least one valid test case triggers an \texttt{AssertionError}, an unhandled runtime exception, or exceeds the 6.0-second timeout.
+\end{enumerate}
+Across the 225 repeated trial quadruplets, 900 test suites were evaluated. Because each test case was executed individually on both reference and faulty implementations (alongside compilation checks), the experiment comprised several thousand isolated sandbox executions.
+
+\subsection{Statistical Analysis Framework}
+Because repeated trials are nested within 15 problem clusters, observations violate independent-and-identically-distributed assumptions. 
+Our primary analytical model is a hierarchical \textbf{Generalized Linear Mixed Model (GLMM)} with a binomial logit link, fitted via maximum likelihood with adaptive Gauss-Hermite quadrature ($nAGQ=9$) using \texttt{lme4}~\cite{bates2015lme4}:
+\begin{equation}
+\begin{aligned}
+\text{logit}\left(P(D_{ij} = 1)\right) = &\; \beta_0 + \beta_1 \text{Exposure}_{ij} + \beta_2 \text{CrossModel}_{ij} \\
+&+ \beta_3 (\text{Exposure}_{ij} \times \text{CrossModel}_{ij}) \\
+&+ \sum_{k} \gamma_k \text{Coder}_{k, i} + u_i
+\end{aligned}
+\label{eq:glmm}
+\end{equation}
+where $D_{ij}$ is the defect detection indicator for trial $j$ on problem $i$; $\text{Exposure} \in \{0, 1\}$ encodes code exposure; $\text{CrossModel} \in \{0, 1\}$ encodes architectural diversity; $\text{Coder}$ captures coder fixed effects; and $u_i \sim \mathcal{N}(0, \sigma_{\text{problem}}^2)$ represents the problem-specific random intercept.
+
+As supporting non-parametric checks, we evaluate paired contingency tables using exact two-sided McNemar tests~\cite{mcnemar1947note} and assess statistical equivalence using Two One-Sided Tests (TOST)~\cite{lakens2017tost} with an equivalence bound $\theta = \pm 0.08$.
+
+\section{Empirical Results}
+\label{sec:results}
+
+A total of 900 condition evaluations across 225 matched trial quadruplets were recorded. Table~\ref{tab:overall_summary} summarizes the overall performance.
+
+\begin{table*}[t]
+\centering
+\caption{Overall $2 \times 2$ Factorial Summary Across All 900 Evaluations ($N=225$ Matched Trials).}
+\label{tab:overall_summary}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccccc}
+\toprule
+\textbf{Condition} & \textbf{Code Exposure} & \textbf{Model Identity} & \textbf{Evaluations} & \textbf{Usable Suites ($|T_{\text{valid}}| \ge 1$)} & \textbf{Usable Rate} & \textbf{Detections} & \textbf{Detection Rate} \\
+\midrule
+$T_0$ & Specification Only & Same Model (Coder) & 225 & 194 & 86.2\% & 76 & \textbf{33.78\%} \\
+$T_1$ & Code-First Exposure & Same Model (Coder) & 225 & 146 & 64.9\% & 55 & \textbf{24.44\%} \\
+$T_2$ & Code-First Exposure & Cross-Family Model & 225 & 192 & 85.3\% & 41 & \textbf{18.22\%} \\
+$T_3$ & Specification Only & Cross-Family Model & 225 & 218 & 96.9\% & 90 & \textbf{40.00\%} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\subsection{RQ1: Code-First Exposure Effect}
+In the matched trial-level paired comparison ($T_0$ vs. $T_1$), defect detection dropped from $33.78\%$ (76/225) in the specification-only baseline down to $24.44\%$ (55/225) under code exposure—an absolute difference of $9.33$ percentage points.
+
+Table~\ref{tab:mcnemar_rq1} details the $2 \times 2$ paired contingency matrix. The comparison yielded 51 discordant pairs: in 36 trials, $T_0$ detected the defect while $T_1$ missed it; in 15 trials, $T_1$ detected while $T_0$ missed. 
+The two-sided exact McNemar test confirms this paired difference:
+\begin{equation*}
+\text{Exact } p = 0.0046, \quad \text{Matched OR} = 2.400 \; [1.314, 4.383]
+\end{equation*}
+(The asymptotic continuity-corrected statistic is $\chi^2 = 7.843, p = 0.0051$).
+
+\begin{table}[h]
+\centering
+\caption{Paired Contingency Matrix for RQ1 ($T_0$ vs. $T_1$, $N=225$).}
+\label{tab:mcnemar_rq1}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lccc}
+\toprule
+& \textbf{$T_1$ Detected} & \textbf{$T_1$ Missed} & \textbf{Row Total} \\
+\midrule
+\textbf{$T_0$ Detected} & 40 & 36 & 76 \\
+\textbf{$T_0$ Missed}   & 15 & 134 & 149 \\
+\midrule
+\textbf{Column Total}   & 55 & 170 & 225 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RQ2: Cross-Family Diversity \& Equivalence under Code}
+Holding code exposure constant ($T_1$ vs. $T_2$), the same-family model detected defects in $24.44\%$ (55/225) of trials, whereas the cross-family model detected defects in $18.22\%$ (41/225) of trials (a difference of $6.22$ percentage points).
+
+Table~\ref{tab:mcnemar_rq2} shows the paired contingency matrix (32 vs. 18 discordant pairs). The exact McNemar test indicates that the difference is not statistically significant at the $5\%$ level ($p = 0.0649$). 
+Applying TOST equivalence testing with margin $\theta = \pm 0.08$, the $90\%$ confidence interval for the difference in paired proportions is $[0.0110, 0.1135]$. Because the upper bound exceeds the $+8\%$ margin, the TOST null hypothesis cannot be rejected ($p_{\text{TOST}} = 0.2841$). 
+\textbf{Conclusion:} Performance between same-family and cross-family generators under code exposure cannot be demonstrated as statistically equivalent within an $8\%$ margin.
+
+\begin{table}[h]
+\centering
+\caption{Paired Contingency Matrix for RQ2 ($T_1$ vs. $T_2$, $N=225$).}
+\label{tab:mcnemar_rq2}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lccc}
+\toprule
+& \textbf{$T_2$ Detected} & \textbf{$T_2$ Missed} & \textbf{Row Total} \\
+\midrule
+\textbf{$T_1$ Detected} & 23 & 32 & 55 \\
+\textbf{$T_1$ Missed}   & 18 & 152 & 170 \\
+\midrule
+\textbf{Column Total}   & 41 & 184 & 225 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{RQ3: Factorial Interaction Analysis (GLMM)}
+Table~\ref{tab:glmm_results} presents the parameter estimates of the protocol GLMM. The model fit exhibits no convergence warnings (optimizer code 0, problem random intercept standard deviation $\sigma = 1.9223$).
+
+\begin{table}[h]
+\centering
+\caption{Hierarchical Mixed Logistic Regression Parameter Estimates ($N=900$, 15 Problems, $nAGQ=9$).}
+\label{tab:glmm_results}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Fixed Effect Term} & \textbf{Estimate} & \textbf{SE} & \textbf{$z$-value} & \textbf{$p$-value} & \textbf{OR [95\% CI]} \\
+\midrule
+(Intercept) & -0.5051 & 1.3844 & -0.365 & 0.7152 & 0.604 [0.040, 9.100] \\
+\texttt{exposure} & -0.7402 & 0.2690 & -2.752 & \textbf{0.0059} & 0.477 [0.282, 0.808] \\
+\texttt{cross\_model} & 0.4506 & 0.2550 & 1.767 & 0.0772 & 1.569 [0.952, 2.587] \\
+\texttt{coder: Llama-3.3-70B} & -0.9878 & 1.5168 & -0.651 & 0.5149 & 0.372 [0.019, 7.281] \\
+\texttt{coder: Qwen-2.5-7B} & 0.8309 & 2.3802 & 0.349 & 0.7270 & 2.295 [0.022, 243.7] \\
+\texttt{coder: Qwen-Coder-32B} & 0.1484 & 1.9505 & 0.076 & 0.9394 & 1.160 [0.025, 53.05] \\
+\textbf{\texttt{exposure:cross\_model}} & \textbf{-1.0358} & \textbf{0.3887} & \textbf{-2.665} & \textbf{0.0077} & \textbf{0.355 [0.166, 0.760]} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The interaction term $\beta_3 (\text{Exposure} \times \text{CrossModel})$ is negative and statistically significant ($\beta_3 = -1.0358, p = 0.00770, \text{OR} = 0.3549$). Furthermore, a Likelihood-Ratio Test comparing the full model against an additive model confirms that the interaction improves model fit ($\chi^2 = 7.213, \text{df}=1, p = 0.00724$).
+
+\textbf{Substantive Finding:} The observed benefit of changing the model family differs depending on prompt exposure. Under specification-only conditions, switching to an independent model family produces an increase in detection ($T_3 = 40.00\%$ vs. $T_0 = 33.78\%$). However, under code exposure, cross-model diversity does not provide a compensatory benefit ($T_2 = 18.22\%$).
+
+\section{Descriptive Examination: Test Usability vs. Cognitive Framing}
+\label{sec:deconstruction}
+
+A prominent question in prior literature is whether detection reductions under code exposure represent cognitive ``confirmation bias'' or operational degradation in test suite validity.
+
+\subsection{Usable Suite Conditioning}
+As detailed in Table~\ref{tab:overall_summary}, code exposure is accompanied by a marked decline in the proportion of test suites that execute cleanly against the reference implementation $C_{\text{ref}}$:
+\begin{itemize}
+    \item $T_0$ (Spec-Only) achieved a usable suite rate of \textbf{$86.2\%$} (194/225).
+    \item $T_1$ (Code-First) dropped to a usable suite rate of \textbf{$64.9\%$} (146/225).
+\end{itemize}
+
+When calculating defect detection rates conditionally among usable suites only (i.e., suites where $|T_{\text{valid}}| \ge 1$):
+\begin{itemize}
+    \item $T_0$ detection among usable suites: $76 / 194 = \mathbf{39.18\%}$.
+    \item $T_1$ detection among usable suites: $55 / 146 = \mathbf{37.67\%}$.
+    \item $T_2$ detection among usable suites: $41 / 192 = \mathbf{21.35\%}$.
+    \item $T_3$ detection among usable suites: $90 / 218 = \mathbf{41.28\%}$.
+\end{itemize}
+
+Conditioning on test usability selects different subsets in each experimental condition and does not substitute for the primary end-to-end outcome. Descriptively, however, the gap between $T_0$ and $T_1$ among usable suites ($39.18\%$ vs. $37.67\%$) is substantially narrower than the $9.33$ percentage point end-to-end difference.
+
+\subsection{Methodological Interpretation}
+These descriptive proportions indicate that attributing the entire exposure penalty to a cognitive mechanism overextends the evidence. Rather, a substantial contributing factor is that \textbf{code exposure reduces the likelihood of generating a valid test suite that adheres to the reference specification}. When exposed to implementation code, models frequently generate assertions tailored to internal variable states or local syntactic structures of the faulty code, resulting in tests that fail against $C_{\text{ref}}$. 
+
+Thus, the overall reduction in fault detection under code exposure reflects an operational breakdown in oracle validity, rather than a purely psychological confirmation effect.
+
+\section{Exploratory Sensitivity Analysis \& Task Heterogeneity}
+\label{sec:sensitivity}
+
+To examine whether findings are sensitive to problem clustering, we report two exploratory sensitivity analyses.
+
+\subsection{Problem-Level Aggregated Contrasts}
+We collapsed the 225 trials into 15 cluster means (one per problem) and applied paired $t$-tests across the 15 problem-level differences ($\text{df}=14$). Table~\ref{tab:sensitivity_problem} presents the contrasts.
+
+\begin{table}[h]
+\centering
+\caption{Exploratory Problem-Level Aggregated Contrasts ($N=15$ Problems, $\text{df}=14$).}
+\label{tab:sensitivity_problem}
+\small
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+\textbf{Contrast} & \textbf{Mean Difference} & \textbf{95\% Confidence Interval} & \textbf{$p$-value} \\
+\midrule
+$T_0 - T_1$ (Exposure Effect, Same Coder) & $+0.0933$ & $[-0.0468, 0.2334]$ & 0.1750 \\
+$T_1 - T_2$ (Diversity under Code Exposure) & $+0.0622$ & $[-0.1112, 0.2356]$ & 0.4544 \\
+$T_3 - T_2$ (Exposure under Cross-Model) & $+0.2178$ & $[-0.0320, 0.4676]$ & 0.0826 \\
+\textbf{Probability Interaction Contrast} & \textbf{-0.1244} & \textbf{[-0.4017, 0.1528]} & \textbf{0.3521} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+While the mean difference point estimates remain identical to the trial-level analysis ($T_0 - T_1 = 9.33$ pp), the $95\%$ confidence intervals span zero when aggregated across 15 problem clusters. Furthermore, the probability-scale interaction contrast ($-12.44$ pp, $p = 0.3521$) is inconclusive; this metric measures linear probability differences, differing conceptually from the conditional log-odds interaction estimated by the GLMM.
+
+\subsection{Random-Slopes GLMM}
+We also fitted an exploratory mixed model incorporating problem-specific random slopes for exposure, diversity, and interaction. In this random-slopes specification, the interaction coefficient shifted to $\beta_3 = -7.2365$ ($SE = 3.3689, z = -2.148, p = 0.0317$). While the interaction retained nominal statistical significance at the $5\%$ level, the substantial shift in coefficient magnitude underscores large task-level slope variance and wide uncertainty regarding effect magnitude across diverse software problems.
+
+\section{Discussion \& Practical Scope}
+\label{sec:discussion}
+
+Within the scope of the evaluated Python algorithmic tasks and model architectures, our results suggest specific considerations for automated testing workflows:
+
+\begin{enumerate}
+    \item \textbf{Decouple Test Synthesis from Implementation Inspection:} Providing implementation code directly in the prompt of an LLM test generator does not enhance defect detection and reduces test oracle validity. Where formal specifications, docstrings, or interface signatures are available, generating tests from specifications alone provides higher net fault discovery.
+    \item \textbf{Position Model Diversity at the Specification Stage:} In multi-agent testing setups, cross-model ensembles provide the largest observed benefit when generating black-box tests ($T_3$ achieved $40.00\%$ detection). Conversely, deploying an independent model to inspect existing code ($T_2$) does not compensate for code-exposure penalties.
+\end{enumerate}
+
+\section{Threats to Validity}
+\label{sec:threats}
+
+\subsection{Internal Validity}
+\begin{itemize}
+    \item \textbf{Provider Routing \& Execution Continuity:} LLM invocations were routed through the OpenRouter unified API. Dynamic provider routing and fallbacks occurred during evaluation; hence, strict hardware-level provider pinning cannot be claimed. Transient credit exhaustion caused temporary HTTP 402 pauses; however, all 900 evaluations in the final dataset were completed under identical prompts and evaluated in Docker sandboxes with clean status recording.
+\end{itemize}
+
+\subsection{External Validity}
+\begin{itemize}
+    \item \textbf{Language and Task Generalizability:} The study is scoped to 15 standalone algorithmic Python tasks. Generalizability to object-oriented frameworks, database systems, or other programming languages (such as Elixir~\cite{leu2026modeldiversity}) requires broader empirical replication.
+    \item \textbf{Model Versioning:} Evaluated open-weight models reflect weights available in late 2024. While open weights ensure scientific reproducibility, newer model generations may exhibit different generation dynamics.
+\end{itemize}
+
+\subsection{Construct Validity}
+\begin{itemize}
+    \item \textbf{Absence of Cognitive Measurements:} LLMs are probabilistic sequence predictors. We explicitly make no claims regarding human cognitive states or mental confirmation bias; all findings represent functional input-output oracle validity and defect detection metrics.
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper presented a $2 \times 2$ factorial empirical investigation ($N=225$ matched trial quadruplets, 900 condition evaluations) disentangling Code Exposure from Model Diversity in LLM test generation. 
+Using a hierarchical GLMM on verified natural Python logic defects, we confirmed a statistically significant negative interaction ($\beta = -1.0358, p = 0.0077, \text{OR} = 0.355$). 
+While cross-model diversity achieves superior fault detection under specification-only conditions ($40.00\%$), code exposure suppresses this benefit ($18.22\%$), a reduction largely driven by degraded test oracle validity ($86.2\%$ vs. $64.9\%$). 
+Within the studied tasks and models, our findings demonstrate that separating test synthesis from implementation inspection is essential for maximizing test oracle quality.
+
+
+
+\subsection*{CRediT Authorship Contribution Statement}
+\textbf{Ziad Emad Allam:} Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data Curation, Writing -- Original Draft, Writing -- Review \& Editing.
+
+\subsection*{Declaration of Competing Interest}
+The author declares that he has no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\subsection*{Data Availability}
+The full replication package, including the benchmark defect dataset, execution logs, evaluation test suites, and R statistical analysis scripts, is openly available at \url{https://github.com/ziademad02153/llm-test-bias-paper}.
+
+\subsection*{Declaration of Generative AI in Scientific Writing}
+During the preparation of this work, the author utilized large language models (specifically Claude 3.7 Sonnet and Antigravity AI coding assistant) for drafting portions of the text, writing automated test-execution scripts, and structuring the statistical modeling pipelines. All generated text, scripts, and statistical models were rigorously reviewed, independently audited, and verified against raw experimental logs and Docker execution traces by the author, who takes full intellectual, methodological, and empirical responsibility for the contents and conclusions of this publication.
+
+\subsection*{Funding}
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

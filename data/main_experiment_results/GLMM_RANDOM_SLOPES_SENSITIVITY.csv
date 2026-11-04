@@ -1,0 +1,2 @@
+"coefficient","standard_error","p_value","odds_ratio","lower_95_or","upper_95_or","singular","convergence_messages","warnings"
+-7.23653867531678,3.36885075948857,0.0317079256675034,0.000719798910945268,9.7642798912472e-07,0.530618210424748,FALSE,"",""

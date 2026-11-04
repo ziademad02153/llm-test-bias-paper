@@ -1,0 +1,5 @@
+- A 2x2 factorial crossover disentangles code exposure from LLM model diversity
+- GLMM confirms a significant negative interaction between exposure and diversity
+- Code exposure reduces test defect detection by 9.33 pp (exact McNemar p=0.0046)
+- Cross-model diversity peaks at 40% under specs but yields no gain under code
+- Code exposure penalty is accompanied by a severe drop in test suite usability
