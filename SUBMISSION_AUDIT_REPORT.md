@@ -159,3 +159,4 @@ All files reside in the working directory `E:\paper2`. The following table lists
 - [ ] **Author Permission Letters:** Drafts in `scratch/PERMISSION_REQUEST_TEMPLATES.md` have **NOT** been transmitted to Dan Austin, Bhavatharani Selvaraj, or Alpha-Park. (Requires manual outreach by Ziad).
 - [ ] **Elsevier Portal Account Setup:** Upload to `submit.elsevier.com/INFSOF` has **NOT** been initiated. (Requires Ziad to log in with his Elsevier credentials).
 - [ ] **Final Author Review of PDF:** Ziad must visually review `paper.pdf` on his local viewer before clicking submit.
+
