@@ -2,7 +2,7 @@
 
 [![Replication Package](https://img.shields.io/badge/Replication-Package-blue.svg)](https://github.com/ziademad02153/llm-test-bias-paper)
 [![R Statistical Analysis](https://img.shields.io/badge/Analysis-R%20%7C%20lme4-success.svg)](scripts/fit_interaction_glmm.R)
-[![License: Mixed Open Source](https://img.shields.io/badge/License-MIT%20%2F%20GPL--3.0-brightgreen.svg)](data/licenses/)
+[![Data Sources: MIT / GPL-3.0](https://img.shields.io/badge/Data%20Sources-MIT%20%2F%20GPL--3.0-brightgreen.svg)](data/licenses/)
 
 **Author:** Ziad Emad Allam  
 *Independent Researcher, Benha, Egypt*  
