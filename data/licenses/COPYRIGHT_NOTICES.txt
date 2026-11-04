@@ -84,10 +84,14 @@ The following 8 tasks originate from software repositories released under the MI
   - Upstream source is publicly available at the repository URL above.
 
 ===============================================================================
-3. TASKS FROM PUBLIC OPEN-SOURCE REPOSITORIES (FAIR USE / UNLICENSED)
+3. TASKS FROM PUBLIC OPEN-SOURCE REPOSITORIES (SOURCES WITHHELD PENDING PERMISSION)
 ===============================================================================
 
-The following 6 tasks originate from public GitHub repositories that do not provide an explicit root license file. By making repositories public on GitHub, authors agree to GitHub's Terms of Service (allowing public viewing and forking), but retain underlying copyright:
+The following 6 tasks originate from public GitHub repositories that do not provide an explicit root license file. In accordance with standard intellectual property practices, public availability on GitHub does not grant automatic downstream redistribution rights.
+
+To ensure strict compliance with open-source and copyright principles, source-bearing artifacts and synthesized test suites for these 6 tasks are withheld from public redistribution packages pending explicit written permission from the respective copyright holders.
+
+Researchers may inspect the original reference implementations directly at the upstream repository links and commit hashes listed below:
 
 - Task REAL_TASK_004 (validate_tags):
   Upstream Repository: https://github.com/Danau5tin/tbench-agentic-data-pipeline
@@ -119,7 +123,9 @@ The following 6 tasks originate from public GitHub repositories that do not prov
   Commit Hash: 1c28477ff9ea3ce8bb2e811dc3fa675ae6bca1f4 (2026-09-29)
   Author: GenPark / Alpha-Park
 
-Legal & Fair Use Determination for Academic Research:
-1. Pure Algorithmic Ideas (17 U.S.C. Section 102(b)): Standard computer science algorithms (such as Kahn's topological sort, MD5 hash ring bisecting, and half-open interval overlap checks) are non-copyrightable ideas and mathematical concepts.
-2. Transformative Academic Fair Use (17 U.S.C. Section 107): The inclusion of isolated, functional docstrings and concise reference implementations (< 25 lines) serves an exclusively transformative purpose: empirical benchmarking and scientific reproducibility. It does not substitute for or harm the market value of the original repositories.
-3. Author Rights and Takedown Protocol: Original authors may contact the corresponding author (ziademadbts@gmail.com) at any time to request attribution adjustments, explicit license additions, or exclusion from future benchmark releases.
+Data Availability and Statistical Replication:
+All 900 empirical observation records (condition outcomes, timing, and error classifications) across all 15 tasks are fully provided in `data/main_experiment_results/main_glmm_dataset.csv`. The complete generalized linear mixed-effects model (GLMM) and exact non-parametric tests can be 100% reproduced without third-party source redistribution.
+
+Author Rights and Contact Protocol:
+Original authors may contact the corresponding author (ziademadbts@gmail.com) to provide formal licensing permission, request attribution updates, or clarify redistribution terms.
+

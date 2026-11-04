@@ -77,3 +77,4 @@ data/test_checkpoint_experiment/
 # Archives
 *.zip
 !supplementary_material.zip
+!supplementary_material_public.zip
